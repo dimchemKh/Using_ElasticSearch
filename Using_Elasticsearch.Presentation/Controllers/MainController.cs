@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Using_Elasticsearch.BusinessLogic.Common.Models;
+using Using_Elasticsearch.Common.View.MainScreen.Post;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 
 namespace Using_Elastic.Presentation.Controllers
@@ -24,7 +24,7 @@ namespace Using_Elastic.Presentation.Controllers
         }
 
         [HttpPost("range")]
-        public async Task<IActionResult> GetRangeAsync([FromBody] FilterModel filter)
+        public async Task<IActionResult> GetRangeAsync([FromBody] RequestFilterParametersMainScreen filter)
         {            
             if(filter == null)
             {
@@ -36,8 +36,8 @@ namespace Using_Elastic.Presentation.Controllers
             return Ok(response);
         }
 
-        [HttpGet("term")]
-        public async Task<IActionResult> GetTermAsync([FromBody] FIlterTerm filter)
+        [HttpPost("search")]
+        public async Task<IActionResult> Search([FromBody] RequestFilterParametersMainScreen filter)
         {
             if (filter == null)
             {

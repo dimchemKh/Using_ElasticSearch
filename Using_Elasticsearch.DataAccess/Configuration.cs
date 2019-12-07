@@ -4,7 +4,7 @@ using System.Reflection;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Using_Elastic.DataAccess.Common.Models;
+using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
 using Using_Elastic.DataAccess.Repositories;
 using Using_Elastic.DataAccess.Repositories.Interfaces;

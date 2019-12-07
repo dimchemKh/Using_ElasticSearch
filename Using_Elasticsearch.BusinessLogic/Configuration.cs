@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Nest;
 using System;
-using Using_Elastic.DataAccess.Common.Models;
+using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
 using Using_ElasticSearch.BusinessLogic.Services;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;

@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
-using Using_Elastic.Presentation.Common.Models;
+using Using_Elastic.Presentation.Common.Configs;
 
 namespace Using_Elastic.Presentation.Common.Extensions
 {
-    public static class SwaggerExtensions
+    public static class SwaggerExtension
     {
         public static void AddSwagger(this IServiceCollection services)
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Using_Elastic.DataAccess.Common.Models
+﻿namespace Using_Elastic.DataAccess.Configs
 {
     public class ConnectionConfig
     {

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Common.Models;
+using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
 using Using_Elastic.DataAccess.Repositories.Interfaces;
 using System.Linq;

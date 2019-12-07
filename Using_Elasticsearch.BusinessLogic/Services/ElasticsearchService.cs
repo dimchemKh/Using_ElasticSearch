@@ -3,12 +3,12 @@ using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Common.Models;
+using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
 using Using_Elastic.DataAccess.Repositories.Interfaces;
-using Using_Elasticsearch.BusinessLogic.Common.Models;
+using Using_Elasticsearch.Common.View.MainScreen.Post;
+using Using_Elasticsearch.Common.View.Models.Get;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 
 namespace Using_ElasticSearch.BusinessLogic.Services
@@ -28,8 +28,6 @@ namespace Using_ElasticSearch.BusinessLogic.Services
 
         public async Task IndexDataAsync()
         {
-            //var res = await _elasticClient.DeleteByQueryAsync<WebAppData>(x => x.Query(z => z.QueryString(c => c.Query("*"))));
-
             var res = await _elasticClient.Indices.DeleteAsync(_connectionConfig.Value.ElasticIndex);
 
             var count = 10000;
@@ -45,9 +43,9 @@ namespace Using_ElasticSearch.BusinessLogic.Services
                 }
 
                 var response = await _elasticClient.BulkAsync(x => x
-                                                            .IndexMany(data, (z, doc) => z
-                                                                        .Document(doc)
-                                                                        .Index(_connectionConfig.Value.ElasticIndex)));
+                                                   .IndexMany(data, (z, doc) => z
+                                                   .Document(doc)
+                                                   .Index(_connectionConfig.Value.ElasticIndex)));
 
                 if (!response.IsValid)
                 {
@@ -55,7 +53,7 @@ namespace Using_ElasticSearch.BusinessLogic.Services
                 }
 
 
-                if (dataCount < count - 1)
+                if (dataCount < count)
                 {
                     break;
                 }
@@ -64,27 +62,42 @@ namespace Using_ElasticSearch.BusinessLogic.Services
             }
         }
 
-        public async Task<IEnumerable<WebAppData>> GetRangeAsync(FilterModel filter)
-        {
+        public async Task<GetDataSearchMainView> GetRangeAsync(RequestFilterParametersMainScreen filter)
+        {            
             var result = await _elasticClient.SearchAsync<WebAppData>(z => z
                 .From(filter.From)
                 .Size(filter.Size)
-                .Query(x => x.Range(
-                    c => c.Field(filter.ColumnName)
+                .Query(x => x.Range(c => c
+                    .Field(filter.ColumnName)
                     .GreaterThanOrEquals((double)filter.MinValue)
                     .LessThanOrEquals((double)filter.MaxValue)))
-                );
-            
-            return result.Documents.ToList();
+                    .SearchAfter(new List<WebAppData> {  }, ));
+
+            var totalCount = await _elasticClient.CountAsync<WebAppData>(z => z.Query(x => x.Range(c => c
+                    .Field(filter.ColumnName)
+                    .GreaterThanOrEquals((double)filter.MinValue)
+                    .LessThanOrEquals((double)filter.MaxValue))));
+
+            var response = new GetDataSearchMainView();
+
+            response.TotalCount = (int)totalCount.Count;
+
+            response.Items = result.Documents.ToList();
+
+            return response;
         }
 
-        public async Task<IEnumerable<WebAppData>> GetSearchTermAsync(FIlterTerm filter)
+        public async Task<GetDataSearchMainView> GetSearchTermAsync(RequestFilterParametersMainScreen filter)
         {
             var result = await _elasticClient.SearchAsync<WebAppData>(x => x.From(filter.From)
                                                                             .Size(filter.Size)
-                                                                            .Query(z => z.Terms(t => t.Field(filter.Field).Terms(filter.Values))));
+                                                                            .Query(z => z.Terms(t => t.Field(filter.ColumnName).Terms(filter.Values))));
 
-            return result.Documents.ToList();
+            var response = new GetDataSearchMainView();
+
+            response.Items = result.Documents.ToList();
+
+            return response;
         }
     }
 }

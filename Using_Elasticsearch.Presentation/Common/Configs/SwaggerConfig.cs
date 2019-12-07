@@ -1,4 +1,4 @@
-﻿namespace Using_Elastic.Presentation.Common.Models
+﻿namespace Using_Elastic.Presentation.Common.Configs
 {
     public class SwaggerConfig
     {
