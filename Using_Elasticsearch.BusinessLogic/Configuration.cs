@@ -1,10 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Nest;
 using System;
 using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.BusinessLogic.Services;
+using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
+using Using_Elasticsearch.DataAccess.Configs;
 using Using_ElasticSearch.BusinessLogic.Services;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 using DataAccess = Using_Elastic.DataAccess;
@@ -15,18 +20,38 @@ namespace Using_ElasticSearch.BusinessLogic
     {
         public static void Add(IServiceCollection services, IConfiguration configuration)
         {
-            DataAccess.Configuration.Add(services, configuration);
+            var passwordOptions = services.BuildServiceProvider().GetService<IOptions<PasswordConfig>>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = passwordOptions.Value.RequiredLength;
+                options.Password.RequiredUniqueChars = passwordOptions.Value.RequiredUniqueChars;
+                options.Password.RequireDigit = passwordOptions.Value.RequireDigit;
+                options.Password.RequireUppercase = passwordOptions.Value.RequireUppercase;
+                options.Password.RequireLowercase = passwordOptions.Value.RequireLowercase;
+                options.Password.RequireNonAlphanumeric = passwordOptions.Value.RequireNonAlphanumeric;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(passwordOptions.Value.DefaultLockoutTimeSpan);
+                options.Lockout.MaxFailedAccessAttempts = passwordOptions.Value.MaxFailedAccessAttempts;
+                options.Lockout.AllowedForNewUsers = passwordOptions.Value.AllowedForNewUsers;
+
+                options.User.RequireUniqueEmail = passwordOptions.Value.RequireUniqueEmail;
+            });
+
 
             var connectionConfig = services.BuildServiceProvider().GetService<IOptions<ConnectionConfig>>();            
 
             AddElasticsearch(services, connectionConfig);
 
             AddServices(services);
+
+            DataAccess.Configuration.Add(services, configuration);
         }
 
         private static void AddServices(IServiceCollection services)
         {
             services.AddTransient<IElasticsearchService, ElasticsearchService>();
+            services.AddTransient<IMainScreenService, MainScreenService>();
         }
 
         private static void AddElasticsearch(IServiceCollection services, IOptions<ConnectionConfig> connectionConfig)
@@ -38,6 +63,10 @@ namespace Using_ElasticSearch.BusinessLogic
             var client = new ElasticClient(settings);
 
             services.AddSingleton<IElasticClient>(client);
+        }
+        public static void Use(IApplicationBuilder app)
+        {
+            DataAccess.Configuration.Use(app);
         }
     }
 }

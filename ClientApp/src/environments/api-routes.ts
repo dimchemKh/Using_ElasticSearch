@@ -6,6 +6,6 @@ export class ApiRoutes {
     private protocolHttp = 'http:/localhost:52196/';
     private protocolHttps = 'https://localhost:44336/';
 
-    public readonly mainScreenRoute = this.protocolHttps + 'api/main/';
+    public readonly mainScreenRoute = this.protocolHttps + 'api/mainscreen/';
 
 }

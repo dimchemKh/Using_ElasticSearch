@@ -24,6 +24,8 @@ import {
     MatSnackBarModule,
     MatBadgeModule,
     MatFormFieldModule,
+    MatExpansionModule,
+    MatRadioModule,
 } from '@angular/material';
 
 @NgModule({
@@ -50,7 +52,9 @@ import {
         MatDividerModule,
         MatSnackBarModule,
         MatBadgeModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatExpansionModule,
+        MatRadioModule
     ],
     exports: [
         MatMenuModule,
@@ -75,7 +79,9 @@ import {
         MatCheckboxModule,
         MatSliderModule,
         MatDividerModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatExpansionModule,
+        MatRadioModule
     ],
     declarations: [],
     providers: [],

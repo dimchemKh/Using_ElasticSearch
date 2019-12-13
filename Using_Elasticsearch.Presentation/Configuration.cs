@@ -6,6 +6,8 @@ using Using_Elastic.Presentation.Common.Configs;
 using BusinessLogic = Using_ElasticSearch.BusinessLogic;
 using Using_Elasticsearch.Presentation.Common.Configs;
 using Using_Elasticsearch.Presentation.Common.Extensions;
+using Using_Elasticsearch.DataAccess.Configs;
+using Using_Elastic.DataAccess.Configs;
 
 namespace Using_Elastic.Presentation
 {
@@ -16,6 +18,8 @@ namespace Using_Elastic.Presentation
 
             services.Configure<SwaggerConfig>(configuration.GetSection(nameof(SwaggerConfig)));
             services.Configure<CorsConfig>(configuration.GetSection(nameof(CorsConfig)));
+            services.Configure<PasswordConfig>(configuration.GetSection(nameof(PasswordConfig)));
+            services.Configure<ConnectionConfig>(configuration.GetSection(nameof(ConnectionConfig)));
 
             services.AddSwagger();
             services.AddCorsWithOrigin();
@@ -26,7 +30,9 @@ namespace Using_Elastic.Presentation
         public static void Use(IApplicationBuilder app, IConfiguration configuration)
         {
             app.UseSwagger(configuration);
-            app.UseCors(configuration.GetSection("CorsConfig").GetSection("PolicyName").Value);
+            app.UseCors(configuration.GetSection(nameof(CorsConfig)).GetSection("PolicyName").Value);
+
+            BusinessLogic.Configuration.Use(app);
         }
     }
 }

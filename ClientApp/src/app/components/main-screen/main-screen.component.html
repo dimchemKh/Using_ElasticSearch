@@ -1,83 +1,355 @@
-<div class="filter-range">
-  <mat-form-field>
-    <input
-      matInput
-      type="number"
-      placeholder="Size"
-      [(ngModel)]="filter.size"
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <input
-      matInput
-      type="number"
-      placeholder="MinValue"
-      [(ngModel)]="filter.minValue"
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <input
-      matInput
-      type="number"
-      placeholder="MaxValue"
-      [(ngModel)]="filter.maxValue"
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="ColumnName" [(ngModel)]="filter.columnName" />
-  </mat-form-field>
-  <button mat-button (click)="filterRange()">Filter</button>
-</div>
-<div>
-  <mat-form-field>
-    <input matInput placeholder="ColumnName" [(ngModel)]="filter.columnName">
-  </mat-form-field>
+<mat-accordion>
+  <mat-expansion-panel class="filters">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Filters
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-divider></mat-divider>
+    <div class="filters-container">
+      <div class="period-select">
+        <h4>Period select</h4>
+        <div class="groups-select">
+          <ng-select placeholder="Arrival year"
+                     [items]="requestSearch.filters.holidayYear"
+                     [(ngModel)]="requestGetFilters.filters.holidayYear"
+                     (open)="getFilters(filterNames.ArrivalYear)"
+                     [multiple]="true"
+                     [closeOnSelect]="false">
+          </ng-select>
+          <ng-select placeholder="Arrial week"
+                     [items]="requestSearch.filters.weekNumber"
+                     [(ngModel)]="requestGetFilters.filters.weekNumber"
+                     (open)="getFilters(filterNames.ArrivalWeek)"
+                     [multiple]="true"
+                     [closeOnSelect]="false">
+          </ng-select>
+          <ng-select placeholder="Key period"
+                     [items]="requestSearch.filters.keyPeriodName"
+                     [(ngModel)]="requestGetFilters.filters.keyPeriodName"
+                     (open)="getFilters(filterNames.KeyPeriod)"
+                     [multiple]="true"
+                     [closeOnSelect]="false">
+          </ng-select>
+        </div>
+      </div>
+      <div class="profile-accommodation">
+        <h4>Profile / accommodation</h4>
+        <div class="groups-select-material">
+          <mat-form-field>
+            <mat-label>RM Responsible</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.responsibleRevenueManager"
+                        (opened)="getFilters(filterNames.RmResponsible)"
+                        (selectionChange)="clearSelect($event)"
+                        multiple>
+              <mat-option *ngFor="
+                  let item of requestSearch.filters.responsibleRevenueManager
+                "
+                          [(value)]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Region</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.regionName"
+                        (opened)="getFilters(filterNames.Region)"
+                        multiple>
+              <mat-option *ngFor="let item of requestSearch.filters.regionName"
+                          [value]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Park</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.parkName"
+                        (opened)="getFilters(filterNames.Park)"
+                        multiple>
+              <mat-option *ngFor="let item of requestSearch.filters.parkName"
+                          [value]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Accommodation type</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.accommTypeName"
+                        (opened)="getFilters(filterNames.AccommodationType)"
+                        multiple>
+              <mat-option *ngFor="let item of requestSearch.filters.accommTypeName"
+                          [value]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Bedrooms</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.accommBeds"
+                        (opened)="getFilters(filterNames.Bedrooms)"
+                        multiple>
+              <mat-option *ngFor="let item of requestSearch.filters.accommBeds"
+                          [value]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Price grade</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.unitGradeName"
+                        (opened)="getFilters(filterNames.sGradeTier)"
+                        multiple>
+              <mat-option *ngFor="let item of requestSearch.filters.unitGradeName"
+                          [value]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Services</mat-label>
+            <mat-select [(ngModel)]="requestGetFilters.filters.accommName"
+                        (opened)="getFilters(filterNames.Service)"
+                        multiple>
+              <mat-option *ngFor="let item of requestSearch.filters.accommName"
+                          [value]="item">{{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="perfomance-factors">
+        <h4>Perfomance factors</h4>
+        <mat-label class="sub-category">by Park</mat-label>
+        <div class="range-park">
+          <mat-form-field>
+            <mat-label>Occupancy From (%)</mat-label>
+            <input matInput
+                   type="number"
+                   digitOnly
+                   class="input-number"
+                   autocomplete="off"
+                   [ngModel]="
+                toPercent(requestGetFilters.filters.greaterParkWeekOccupancy)
+                  | number
+              "
+                   (ngModelChange)="
+                requestGetFilters.filters.greaterParkWeekOccupancy = fromPercent(
+                  $event
+                )
+              " />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Occupancy To (%)</mat-label>
+            <input matInput
+                   type="number"
+                   class="input-number"
+                   autocomplete="off"
+                   [ngModel]="
+                toPercent(requestGetFilters.filters.lessParkWeekOccupancy)
+                  | number
+              "
+                   (ngModelChange)="
+                requestGetFilters.filters.lessParkWeekOccupancy = fromPercent(
+                  $event
+                )
+              " />
+          </mat-form-field>
+        </div>
 
-</div>
+        <mat-label class="sub-category">by Price grade</mat-label>
+        <div class="range-park">
+          <mat-form-field>
+            <mat-label>Occupancy From (%)</mat-label>
+            <input matInput
+                   type="number"
+                   digitOnly
+                   class="input-number"
+                   autocomplete="off"
+                   [ngModel]="
+                toPercent(requestGetFilters.filters.greaterParkWeekOccupancy)
+                  | number
+              "
+                   (ngModelChange)="
+                requestGetFilters.filters.greaterParkWeekOccupancy = fromPercent(
+                  $event
+                )
+              " />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Occupancy To (%)</mat-label>
+            <input matInput
+                   type="number"
+                   class="input-number"
+                   autocomplete="off"
+                   [ngModel]="
+                toPercent(requestGetFilters.filters.lessParkWeekOccupancy)
+                  | number
+              "
+                   (ngModelChange)="
+                requestGetFilters.filters.lessParkWeekOccupancy = fromPercent(
+                  $event
+                )
+              " />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit">
+      <button mat-raised-button color="primary" (click)="search()">
+        Submit
+      </button>
+      <button mat-raised-button color="warn" (click)="reset()">Reset</button>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
 <!-- ------------------------------------------------------------------- -->
 
-<div class="container">
-  <table class="main-table" mat-table [dataSource]="dataSource.items">
-    <ng-container matColumnDef="ParkName">
-      <th mat-header-cell *matHeaderCellDef>ParkName</th>
-      <td mat-cell *matCellDef="let row">{{ row.parkName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="AccommName">
-      <th mat-header-cell *matHeaderCellDef>AccommName</th>
-      <td mat-cell *matCellDef="let row">{{ row.accommName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="AccommBeds">
-      <th mat-header-cell *matHeaderCellDef>AccommBeds</th>
-      <td mat-cell *matCellDef="let row">{{ row.accommBeds }}</td>
-    </ng-container>
-    <ng-container matColumnDef="AccommTypeName">
-      <th mat-header-cell *matHeaderCellDef>AccommTypeName</th>
-      <td mat-cell *matCellDef="let row">{{ row.accommTypeName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="UnitGradeName">
-      <th mat-header-cell *matHeaderCellDef>UnitGradeName</th>
-      <td mat-cell *matCellDef="let row">{{ row.unitGradeName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="AccommPax">
-      <th mat-header-cell *matHeaderCellDef>AccommPax</th>
-      <td mat-cell *matCellDef="let row">{{ row.accommPax }}</td>
-    </ng-container>
-    <ng-container matColumnDef="ArrivalDateRevised">
-      <th mat-header-cell *matHeaderCellDef>ArrivalDateRevised</th>
-      <td mat-cell *matCellDef="let row">{{ row.arrivalDateRevised }}</td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="cloumnNames"></tr>
-    <tr mat-row *matRowDef="let row; columns: cloumnNames"></tr>
-  </table>
-</div>
-<mat-paginator
-  [length]="dataSource.totalCount"
-  [pageIndex]="filter.from / filter.size"
-  [pageSize]="filter.size"
-  [pageSizeOptions]="[5, 10, 25, 100]"
-  (page)="filterRange($event)"
-  class="paginator"
->
-</mat-paginator>
+<mat-accordion class="table-according">
+  <mat-expansion-panel expanded="true"
+                       disabled="true"
+                       hideToggle="true"
+                       class="table">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Table
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="container">
+      <table class="main-table"
+             mat-table
+             [dataSource]="responseSearch.items">
+        <ng-container matColumnDef="parkName"
+                      sticky="true">
+          <th class="park"
+              mat-header-cell
+              *matHeaderCellDef>Park</th>
+          <td class="park"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.parkName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="accommName"
+                      sticky="true">
+          <th class="accommName"
+              mat-header-cell
+              *matHeaderCellDef>
+            Accommodation
+          </th>
+          <td class="accommName"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.accommName }}
+          </td>
+        </ng-container>        
+        <ng-container matColumnDef="accommBeds"
+                      sticky="true">
+          <th class="accommBeds"
+              mat-header-cell
+              *matHeaderCellDef>Bedrooms</th>
+          <td class="accommBeds"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.accommBeds }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="accommTypeName"
+                      sticky="true">
+          <th class="accommType"
+              mat-header-cell
+              *matHeaderCellDef>Type</th>
+          <td class="accommType"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.accommTypeName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="unitGradeName"
+                      sticky="true">
+          <th class="unitGradeName"
+              mat-header-cell
+              *matHeaderCellDef>
+            S-grade tier
+          </th>
+          <td class="unitGradeName"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.unitGradeName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="accommPax"
+                      sticky="true">
+          <th class="accommPax"
+              mat-header-cell
+              *matHeaderCellDef>Pax</th>
+          <td class="accommPax"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.accommPax }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="arrivalDateRevised"
+                      sticky="true">
+          <th class="arrivalDateRevised"
+              mat-header-cell
+              *matHeaderCellDef>
+            Arrival date revised
+          </th>
+          <td class="arrivalDateRevised"
+              mat-cell
+              *matCellDef="let row">
+            {{ row.arrivalDateRevised | date: "dd.MM.yyyy" }}
+          </td>
+        </ng-container>
+
+        <ng-container *ngFor="let name of repetedColumns"
+                      matColumnDef="{{ name.name }}">
+          <th [ngStyle]="  drawBorderCells(name.name) ? {'border-right': '1px solid','border-right-color': 'rgba(0,0,0,.12)'}  : {}"
+              mat-header-cell
+              *matHeaderCellDef>
+            {{ name.viewName }}
+          </th>
+          <td [ngStyle]="
+              drawBorderCells(name.name)
+                ? {
+                    'border-right': '1px solid',
+                    'border-right-color': 'rgba(0,0,0,.12)'
+                  }
+                : {}
+            "
+              mat-cell
+              *matCellDef="let row">
+            {{ row[name.name] }}
+          </td>
+        </ng-container>
+
+        <ng-container *ngFor="let header of groupHeaders"
+                      matColumnDef="{{ header.name }}"
+                      sticky="{{ header.sticky }}">
+          <th mat-header-cell
+              *matHeaderCellDef
+              [ngStyle]="drawBorderHeaders(header.name) ? { 'border-top': '1px solid', 'border-right': '1px solid', 'border-color': 'rgba(0,0,0,.12)' } : {}"
+              [attr.colspan]="header.colspan">
+            {{ header.viewName }}
+          </th>
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="groupHeadersNames"></tr>
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr mat-row
+            *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator [length]="responseSearch.totalCount"
+                   [pageIndex]="requestSearch.from / requestSearch.size"
+                   [pageSize]="requestSearch.size"
+                   [pageSizeOptions]="[5, 10, 25]"
+                   (page)="filterRange($event)"
+                   [showFirstLastButtons]="true"
+                   class="paginator">
+    </mat-paginator>
+  </mat-expansion-panel>
+</mat-accordion>
 
 <router-outlet></router-outlet>

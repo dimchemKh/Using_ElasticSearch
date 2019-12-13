@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Using_Elasticsearch.DataAccess.DbInitializers;
 
 namespace Using_Elastic.Presentation
 {
@@ -24,7 +25,7 @@ namespace Using_Elastic.Presentation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer initializer)
         {
             if (env.IsDevelopment())
             {
@@ -36,7 +37,10 @@ namespace Using_Elastic.Presentation
                 app.UseHsts();
             }
 
+            initializer.Initialize();
+
             Presentation.Configuration.Use(app, Configuration);
+
 
             app.UseHttpsRedirection();
             app.UseMvc();

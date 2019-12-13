@@ -1,15 +1,138 @@
-.filter-range {
-  margin: 50px;
+.filters {
+  margin: 20px 50px;
+}
+.filters-container {
+  padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
+}
+.perfomance-factors {
   display: flex;
   flex-direction: column;
-  width: 150px;
+  text-align: center;
+  border: 1px solid;
+  height: 18rem;
+  border-color: rgba(0,0,0,.12);
+  border-radius: 5px;
+  margin: 10px 0;
+  width: 600px;
+}
+.mat-form-field {
+  padding: 10px;
+}
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 0 20px !important;
+}
+::ng-deep .mat-option .mat-pseudo-checkbox{
+  display: none;
+}
+h4 {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(0,0,0,.12);
+}
+.period-select {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 200px;
+  height: 18rem;
+  border: 1px solid;
+  border-color: rgba(0,0,0,.12);
+  border-radius: 5px;
+  margin: 10px 0;
+}
+.groups-select {
+  padding: 0 25px;
+  width: 155px;
+}
+.groups-select-material {
+  padding: 0 20px;
+  width: 200px;
 }
 
+.profile-accommodation {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 38rem;
+  border: 1px solid;
+  border-color: rgba(0,0,0,.12);
+  border-radius: 5px;
+  margin: 10px 0;
+  margin-right: 100px;
+}
+.sub-category {
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(0,0,0,.12);
+  padding: 0.5rem;
+}
+.range-park {
+  display: flex;
+  justify-content: space-between;
+  .mat-form-field {
+    margin: 0 40px;
+  }
+}
+.submit {
+  margin: 20px 50px 0px 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  button {
+    width: 100px;
+    margin: 0 50px;
+  }
+}
+.mat-expansion-panel-header {
+  color: rgba(0, 0, 0, 0.87)
+}
+.table {
+  margin: 20px 50px;
+}
 .container {
-  width: 1200px;
   overflow: auto;
 }
+.park {
+  width: 90px;
+}
+.accommName {
+  width: 120px;
+}
+.accommBeds {
+  width: 65px;
+}
+.accommType {
+  width: 60px;
+}
+.unitGradeName {
+  width: 50px;
+}
+.accommPax {
+  width: 40px;
+}
+.arrivalDateRevised {
+  width: 90px;
+  border-right: 1px solid;
+  border-right-color: rgba(0,0,0,.12);
+}
 
+.paginator {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
 .main-table {
-  width: 1600px;
+  width: 5600px;
+}
+th.mat-header-cell, td.mat-cell {
+  text-align: center;
+  padding: 0 !important;
+}
+
+input.input-number::-webkit-outer-spin-button,
+input.input-number::-webkit-inner-spin-button {
+  display: none;
 }

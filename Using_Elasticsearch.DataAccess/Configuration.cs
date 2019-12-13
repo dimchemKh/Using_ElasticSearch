@@ -2,24 +2,58 @@
 using System.Linq;
 using System.Reflection;
 using Dapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
 using Using_Elastic.DataAccess.Repositories;
 using Using_Elastic.DataAccess.Repositories.Interfaces;
+using Using_Elasticsearch.DataAccess.AppContext;
+using Using_Elasticsearch.DataAccess.DbInitializers;
+using Using_Elasticsearch.DataAccess.Entities;
 
 namespace Using_Elastic.DataAccess
 {
-    public class Configuration
+    public static class Configuration
     {
         public static void Add(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<ConnectionConfig>(configuration.GetSection(nameof(ConnectionConfig)));
+            services.AddScoped<DbInitializer>();
+
+            AddContext(services, configuration);
 
             AddRepositories(services);
 
             SQLMapper();
+        }
+        public static void Use(IApplicationBuilder app)
+        {
+            app.EnsureMigrate();
+        }
+
+        private static void AddContext(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetSection(nameof(ConnectionConfig)).GetSection("ConnectionDb").Value));
+
+            services.AddIdentity<ApplicationUser, Role>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
+        }
+
+        private static void EnsureMigrate(this IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<ApplicationContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
 
         private static void AddRepositories(IServiceCollection services)

@@ -1,58 +1,136 @@
-
 import { Component, OnInit } from '@angular/core';
-import { WebAppData } from 'src/app/shared/models/web-app-data';
-import { RequestFilterParametersMainScreen } from 'src/app/shared/models/post/request-filter-parameters-main-screen';
-import { ElasticsearchService } from 'src/app/core/services/elasticsearch.service';
-import { GetSearchDataView } from 'src/app/shared/models/get/get-search-data-view';
-import { PageEvent } from '@angular/material';
+import { MainScreenService } from 'src/app/core/services/main-screen.service';
+import { ResponseFiltersMainScreenView } from 'src/app/shared/models/response/response-filter-main-screen-view';
+import { RequestGetFiltersMainScreenView } from 'src/app/shared/models/request/request-get-filters-main-screen-view';
+import { MatSelectChange, PageEvent } from '@angular/material';
+import { NgModel, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ResponseSearchMainScreenView } from 'src/app/shared/models/response/response-search-main-screen-view';
+import { STICKY_COLUMNS, REPETED_COLUMNS, DAY_PREFIX, GROUP_HEADERS } from 'src/app/components/shared/constants/column-names';
+import { FilterName } from 'src/app/shared/enums/filter-name.enum';
+import * as _ from 'lodash';
+import { RequestSearchMainScreenParameters } from 'src/app/shared/models/request/request-search-main-screen-parameters';
+import { FILTERS_NAMES } from 'src/app/components/shared/constants/filters-names';
+import { TableView } from '../shared/views/table-view';
 
 @Component({
   selector: 'app-main-screen',
   templateUrl: './main-screen.component.html',
   styleUrls: ['./main-screen.component.scss']
 })
+
 export class MainScreenComponent implements OnInit {
 
-  public cloumnNames: string[];
-  public dataSource: GetSearchDataView;
-  public filter: RequestFilterParametersMainScreen;
+  public responseFilters: ResponseFiltersMainScreenView;
+  public requestGetFilters: RequestGetFiltersMainScreenView;
+  public responseSearch: ResponseSearchMainScreenView;
+  public requestSearch: RequestSearchMainScreenParameters;
+  public readonly filterNames = FILTERS_NAMES;
+  public numberFrom: number;
+  public numberTo: number;
 
   constructor(
-    private elasticService: ElasticsearchService
+    private mainScreenService: MainScreenService
   ) {
-    this.cloumnNames =
-      [
-        'ParkName',
-        'AccommName',
-        'AccommBeds',
-        'AccommTypeName',
-        'UnitGradeName',
-        'AccommPax',
-        'ArrivalDateRevised'
-      ];
-    this.dataSource = new GetSearchDataView();
-    this.filter = new RequestFilterParametersMainScreen();
-    this.filter.from = 0;
-    this.filter.columnName = 'friCurrentFitPrice';
+    this.responseFilters = new ResponseFiltersMainScreenView();
+    this.requestGetFilters = new RequestGetFiltersMainScreenView();
+    this.responseSearch = new ResponseSearchMainScreenView();
+    this.requestSearch = new RequestSearchMainScreenParameters();
   }
 
-  filterRange(event: PageEvent = null): void {
-    if (event) {
-      this.filter.from = event.pageIndex * event.pageSize;
-      this.filter.size = event.pageSize;
-    }
-    this.elasticService.getRange(this.filter).subscribe((data: GetSearchDataView) => {
-      this.dataSource = data;
+  get displayedColumns(): string[] {
+    const stickyColumns = STICKY_COLUMNS.map(c => c.name);
+
+    return stickyColumns.concat(this.repetedColumns.map(z => z.name));
+  }
+
+  get groupHeadersNames(): string[] {
+    return GROUP_HEADERS.map(h => h.name);
+  }
+
+  get groupHeaders(): any {
+    const headers = GROUP_HEADERS;
+
+    return headers;
+  }
+
+  fromPercent(num: number): number | null {
+    return num !== null ? num / 100 : null;
+  }
+
+  toPercent(num: number): number | null {
+    return num !== null ? num * 100 : null;
+  }
+
+  get repetedColumns(): Array<TableView> {
+    const names = Array<TableView>();
+
+    DAY_PREFIX.forEach(day => {
+      REPETED_COLUMNS.forEach(column => {
+        const tab: TableView = { name: day.prefix + column.name, viewName: column.viewName };
+        names.push(tab);
+      });
+    });
+
+    return names;
+  }
+
+  drawBorderCells(columnName: string): boolean {
+    const column = columnName.substring(3);
+
+    return column === REPETED_COLUMNS[REPETED_COLUMNS.length - 1].name;
+  }
+
+  drawBorderHeaders(columnName: string): boolean {
+    const column = columnName.substring(4);
+
+    return column === 'header';
+  }
+
+  getFilters(currentFilter: number): void {
+    this.requestGetFilters.size = 100;
+    this.requestGetFilters.currentFilter = currentFilter;
+
+    this.mainScreenService.getFilters(this.requestGetFilters).subscribe((data) => {
+      this.responseFilters = data;
+      this.requestSearch.filters[FilterName[currentFilter]] = data.items;
     });
   }
 
+  clearSelect(event: MatSelectChange): void {
+    const model = (event.source.ngControl as NgModel).model as Array<string>;
+
+    if (model[0] !== null) {
+      this.requestGetFilters.filters.responsibleRevenueManager.forEach((name: string) => {
+        if (name !== model[0]) {
+          this.requestGetFilters.filters.responsibleRevenueManager = [name];
+        }
+      });
+    }
+  }
+
+  search(): void {
+    this.requestSearch.filters = _.cloneDeep(this.requestGetFilters.filters);
+
+    this.mainScreenService.search(this.requestSearch).subscribe((data) => {
+      this.responseSearch = data;
+    });
+  }
+
+  reset() {
+    this.requestGetFilters.reset();
+    this.search();
+  }
+
+  filterRange(event: PageEvent): void {
+    this.requestSearch.from = event.pageIndex * event.pageSize;
+    this.requestSearch.size = event.pageSize;
+
+    this.search();
+  }
+
   ngOnInit() {
-    // this.filter.columnName = 'holidayYear';
-    // this.filter.size = 10;
-    // this.filter.values = ['2019'];
-    // this.elasticService.getSearch(this.filter).subscribe((data: WebAppData[]) => {
-    //   this.dataSource = data;
-    // });
+    this.requestSearch.size = 5;
+    this.search();
   }
 
 }

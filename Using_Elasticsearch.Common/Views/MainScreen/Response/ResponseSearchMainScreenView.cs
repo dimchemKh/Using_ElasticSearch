@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using Using_Elastic.DataAccess.Entities;
 
-namespace Using_Elasticsearch.Common.View.Models.Get
+namespace Using_Elasticsearch.Common.Views.MainScreen.Response
 {
-    public class GetDataSearchMainView
+    //ResponseGetFiltersMainScreenView
+    //FilterResponseGetFiltersMainScreenViewItem
+    //ResponseSearchMainScreenViewItem
+    public class ResponseSearchMainScreenView
     {
         public int TotalCount { get; set; }
         public List<WebAppData> Items { get; set; }
-        public GetDataSearchMainView()
+        public ResponseSearchMainScreenView()
         {
             Items = new List<WebAppData>();
         }

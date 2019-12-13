@@ -27,8 +27,6 @@ namespace Using_Elastic.DataAccess.Repositories
 
         public async Task<IEnumerable<WebAppData>> GetRangeAsync(int from, int count)
         {
-            Stopwatch watch = new Stopwatch();
-            //string sql = $@"SKP_Web_App_Data_Select_Specific_Records";
             string sql = $@"GetPartRecords";
 
             using (IDbConnection db = GetSqlConnection())
