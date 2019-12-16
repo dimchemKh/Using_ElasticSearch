@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Using_Elasticsearch.DataAccess.DbInitializers;
+using Using_Elasticsearch.Presentation.Middlewares;
 
 namespace Using_Elastic.Presentation
 {
@@ -37,10 +38,13 @@ namespace Using_Elastic.Presentation
                 app.UseHsts();
             }
 
-            initializer.Initialize();
 
             Presentation.Configuration.Use(app, Configuration);
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+
+            initializer.Initialize().Wait();
 
             app.UseHttpsRedirection();
             app.UseMvc();

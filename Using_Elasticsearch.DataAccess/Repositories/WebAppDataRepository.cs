@@ -15,11 +15,11 @@ using System;
 
 namespace Using_Elastic.DataAccess.Repositories
 {
-    public class WebAppDataDapperRepository : IWebAppDataDapperRepository
+    public class WebAppDataRepository : IWebAppDataDapperRepository
     {
         private readonly IOptions<ConnectionConfig> _options;
         protected string tableName;
-        public WebAppDataDapperRepository(IOptions<ConnectionConfig> options)
+        public WebAppDataRepository(IOptions<ConnectionConfig> options)
         {
             _options = options;
             tableName = typeof(WebAppData).GetCustomAttribute<TableAttribute>().Name;

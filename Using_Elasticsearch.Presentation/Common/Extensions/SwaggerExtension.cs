@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
-using Using_Elastic.Presentation.Common.Configs;
+using Using_Elastic.Common.Configs;
 
 namespace Using_Elastic.Presentation.Common.Extensions
 {

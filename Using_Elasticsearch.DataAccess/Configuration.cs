@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Using_Elastic.DataAccess.Configs;
@@ -16,6 +15,8 @@ using Using_Elastic.DataAccess.Repositories.Interfaces;
 using Using_Elasticsearch.DataAccess.AppContext;
 using Using_Elasticsearch.DataAccess.DbInitializers;
 using Using_Elasticsearch.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Repositories;
+using Using_Elasticsearch.DataAccess.Repositories.Interfaces;
 
 namespace Using_Elastic.DataAccess
 {
@@ -29,10 +30,10 @@ namespace Using_Elastic.DataAccess
 
             AddRepositories(services);
 
-            SQLMapper();
+            SQLMapper();           
         }
         public static void Use(IApplicationBuilder app)
-        {
+        {            
             app.EnsureMigrate();
         }
 
@@ -51,14 +52,19 @@ namespace Using_Elastic.DataAccess
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationContext>())
                 {
-                    context.Database.Migrate();
+                    if (!context.Database.EnsureCreated())
+                    {
+                        context.Database.Migrate();
+                    }
                 }
             }
         }
 
         private static void AddRepositories(IServiceCollection services)
         {
-            services.AddTransient<IWebAppDataDapperRepository, WebAppDataDapperRepository>();
+            services.AddTransient<IWebAppDataDapperRepository, WebAppDataRepository>();
+            services.AddTransient<ILogExceptionRepository, LogExceptionRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         public static void SQLMapper()

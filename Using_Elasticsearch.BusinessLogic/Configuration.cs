@@ -5,10 +5,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Nest;
 using System;
+using Using_Elastic.Common.Configs;
 using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.BusinessLogic.Helpers;
+using Using_Elasticsearch.BusinessLogic.Helpers.Interfaces;
 using Using_Elasticsearch.BusinessLogic.Services;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
+using Using_Elasticsearch.Common.Configs;
 using Using_Elasticsearch.DataAccess.Configs;
 using Using_ElasticSearch.BusinessLogic.Services;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
@@ -20,7 +24,11 @@ namespace Using_ElasticSearch.BusinessLogic
     {
         public static void Add(IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<PasswordConfig>(configuration.GetSection(nameof(PasswordConfig)));
+            services.Configure<ConnectionConfig>(configuration.GetSection(nameof(ConnectionConfig)));
+
             var passwordOptions = services.BuildServiceProvider().GetService<IOptions<PasswordConfig>>();
+            var connectionConfig = services.BuildServiceProvider().GetService<IOptions<ConnectionConfig>>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -37,10 +45,7 @@ namespace Using_ElasticSearch.BusinessLogic
 
                 options.User.RequireUniqueEmail = passwordOptions.Value.RequireUniqueEmail;
             });
-
-
-            var connectionConfig = services.BuildServiceProvider().GetService<IOptions<ConnectionConfig>>();            
-
+                        
             AddElasticsearch(services, connectionConfig);
 
             AddServices(services);
@@ -50,8 +55,12 @@ namespace Using_ElasticSearch.BusinessLogic
 
         private static void AddServices(IServiceCollection services)
         {
+            services.AddScoped<IJwtFactoryHelper, JwtFactoryHelper>();
+
             services.AddTransient<IElasticsearchService, ElasticsearchService>();
             services.AddTransient<IMainScreenService, MainScreenService>();
+            services.AddTransient<IAuthentificationService, AuthentificationService>();
+            services.AddTransient<ILogExceptionService, LogExceptionService>();
         }
 
         private static void AddElasticsearch(IServiceCollection services, IOptions<ConnectionConfig> connectionConfig)

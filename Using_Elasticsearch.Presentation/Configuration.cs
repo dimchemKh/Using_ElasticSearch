@@ -2,12 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Using_Elastic.Presentation.Common.Extensions;
-using Using_Elastic.Presentation.Common.Configs;
 using BusinessLogic = Using_ElasticSearch.BusinessLogic;
-using Using_Elasticsearch.Presentation.Common.Configs;
 using Using_Elasticsearch.Presentation.Common.Extensions;
-using Using_Elasticsearch.DataAccess.Configs;
-using Using_Elastic.DataAccess.Configs;
+using Using_Elasticsearch.Common.Configs;
+using Using_Elastic.Common.Configs;
 
 namespace Using_Elastic.Presentation
 {
@@ -15,14 +13,14 @@ namespace Using_Elastic.Presentation
     {
         public static void Add(IServiceCollection services, IConfiguration configuration)
         {
-
-            services.Configure<SwaggerConfig>(configuration.GetSection(nameof(SwaggerConfig)));
             services.Configure<CorsConfig>(configuration.GetSection(nameof(CorsConfig)));
-            services.Configure<PasswordConfig>(configuration.GetSection(nameof(PasswordConfig)));
-            services.Configure<ConnectionConfig>(configuration.GetSection(nameof(ConnectionConfig)));
+            services.Configure<SwaggerConfig>(configuration.GetSection(nameof(SwaggerConfig)));
+            services.Configure<JwtConfig>(configuration.GetSection(nameof(JwtConfig)));
+            
 
             services.AddSwagger();
             services.AddCorsWithOrigin();
+            services.AddJwt();
 
             BusinessLogic.Configuration.Add(services, configuration);
         }
