@@ -238,7 +238,7 @@
               *matCellDef="let row">
             {{ row.accommName }}
           </td>
-        </ng-container>        
+        </ng-container>
         <ng-container matColumnDef="accommBeds"
                       sticky="true">
           <th class="accommBeds"
@@ -301,19 +301,12 @@
 
         <ng-container *ngFor="let name of repetedColumns"
                       matColumnDef="{{ name.name }}">
-          <th [ngStyle]="  drawBorderCells(name.name) ? {'border-right': '1px solid','border-right-color': 'rgba(0,0,0,.12)'}  : {}"
+          <th [ngStyle]="drawBorderCells(name.name) ? {'border-right': '1px solid','border-right-color': 'rgba(0,0,0,.12)'}  : {}"
               mat-header-cell
               *matHeaderCellDef>
             {{ name.viewName }}
           </th>
-          <td [ngStyle]="
-              drawBorderCells(name.name)
-                ? {
-                    'border-right': '1px solid',
-                    'border-right-color': 'rgba(0,0,0,.12)'
-                  }
-                : {}
-            "
+          <td [ngStyle]="drawBorderCells(name.name) ? { 'border-right': '1px solid', 'border-right-color': 'rgba(0,0,0,.12)' } : {}"
               mat-cell
               *matCellDef="let row">
             {{ row[name.name] }}
@@ -332,13 +325,16 @@
         </ng-container>
 
         <tr mat-header-row
-            *matHeaderRowDef="groupHeadersNames"></tr>
+            *matHeaderRowDef="groupHeadersNames">
+        </tr>
 
         <tr mat-header-row
-            *matHeaderRowDef="displayedColumns"></tr>
+            *matHeaderRowDef="displayedColumns">
+        </tr>
 
         <tr mat-row
-            *matRowDef="let row; columns: displayedColumns"></tr>
+            *matRowDef="let row; columns: displayedColumns">
+        </tr>
       </table>
     </div>
     <mat-paginator [length]="responseSearch.totalCount"

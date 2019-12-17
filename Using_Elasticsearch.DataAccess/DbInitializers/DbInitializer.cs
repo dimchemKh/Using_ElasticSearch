@@ -23,9 +23,7 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
 
         public async Task Initialize()
         {
-
             await SeedAdminAndUserRoles();
-
         }
         protected async Task SeedAdminAndUserRoles()
         {

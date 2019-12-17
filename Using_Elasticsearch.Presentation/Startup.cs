@@ -43,7 +43,6 @@ namespace Using_Elastic.Presentation
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
-
             initializer.Initialize().Wait();
 
             app.UseHttpsRedirection();

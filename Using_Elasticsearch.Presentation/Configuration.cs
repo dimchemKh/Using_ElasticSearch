@@ -17,7 +17,6 @@ namespace Using_Elastic.Presentation
             services.Configure<SwaggerConfig>(configuration.GetSection(nameof(SwaggerConfig)));
             services.Configure<JwtConfig>(configuration.GetSection(nameof(JwtConfig)));
             
-
             services.AddSwagger();
             services.AddCorsWithOrigin();
             services.AddJwt();

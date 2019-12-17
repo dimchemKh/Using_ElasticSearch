@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
+using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.MainScreen.Request;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 
@@ -31,7 +33,7 @@ namespace Using_Elastic.Presentation.Controllers
         {
             if(filters == null)
             {
-                return BadRequest();
+                throw new ProjectException(StatusCodes.Status400BadRequest);
             }
 
             var response = await _mainScreenService.SearchAsync(filters);
@@ -43,7 +45,7 @@ namespace Using_Elastic.Presentation.Controllers
         {
             if (filter == null)
             {
-                return BadRequest();
+                throw new ProjectException(StatusCodes.Status400BadRequest);
             }
 
             var response = await _mainScreenService.GetFiltersAsync(filter);

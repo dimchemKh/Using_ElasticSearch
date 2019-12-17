@@ -21,40 +21,6 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
         {
             _jwtConfig = jwtConfig;
         }
-
-        private List<Claim> GetAccessTokenClaims(ApplicationUser user)
-        {
-            var claims = GetRefreshTokenClaims(user);
-
-            claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
-            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-
-            return claims;
-        }
-        private List<Claim> GetRefreshTokenClaims(ApplicationUser user)
-        {
-            var claims = new List<Claim>();
-
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-
-            return claims;
-        }
-        private string Generate(List<Claim> claims, TimeSpan tokenExpiration)
-        {
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtConfig.Value.JwtKey));
-
-            var credential = new SigningCredentials(key, SecurityAlgorithm);
-
-            var token = new JwtSecurityToken(
-             issuer: _jwtConfig.Value.JwtIssuer,
-             audience: _jwtConfig.Value.JwtAudience,
-             claims: claims,
-             expires: DateTime.Now.Add(tokenExpiration),
-             signingCredentials: credential);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
         public ResponseGenerateAuthentificationView ValidateData(string token)
         {
             var response = new ResponseGenerateAuthentificationView();
@@ -92,6 +58,39 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
             result.RefreshToken = Generate(refreshClaims, _jwtConfig.Value.RefreshTokenExpiration);
 
             return result;
+        }
+        private List<Claim> GetAccessTokenClaims(ApplicationUser user)
+        {
+            var claims = GetRefreshTokenClaims(user);
+
+            claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+
+            return claims;
+        }
+        private List<Claim> GetRefreshTokenClaims(ApplicationUser user)
+        {
+            var claims = new List<Claim>();
+
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+            return claims;
+        }
+        private string Generate(List<Claim> claims, TimeSpan tokenExpiration)
+        {
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtConfig.Value.JwtKey));
+
+            var credential = new SigningCredentials(key, SecurityAlgorithm);
+
+            var token = new JwtSecurityToken(
+             issuer: _jwtConfig.Value.JwtIssuer,
+             audience: _jwtConfig.Value.JwtAudience,
+             claims: claims,
+             expires: DateTime.Now.Add(tokenExpiration),
+             signingCredentials: credential);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

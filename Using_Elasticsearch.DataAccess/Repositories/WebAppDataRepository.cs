@@ -12,17 +12,15 @@ using System.Linq;
 using System.Data;
 using System.Diagnostics;
 using System;
+using Using_Elasticsearch.DataAccess.Repositories.Base;
+using Using_Elasticsearch.DataAccess.AppContext;
 
 namespace Using_Elastic.DataAccess.Repositories
 {
-    public class WebAppDataRepository : IWebAppDataDapperRepository
+    public class WebAppDataRepository : BaseRepository<WebAppData>, IWebAppDataDapperRepository
     {
-        private readonly IOptions<ConnectionConfig> _options;
-        protected string tableName;
-        public WebAppDataRepository(IOptions<ConnectionConfig> options)
+        public WebAppDataRepository(IOptions<ConnectionConfig> options) : base(options)
         {
-            _options = options;
-            tableName = typeof(WebAppData).GetCustomAttribute<TableAttribute>().Name;
         }
 
         public async Task<IEnumerable<WebAppData>> GetRangeAsync(int from, int count)

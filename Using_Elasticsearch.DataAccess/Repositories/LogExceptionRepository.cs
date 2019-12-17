@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Using_Elastic.DataAccess.Configs;
+using Using_Elasticsearch.DataAccess.AppContext;
 using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.DataAccess.Repositories.Base;
 using Using_Elasticsearch.DataAccess.Repositories.Interfaces;

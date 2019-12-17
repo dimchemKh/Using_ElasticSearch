@@ -57,10 +57,10 @@ namespace Using_ElasticSearch.BusinessLogic
         {
             services.AddScoped<IJwtFactoryHelper, JwtFactoryHelper>();
 
-            services.AddTransient<IElasticsearchService, ElasticsearchService>();
-            services.AddTransient<IMainScreenService, MainScreenService>();
-            services.AddTransient<IAuthentificationService, AuthentificationService>();
-            services.AddTransient<ILogExceptionService, LogExceptionService>();
+            services.AddScoped<IElasticsearchService, ElasticsearchService>();
+            services.AddScoped<IMainScreenService, MainScreenService>();
+            services.AddScoped<IAuthentificationService, AuthentificationService>();
+            services.AddSingleton<ILogExceptionService, LogExceptionService>();
         }
 
         private static void AddElasticsearch(IServiceCollection services, IOptions<ConnectionConfig> connectionConfig)

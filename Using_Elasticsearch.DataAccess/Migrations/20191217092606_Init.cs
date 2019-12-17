@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Using_Elasticsearch.DataAccess.Migrations
 {
-    public partial class test : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,12 +55,12 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                 name: "LogExceptions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     StackTrace = table.Column<string>(nullable: true),
                     Message = table.Column<string>(nullable: true),
                     Action = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: true)
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

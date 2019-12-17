@@ -163,18 +163,24 @@ namespace Using_Elasticsearch.DataAccess.Migrations
 
             modelBuilder.Entity("Using_Elasticsearch.DataAccess.Entities.LogException", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id");
 
-                    b.Property<string>("Action");
+                    b.Property<string>("Action")
+                        .HasColumnName("Action");
 
-                    b.Property<DateTime>("CreationDate");
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnName("CreationDate");
 
-                    b.Property<string>("Message");
+                    b.Property<string>("Message")
+                        .HasColumnName("Message");
 
-                    b.Property<string>("StackTrace");
+                    b.Property<string>("StackTrace")
+                        .HasColumnName("StackTrace");
 
-                    b.Property<Guid?>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 

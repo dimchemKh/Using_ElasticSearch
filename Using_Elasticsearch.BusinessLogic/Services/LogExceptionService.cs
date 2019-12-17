@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
-using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.DataAccess.Repositories.Interfaces;
 
@@ -15,7 +14,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
             _repository = repository;
         }
 
-        public async Task Create(Exception exception, string url, Guid userId)
+        public async Task Create(Exception exception, string url, string userId)
         {
             var logException = new LogException();
 

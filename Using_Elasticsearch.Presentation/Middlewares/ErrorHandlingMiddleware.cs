@@ -14,12 +14,10 @@ namespace Using_Elasticsearch.Presentation.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly ILogExceptionService _exceptionService;
-        //private readonly ClaimsPrincipal _claims;
         public ErrorHandlingMiddleware(RequestDelegate next, ILogExceptionService exceptionService)
         {
             _next = next;
             _exceptionService = exceptionService;
-            //_claims = claims;
         }
         public async Task Invoke(HttpContext context)
         {
@@ -27,28 +25,37 @@ namespace Using_Elasticsearch.Presentation.Middlewares
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                await HandleException(context, ex);
+                await HandleException(context, exception);
             }
         }
-        private async Task HandleException(HttpContext context, Exception ex)
+        private async Task HandleException(HttpContext context, Exception exception)
         {
             var statusCode = (int)HttpStatusCode.InternalServerError;
 
-            var res = ex as ProjectException;
+            var message = exception.Message;
 
-            var userId = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            var result = Guid.Empty;
-
-            if(Guid.TryParse(userId, out Guid userGuid))
+            if (exception is ProjectException)
             {
-                result = userGuid;
+                statusCode = (exception as ProjectException).StatusCode;
             }
 
-            await _exceptionService.Create(res, context.Request.Path, result);
+            var userId = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            
+            await _exceptionService.Create(exception, context.Request.Path, userId);
 
+            if(statusCode != StatusCodes.Status401Unauthorized && statusCode != StatusCodes.Status403Forbidden 
+                && statusCode != StatusCodes.Status400BadRequest && statusCode != StatusCodes.Status404NotFound)
+            {
+                message = "This server is unavailible";
+            }
+
+            context.Response.ContentType = "application/json; charset=utf-8";
+
+            context.Response.StatusCode = statusCode;
+
+            await context.Response.WriteAsync(message);
         }
     }
 }

@@ -4,9 +4,6 @@ using Using_Elastic.DataAccess.Entities;
 
 namespace Using_Elasticsearch.Common.Views.MainScreen.Response
 {
-    //ResponseGetFiltersMainScreenView
-    //FilterResponseGetFiltersMainScreenViewItem
-    //ResponseSearchMainScreenViewItem
     public class ResponseSearchMainScreenView
     {
         public int TotalCount { get; set; }

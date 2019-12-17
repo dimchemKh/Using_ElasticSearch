@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Using_Elasticsearch.DataAccess.Entities
 {

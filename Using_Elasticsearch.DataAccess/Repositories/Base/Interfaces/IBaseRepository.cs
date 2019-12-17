@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Using_Elasticsearch.DataAccess.Entities.Base;
+﻿using System.Threading.Tasks;
 
 namespace Using_Elasticsearch.DataAccess.Repositories.Base.Interfaces
 {
-    public interface IBaseRepository<TEntity> where TEntity : BaseEntity
+    public interface IBaseRepository<TEntity>
     {
         Task<int> CreateAsync(TEntity entity);
         Task<int> DeleteAsync(TEntity entity);

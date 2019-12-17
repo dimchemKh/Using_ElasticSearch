@@ -1,0 +1,23 @@
+<div class="container">
+    <h2>Authorization</h2>
+    <mat-form-field class="input-form" appearance="outline">
+        <input matInput
+               placeholder="Enter your email"
+               [formControl]="email"
+               required
+               autocomplete="off">
+        <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-form" appearance="outline">
+        <input matInput
+               placeholder="Enter your password"
+               [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="email.invalid">{{getPasswordErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <div class="btn">
+        <button mat-raised-button color="primary">Login</button>
+    </div>
+</div>

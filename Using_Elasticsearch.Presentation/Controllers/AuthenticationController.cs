@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -26,19 +27,7 @@ namespace Using_Elasticsearch.Presentation.Controllers
         {
             var respose = await _service.LoginAsync(requestLogin);
 
-            throw new ProjectException("Ups");
-
             return Ok(respose);
-        }
-
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
-        {
-            var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            throw new ProjectException("Ups");
-
-            return Ok();
         }
     }
 }

@@ -6,7 +6,7 @@ using Using_Elasticsearch.Common.Views.MainScreen.Request;
 
 namespace Using_Elasticsearch.BusinessLogic.Helpers
 {
-    public static class FilterHelper
+    public static class ElasticHelper
     {
         private static readonly string Key = "keyword";
         public static string StringToLower(string word)

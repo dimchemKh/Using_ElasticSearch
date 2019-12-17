@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MainScreenService } from 'src/app/core/services/main-screen.service';
-import { ResponseFiltersMainScreenView } from 'src/app/shared/models/response/response-filter-main-screen-view';
-import { RequestGetFiltersMainScreenView } from 'src/app/shared/models/request/request-get-filters-main-screen-view';
+import { ResponseFiltersMainScreenView } from 'src/app/shared/models/main-screen/response/response-filter-main-screen-view';
+import { RequestGetFiltersMainScreenView } from 'src/app/shared/models/main-screen/request/request-get-filters-main-screen-view';
 import { MatSelectChange, PageEvent } from '@angular/material';
 import { NgModel, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ResponseSearchMainScreenView } from 'src/app/shared/models/response/response-search-main-screen-view';
-import { STICKY_COLUMNS, REPETED_COLUMNS, DAY_PREFIX, GROUP_HEADERS } from 'src/app/components/shared/constants/column-names';
+import { ResponseSearchMainScreenView } from 'src/app/shared/models/main-screen/response/response-search-main-screen-view';
+import { STICKY_COLUMNS, REPETED_COLUMNS, DAY_PREFIX, GROUP_HEADERS } from 'src/app/managment/main-screen/shared/constants/column-names';
 import { FilterName } from 'src/app/shared/enums/filter-name.enum';
 import * as _ from 'lodash';
-import { RequestSearchMainScreenParameters } from 'src/app/shared/models/request/request-search-main-screen-parameters';
-import { FILTERS_NAMES } from 'src/app/components/shared/constants/filters-names';
-import { TableView } from '../shared/views/table-view';
+import { RequestSearchMainScreenParameters } from 'src/app/shared/models/main-screen/request/request-search-main-screen-parameters';
+import { FILTERS_NAMES } from 'src/app/managment/main-screen/shared/constants/filters-names';
+import { TableView } from './shared/views/table-view';
 
 @Component({
   selector: 'app-main-screen',

@@ -20,7 +20,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
         public async Task<ResponseGetFiltersMainScreenView> GetFiltersAsync(RequestGetFiltersMainScreenView filters)
         {
-            var currentField = FilterHelper.StringToLower(filters.CurrentFilter.ToString());
+            var currentField = ElasticHelper.StringToLower(filters.CurrentFilter.ToString());
 
             filters.Filters.GetType().GetProperty(filters.CurrentFilter.ToString()).SetValue(filters.Filters, Enumerable.Empty<string>());
 
