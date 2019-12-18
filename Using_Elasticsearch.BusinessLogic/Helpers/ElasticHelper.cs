@@ -48,7 +48,7 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
         }
         public static SortDescriptor<WebAppData> SortByPredicate(this SortDescriptor<WebAppData> sortDescriptor)
         {
-            //sortDescriptor.Ascending()
+            // TODO sorting_table
 
             return sortDescriptor;
         }

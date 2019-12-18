@@ -26,7 +26,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
             var result = await _elasticClient.SearchAsync<LogException>(x => x
                          .From(requestModel.From)
                          .Size(requestModel.Size)
-                         .Query(z => z) // TODO
+                         .Query(z => z).Sort(z => z.Ascending(requestModel.CurrentFilter.ToString()))
                          .Aggregations(a => a.ValueCount(ValueKey, f => f.Field(r => r.CreationDate))));
 
             var response = new ResponseGetLogsAdminScreenView();

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using Nest;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Repositories.Interfaces;
+using Using_Elasticsearch.Common.Exceptions;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 
 namespace Using_ElasticSearch.BusinessLogic.Services
@@ -25,7 +25,7 @@ namespace Using_ElasticSearch.BusinessLogic.Services
 
         public async Task IndexDataAsync()
         {
-            var res = await _elasticClient.Indices.DeleteAsync(_connectionConfig.Value.ElasticIndex);
+            var deleteResult = await _elasticClient.Indices.DeleteAsync(_connectionConfig.Value.ElasticIndex);
 
             var count = 10000;
 
@@ -46,8 +46,8 @@ namespace Using_ElasticSearch.BusinessLogic.Services
                                                    .Index(_connectionConfig.Value.ElasticIndex)));
 
                 if (!response.IsValid)
-                {                    
-                    throw new Exception();
+                {
+                    throw new ProjectException(response.ApiCall.HttpStatusCode.Value);
                 }
 
 
@@ -58,6 +58,12 @@ namespace Using_ElasticSearch.BusinessLogic.Services
 
                 GC.Collect();
             }
+        }
+        public async Task IndexExceptionsAsync()
+        {
+            var deleteResult = await _elasticClient.Indices.DeleteAsync(_connectionConfig.Value.LogIndex);
+
+
         }
     }
 }
