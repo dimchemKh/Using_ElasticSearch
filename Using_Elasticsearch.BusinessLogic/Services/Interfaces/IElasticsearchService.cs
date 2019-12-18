@@ -5,5 +5,6 @@ namespace Using_ElasticSearch.BusinessLogic.Services.Interfaces
     public interface IElasticsearchService
     {
         Task IndexDataAsync();
+        Task IndexExceptionsAsync();
     }
 }

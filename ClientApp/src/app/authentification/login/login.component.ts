@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { AuthentificationService } from 'src/app/core/services/authentification.service';
+import { RequestLoginAuthentificationView } from 'src/app/shared/models/authentification/request/request-login-authentification-view';
+import { AuthHelper } from 'src/app/shared/helpers/auth.helper';
 
 const EMAIL_PATTERN = /^[a-zA-Z]{1}[a-zA-Z0-9.\-_]*@[a-zA-Z]{1}[a-zA-Z.-]*[a-zA-Z]{1}[.][a-zA-Z]{2,4}$/;
 
@@ -8,15 +11,19 @@ const EMAIL_PATTERN = /^[a-zA-Z]{1}[a-zA-Z0-9.\-_]*@[a-zA-Z]{1}[a-zA-Z.-]*[a-zA-
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  public hide: boolean;
-  public email: FormControl;
-  public password: FormControl;
+  hide: boolean;
+  email: FormControl;
+  password: FormControl;
+  requestLogin: RequestLoginAuthentificationView;
 
   constructor(
+    private authentificationService: AuthentificationService,
+    private authHelper: AuthHelper
   ) {
     this.hide = true;
+    this.requestLogin = new RequestLoginAuthentificationView();
     this.InitialControls();
   }
 
@@ -29,11 +36,11 @@ export class LoginComponent implements OnInit {
     this.password = new FormControl(null, Validators.required);
   }
 
-  private checkError(controll: string, patternError: string, requiredError: string): string {
-    if (this[controll].hasError('pattern')) {
+  private checkError(control: string, patternError: string, requiredError: string): string {
+    if (this[control].hasError('pattern')) {
       return patternError;
     }
-    if (this[controll].hasError('required')) {
+    if (this[control].hasError('required')) {
       return requiredError;
     }
   }
@@ -46,7 +53,11 @@ export class LoginComponent implements OnInit {
     return this.checkError('password', '', 'Empty password');
   }
 
-  ngOnInit() {
+  login(): void {
+    if (this.email.valid && this.password.valid) {
+      this.authentificationService.login(this.requestLogin).subscribe((data) => {
+        this.authHelper.login(data);
+      });
+    }
   }
-
 }

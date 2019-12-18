@@ -1,11 +1,30 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
+import { AuthHelper } from '../helpers/auth.helper';
 
-@Injectable({providedIn: 'root'})
-export class NameGuard implements CanActivate {
-    constructor() { }
+@Injectable({ providedIn: 'root' })
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return true;
+export class AuthGuard implements CanActivate {
+    constructor(
+        private authHelper: AuthHelper,
+        private router: Router
+    ) { }
+
+    async canActivate() {
+        debugger;
+
+        const isAuth: boolean = await this.authHelper.isAuth().then(res => { return res });
+        // const isAuth = await this.authHelper.isAuth().then((result) => {
+        //     return result;
+        // });
+
+        // const isAuth:boolean=true;
+
+        if (isAuth) {
+            return true;
+        }
+
+        this.router.navigate(['auth']);
+        return false;
     }
 }

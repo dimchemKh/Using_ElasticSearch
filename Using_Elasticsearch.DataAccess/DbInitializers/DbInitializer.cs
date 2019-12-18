@@ -42,22 +42,31 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
 
             var admin = new ApplicationUser();
 
-            admin.FirstName = InitialSuperUsers.AdminFirstName;
-            admin.LastName = InitialSuperUsers.AdminLastName;
-            admin.Email = InitialSuperUsers.AdminEmail;
-            admin.UserName = string.Concat(InitialSuperUsers.AdminFirstName, InitialSuperUsers.AdminLastName);
+            admin.FirstName = InitialUsers.AdminFirstName;
+            admin.LastName = InitialUsers.AdminLastName;
+            admin.Email = InitialUsers.AdminEmail;
+            admin.UserName = string.Concat(InitialUsers.AdminFirstName, InitialUsers.AdminLastName);
             admin.EmailConfirmed = true;
             admin.LockoutEnabled = false;
 
-            var result = _userManager.CreateAsync(admin, InitialSuperUsers.AdminPassword)
-                                     .GetAwaiter().GetResult();
+            var user = new ApplicationUser();
 
-            if (result.Succeeded)
+            user.FirstName = InitialUsers.UserFirstName;
+            user.LastName = InitialUsers.UserLastName;
+            user.Email = InitialUsers.UserEmail;
+            user.UserName = string.Concat(InitialUsers.UserFirstName, InitialUsers.UserLastName);
+            admin.EmailConfirmed = true;
+            admin.LockoutEnabled = false;
+
+            var createdAdmin = _userManager.CreateAsync(admin, InitialUsers.AdminPassword).GetAwaiter().GetResult();
+            var createdUser = _userManager.CreateAsync(user, InitialUsers.UserPassword).GetAwaiter().GetResult();
+
+            if (createdAdmin.Succeeded && createdUser.Succeeded)
             {
-                //_userManager.AddToRoleAsync(admin, InitialData.SuperAdminRole).GetAwaiter().GetResult();
-                await _userManager.AddToRoleAsync(admin, UserRole.SuperUser.ToString());
-                var adminId = _userManager.Users.Where(x => x.Email.Equals(admin.Email)).Select(z => z.Id).FirstOrDefault();
+                await _userManager.AddToRoleAsync(admin, UserRole.Admin.ToString());
+                await _userManager.AddToRoleAsync(user, UserRole.User.ToString());
 
+                //var adminId = _userManager.Users.Where(x => x.Email.Equals(admin.Email)).Select(z => z.Id).FirstOrDefault();
                 //_context.UserPermissions.Add(new UserPermission() { UserId = adminId, CanEdit = true, CanView = true });
             }
 

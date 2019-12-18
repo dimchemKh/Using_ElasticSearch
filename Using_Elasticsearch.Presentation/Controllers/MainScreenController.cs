@@ -24,6 +24,7 @@ namespace Using_Elastic.Presentation.Controllers
         public async Task<IActionResult> IndexDataAsync()
         {
             await _elasticService.IndexDataAsync();
+            await _elasticService.IndexExceptionsAsync();
 
             return Ok();
         }

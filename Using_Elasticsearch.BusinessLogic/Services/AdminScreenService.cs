@@ -15,6 +15,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
     {
         private readonly IElasticClient _elasticClient;
         private const string ValueKey = "totalCount";
+        private const string IndexName = "log_index";
 
         public AdminScreenService(IElasticClient elasticClient)
         {
@@ -26,7 +27,8 @@ namespace Using_Elasticsearch.BusinessLogic.Services
             var result = await _elasticClient.SearchAsync<LogException>(x => x
                          .From(requestModel.From)
                          .Size(requestModel.Size)
-                         .Query(z => z).Sort(z => z.Ascending(requestModel.CurrentFilter.ToString()))
+                         .Index(IndexName)
+                         .Sort(s => s.Ascending(a => a.CreationDate))
                          .Aggregations(a => a.ValueCount(ValueKey, f => f.Field(r => r.CreationDate))));
 
             var response = new ResponseGetLogsAdminScreenView();

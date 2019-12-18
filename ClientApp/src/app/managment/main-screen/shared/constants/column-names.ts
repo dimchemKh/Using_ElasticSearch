@@ -6,8 +6,8 @@ export const STICKY_COLUMNS = [
   { name: 'unitGradeName' },
   { name: 'accommPax' },
   { name: 'arrivalDateRevised' }
-
 ];
+
 export const REPETED_COLUMNS = [
   { name: 'RackRate', viewName: 'Rack rate' },
   { name: 'CurrentFitPrice', viewName: 'Current fit price' },

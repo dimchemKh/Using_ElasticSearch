@@ -6,19 +6,22 @@ using System.Threading.Tasks;
 using Using_Elastic.DataAccess.Configs;
 using Using_Elastic.DataAccess.Repositories.Interfaces;
 using Using_Elasticsearch.Common.Exceptions;
+using Using_Elasticsearch.DataAccess.Repositories.Interfaces;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 
 namespace Using_ElasticSearch.BusinessLogic.Services
 {
     public class ElasticsearchService : IElasticsearchService
     {
-        private readonly IWebAppDataDapperRepository _dapperRepository;
+        private readonly IWebAppDataDapperRepository _webAppDataRepository;
+        private readonly ILogExceptionRepository _logExceptionRepository;
         private readonly IElasticClient _elasticClient;
         private readonly IOptions<ConnectionConfig> _connectionConfig;
 
-        public ElasticsearchService(IWebAppDataDapperRepository repository, IElasticClient elasticClient, IOptions<ConnectionConfig> connectionConfig)
+        public ElasticsearchService(IWebAppDataDapperRepository repository, ILogExceptionRepository logExceptionRepository, IElasticClient elasticClient, IOptions<ConnectionConfig> connectionConfig)
         {
-            _dapperRepository = repository;
+            _webAppDataRepository = repository;
+            _logExceptionRepository = logExceptionRepository;
             _elasticClient = elasticClient;
             _connectionConfig = connectionConfig;
         }
@@ -31,7 +34,7 @@ namespace Using_ElasticSearch.BusinessLogic.Services
 
             for (int i = 0; ; i += count)
             {
-                var data = await _dapperRepository.GetRangeAsync(i, count);
+                var data = await _webAppDataRepository.GetRangeAsync(i, count);
 
                 var dataCount = data.Count();
 
@@ -63,6 +66,17 @@ namespace Using_ElasticSearch.BusinessLogic.Services
         {
             var deleteResult = await _elasticClient.Indices.DeleteAsync(_connectionConfig.Value.LogIndex);
 
+            var data = await _logExceptionRepository.GetAllAsync();
+
+            var response = await _elasticClient.BulkAsync(x => x
+                                                   .IndexMany(data, (z, doc) => z
+                                                   .Document(doc)
+                                                   .Index(_connectionConfig.Value.LogIndex)));
+
+            if (!response.IsValid)
+            {
+                throw new ProjectException(response.ApiCall.HttpStatusCode.Value);
+            }
 
         }
     }

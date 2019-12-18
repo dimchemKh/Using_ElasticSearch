@@ -12,6 +12,8 @@ using Using_Elasticsearch.Common.Views.AdminScreen.Request;
 namespace Using_Elasticsearch.Presentation.Controllers
 {
     //[Authorize(Roles = "admin")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class AdminScreenController : ControllerBase
     {
         private readonly IAdminScreenService _adminService;
@@ -20,8 +22,8 @@ namespace Using_Elasticsearch.Presentation.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("getLogs")]
-        public async Task<IActionResult> GetLogsAsync(RequestGetLogsAdminScreenView requestModel)
+        [HttpPost("getLogs")]
+        public async Task<IActionResult> GetLogsAsync([FromBody] RequestGetLogsAdminScreenView requestModel)
         {
             if(requestModel == null)
             {

@@ -25,7 +25,7 @@ import {
     MatBadgeModule,
     MatFormFieldModule,
     MatExpansionModule,
-    MatRadioModule,
+    MatRadioModule
 } from '@angular/material';
 
 @NgModule({

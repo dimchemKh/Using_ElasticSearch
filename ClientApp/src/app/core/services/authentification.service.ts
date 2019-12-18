@@ -15,7 +15,7 @@ export class AuthentificationService {
     ) {        
     }
 
-    public login(model: RequestLoginAuthentificationView): Observable<ResponseGenerateAuthentificationView> {
-        return this.http.post<ResponseGenerateAuthentificationView>(this.apiRoutes.authentificationRoute + 'auth', model);
+    public login(model: RequestLoginAuthentificationView): Observable<ResponseGenerateAuthentificationView> {         
+        return this.http.post<ResponseGenerateAuthentificationView>(this.apiRoutes.authentificationRoute + 'login', model);
     }
 }

@@ -3,7 +3,7 @@ import { MainScreenService } from 'src/app/core/services/main-screen.service';
 import { ResponseFiltersMainScreenView } from 'src/app/shared/models/main-screen/response/response-filter-main-screen-view';
 import { RequestGetFiltersMainScreenView } from 'src/app/shared/models/main-screen/request/request-get-filters-main-screen-view';
 import { MatSelectChange, PageEvent } from '@angular/material';
-import { NgModel, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgModel } from '@angular/forms';
 import { ResponseSearchMainScreenView } from 'src/app/shared/models/main-screen/response/response-search-main-screen-view';
 import { STICKY_COLUMNS, REPETED_COLUMNS, DAY_PREFIX, GROUP_HEADERS } from 'src/app/managment/main-screen/shared/constants/column-names';
 import { FilterName } from 'src/app/shared/enums/filter-name.enum';
@@ -48,9 +48,7 @@ export class MainScreenComponent implements OnInit {
   }
 
   get groupHeaders(): any {
-    const headers = GROUP_HEADERS;
-
-    return headers;
+    return GROUP_HEADERS;
   }
 
   fromPercent(num: number): number | null {
@@ -116,7 +114,7 @@ export class MainScreenComponent implements OnInit {
     });
   }
 
-  reset() {
+  reset(): void {
     this.requestGetFilters.reset();
     this.search();
   }
@@ -128,7 +126,7 @@ export class MainScreenComponent implements OnInit {
     this.search();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.requestSearch.size = 5;
     this.search();
   }

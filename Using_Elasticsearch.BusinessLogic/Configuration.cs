@@ -61,6 +61,7 @@ namespace Using_ElasticSearch.BusinessLogic
             services.AddScoped<IMainScreenService, MainScreenService>();
             services.AddScoped<IAuthentificationService, AuthentificationService>();
             services.AddSingleton<ILogExceptionService, LogExceptionService>();
+            services.AddScoped<IAdminScreenService, AdminScreenService>();
         }
 
         private static void AddElasticsearch(IServiceCollection services, IOptions<ConnectionConfig> connectionConfig)

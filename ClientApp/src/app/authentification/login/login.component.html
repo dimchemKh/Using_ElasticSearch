@@ -5,19 +5,23 @@
                placeholder="Enter your email"
                [formControl]="email"
                required
+               [(ngModel)]="requestLogin.email"
                autocomplete="off">
         <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field class="input-form" appearance="outline">
         <input matInput
                placeholder="Enter your password"
+               [formControl]="password"
+               required
+               [(ngModel)]="requestLogin.password"
                [type]="hide ? 'password' : 'text'">
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        <mat-error *ngIf="email.invalid">{{getPasswordErrorMessage()}}</mat-error>
+        <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
     </mat-form-field>
     <div class="btn">
-        <button mat-raised-button color="primary">Login</button>
+        <button mat-raised-button color="primary" (click)="login()">Login</button>
     </div>
 </div>
