@@ -13,6 +13,6 @@ namespace Using_Elasticsearch.DataAccess.Repositories
         {
         }
 
-        public async Task 
+        //public async Task 
     }
 }
