@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
-import { RequestLoginAuthentificationView } from 'src/app/shared/models/authentification/request/request-login-authentification-view';
+import { RequestLoginAuthentificationView } from 'src/app/shared/models/authentification/request/request-login-authentification.view';
 import { AuthHelper } from 'src/app/shared/helpers/auth.helper';
 
 const EMAIL_PATTERN = /^[a-zA-Z]{1}[a-zA-Z0-9.\-_]*@[a-zA-Z]{1}[a-zA-Z.-]*[a-zA-Z]{1}[.][a-zA-Z]{2,4}$/;

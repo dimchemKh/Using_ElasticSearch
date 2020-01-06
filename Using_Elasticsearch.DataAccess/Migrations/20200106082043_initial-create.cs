@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Using_Elasticsearch.DataAccess.Migrations
 {
-    public partial class Init : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,7 +44,8 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    Role = table.Column<int>(nullable: false)
+                    Role = table.Column<int>(nullable: false),
+                    IsRemoved = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

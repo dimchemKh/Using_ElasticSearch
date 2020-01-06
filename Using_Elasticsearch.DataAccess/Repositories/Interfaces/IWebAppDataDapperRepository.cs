@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Entities;
 
-namespace Using_Elastic.DataAccess.Repositories.Interfaces
+namespace Using_Elasticsearch.DataAccess.Repositories.Interfaces
 {
     public interface IWebAppDataDapperRepository
     {

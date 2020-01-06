@@ -1,4 +1,4 @@
-﻿namespace Using_Elastic.Common.Configs
+﻿namespace Using_Elasticsearch.Common.Configs
 {
     public class SwaggerConfig
     {

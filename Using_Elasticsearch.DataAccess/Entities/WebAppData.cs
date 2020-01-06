@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Using_Elastic.DataAccess.Entities
+namespace Using_Elasticsearch.DataAccess.Entities
 {
     [Table("SKP_Web_App_Data")]
     public class WebAppData

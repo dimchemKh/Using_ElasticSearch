@@ -10,8 +10,8 @@ using Using_Elasticsearch.DataAccess.AppContext;
 namespace Using_Elasticsearch.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191217092606_Init")]
-    partial class Init
+    [Migration("20200106082043_initial-create")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,6 +120,8 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
+
+                    b.Property<bool>("IsRemoved");
 
                     b.Property<string>("LastName");
 

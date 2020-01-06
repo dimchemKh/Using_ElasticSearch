@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Using_Elasticsearch.DataAccess.Configs
 {
     public class PasswordConfig

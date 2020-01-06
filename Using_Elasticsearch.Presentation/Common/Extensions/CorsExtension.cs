@@ -6,7 +6,7 @@ namespace Using_Elasticsearch.Presentation.Common.Extensions
 {
     public static class CorsExtension
     {
-        public static void AddCorsWithOrigin(this IServiceCollection services)
+        public static void AddCorsWithOrigin(IServiceCollection services)
         {
             var corsService = services.BuildServiceProvider().GetService<IOptions<CorsConfig>>();
 

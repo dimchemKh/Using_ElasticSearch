@@ -8,5 +8,7 @@ namespace Using_Elasticsearch.Common.Constants
     {
         public const string UserExistedError = "User disabled or does not exist";
         public const string UserIncorrectPassword = "Incorrect password";
+
+        public const string UserNotFound = "User not found";
     }
 }

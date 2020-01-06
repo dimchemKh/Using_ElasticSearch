@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Configs;
+using Using_Elasticsearch.DataAccess.Configs;
 using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.DataAccess.Repositories.Base;
 using Using_Elasticsearch.DataAccess.Repositories.Interfaces;

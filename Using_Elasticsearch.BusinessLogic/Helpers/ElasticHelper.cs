@@ -1,6 +1,6 @@
 ﻿using Nest;
 using System.Linq;
-using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.Common.Models;
 using Using_Elasticsearch.Common.Views.MainScreen.Request;
 

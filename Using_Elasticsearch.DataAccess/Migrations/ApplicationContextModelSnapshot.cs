@@ -119,6 +119,8 @@ namespace Using_Elasticsearch.DataAccess.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<bool>("IsRemoved");
+
                     b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");

@@ -5,18 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Nest;
 using System;
-using Using_Elastic.Common.Configs;
-using Using_Elastic.DataAccess.Configs;
-using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Configs;
+using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.BusinessLogic.Helpers;
 using Using_Elasticsearch.BusinessLogic.Helpers.Interfaces;
 using Using_Elasticsearch.BusinessLogic.Services;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
-using Using_Elasticsearch.Common.Configs;
-using Using_Elasticsearch.DataAccess.Configs;
 using Using_ElasticSearch.BusinessLogic.Services;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
-using DataAccess = Using_Elastic.DataAccess;
+using DataAccess = Using_Elasticsearch.DataAccess;
 
 namespace Using_ElasticSearch.BusinessLogic
 {
@@ -74,9 +71,9 @@ namespace Using_ElasticSearch.BusinessLogic
 
             services.AddSingleton<IElasticClient>(client);
         }
-        public static void Use(IApplicationBuilder app)
-        {
-            DataAccess.Configuration.Use(app);
-        }
+        //public static void Use(IApplicationBuilder app)
+        //{
+        //    DataAccess.Configuration.Use(app);
+        //}
     }
 }

@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Using_Elasticsearch.Common.Configs;
+using Using_Elasticsearch.Presentation.Common.Extensions;
 using Using_Elasticsearch.DataAccess.DbInitializers;
 using Using_Elasticsearch.Presentation.Middlewares;
+using Using_Elasticsearch.DataAccess;
 
-namespace Using_Elastic.Presentation
+namespace Using_Elasticsearch.Presentation
 {
     public class Startup
     {
@@ -20,7 +23,16 @@ namespace Using_Elastic.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Presentation.Configuration.Add(services, Configuration);
+            services.Configure<CorsConfig>(Configuration.GetSection(nameof(CorsConfig)));
+            services.Configure<SwaggerConfig>(Configuration.GetSection(nameof(SwaggerConfig)));
+            services.Configure<JwtConfig>(Configuration.GetSection(nameof(JwtConfig)));
+
+            CorsExtension.AddCorsWithOrigin(services);
+            SwaggerExtension.AddSwagger(services);
+
+            Using_ElasticSearch.BusinessLogic.Configuration.Add(services, Configuration);
+
+            JwtExtension.AddJwt(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -38,14 +50,22 @@ namespace Using_Elastic.Presentation
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
 
-            Presentation.Configuration.Use(app, Configuration);
+            app.UseAuthentication();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
+
+            app.UseSwagger(Configuration);
+
+            app.UseCors(Configuration.GetSection(nameof(CorsConfig)).GetSection(nameof(CorsConfig.PolicyName)).Value);           
+
+            app.EnsureMigrate();
+
             initializer.Initialize().Wait();
 
-            app.UseHttpsRedirection();
+
             app.UseMvc();
         }
     }

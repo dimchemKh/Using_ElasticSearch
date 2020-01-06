@@ -1,4 +1,4 @@
-﻿namespace Using_Elastic.DataAccess.Configs
+﻿namespace Using_Elasticsearch.DataAccess.Configs
 {
     public class ConnectionConfig
     {

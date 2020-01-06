@@ -28,15 +28,21 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
             return resposne;
         }
-
-        private async Task<ApplicationUser> CheckUser(RequestLoginAuthentificationView requestLogin)
+        public async Task<ApplicationUser> FindUserAsync(string email)
         {
-            var user = await _userRepository.FindByEmailAsync(requestLogin.Email);
+            var user = await _userRepository.FindUserAsync(email);
 
             if (user == null)
             {
                 throw new ProjectException(statusCode: StatusCodes.Status404NotFound, message: Messages.UserExistedError);
             }
+
+            return user;
+        }
+
+        private async Task<ApplicationUser> CheckUser(RequestLoginAuthentificationView requestLogin)
+        {
+            var user = await FindUserAsync(requestLogin.Email);
 
             var result = await _userRepository.CheckPasswordAsync(user, requestLogin.Password);
 

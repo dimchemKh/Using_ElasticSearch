@@ -9,5 +9,6 @@ namespace Using_Elasticsearch.DataAccess.Entities
         public string LastName { get; set; }
         public string Password { get; set; }
         public Enums.Enums.UserRole Role { get; set; }
+        public bool IsRemoved { get; set; }
     }
 }

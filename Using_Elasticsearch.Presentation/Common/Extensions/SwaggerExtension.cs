@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
-using Using_Elastic.Common.Configs;
+using Using_Elasticsearch.Common.Configs;
 
-namespace Using_Elastic.Presentation.Common.Extensions
+namespace Using_Elasticsearch.Presentation.Common.Extensions
 {
     public static class SwaggerExtension
     {
@@ -22,9 +22,9 @@ namespace Using_Elastic.Presentation.Common.Extensions
         {
             var swaggerSection = configuration.GetSection(nameof(SwaggerConfig));
 
-            var title = swaggerSection.GetSection("Title").Value;
-            var version = swaggerSection.GetSection("Version").Value;
-            var path = swaggerSection.GetSection("Path").Value;
+            var title = swaggerSection.GetSection(nameof(SwaggerConfig.Title)).Value;
+            var version = swaggerSection.GetSection(nameof(SwaggerConfig.Version)).Value;
+            var path = swaggerSection.GetSection(nameof(SwaggerConfig.Path)).Value;
 
             app.UseSwagger();
 

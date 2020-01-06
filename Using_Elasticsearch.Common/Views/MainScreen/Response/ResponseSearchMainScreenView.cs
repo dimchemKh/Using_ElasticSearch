@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Entities;
 
 namespace Using_Elasticsearch.Common.Views.MainScreen.Response
 {
     public class ResponseSearchMainScreenView
     {
         public int TotalCount { get; set; }
-        public List<WebAppData> Items { get; set; }
+        public IEnumerable<WebAppData> Items { get; set; }
         public ResponseSearchMainScreenView()
         {
             Items = new List<WebAppData>();

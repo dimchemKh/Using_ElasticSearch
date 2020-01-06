@@ -5,19 +5,18 @@ import { AdminScreenComponent } from './admin-screen/admin-screen.component';
 import { MaterialModule } from '../shared/modules/material.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { routes } from 'src/app/managment/managment-routing.module'
-import { ManagmentComponent } from './managment.component';
+import { ManagementComponent } from './management.component';
+import { ManagementRoutingModule } from './management-routing.module';
 
 
 @NgModule({
   declarations: [
     MainScreenComponent,
     AdminScreenComponent,
-    ManagmentComponent
+    ManagementComponent
   ],
   imports: [
-    RouterModule.forChild(routes),
+    ManagementRoutingModule,
     CommonModule,
     MaterialModule,
     NgSelectModule,
@@ -25,4 +24,4 @@ import { ManagmentComponent } from './managment.component';
     ReactiveFormsModule
   ]
 })
-export class ManagmentModule { }
+export class ManagementModule { }

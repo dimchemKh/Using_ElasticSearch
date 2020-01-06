@@ -1,7 +1,7 @@
 ﻿using Nest;
 using System.Linq;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.BusinessLogic.Helpers;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_Elasticsearch.Common.Views.MainScreen.Request;

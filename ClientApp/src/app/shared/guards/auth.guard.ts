@@ -11,14 +11,7 @@ export class AuthGuard implements CanActivate {
     ) { }
 
     async canActivate() {
-        debugger;
-
-        const isAuth: boolean = await this.authHelper.isAuth().then(res => { return res });
-        // const isAuth = await this.authHelper.isAuth().then((result) => {
-        //     return result;
-        // });
-
-        // const isAuth:boolean=true;
+        const isAuth: boolean = await this.authHelper.isAuth().then(res => res);
 
         if (isAuth) {
             return true;

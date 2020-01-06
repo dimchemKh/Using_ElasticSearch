@@ -11,26 +11,29 @@ export class RoleGuard implements CanActivate {
         private authHelper: AuthHelper,
         private router: Router
     ) {
-
     }
 
-    canActivate(route: ActivatedRouteSnapshot): boolean {
-        debugger;
-        let role = this.authHelper.getRoleFromToken();
+    async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
+        let role = await this.authHelper.getRoleFromToken();
 
         let currentRoles: number[] = route.data.roles;
 
         if (!currentRoles) {
             return false;
         }
-        
-        let isInRole = currentRoles.some(x => x == UserRoles[role]);
+
+        if (!role) {
+            this.router.navigate(['auth']);
+            return false;
+        }
+
+        let isInRole = currentRoles.some(x => x === UserRoles[role]);
 
         if (isInRole) {
             return true;
         }
 
-        this.router.navigate(['auth']);
+        this.router.navigate(['management']);
         return false;
     }
     

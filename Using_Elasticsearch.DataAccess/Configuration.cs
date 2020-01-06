@@ -8,17 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Using_Elastic.DataAccess.Configs;
-using Using_Elastic.DataAccess.Entities;
-using Using_Elastic.DataAccess.Repositories;
-using Using_Elastic.DataAccess.Repositories.Interfaces;
-using Using_Elasticsearch.DataAccess.AppContext;
-using Using_Elasticsearch.DataAccess.DbInitializers;
+using Using_Elasticsearch.DataAccess.Configs;
 using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.DataAccess.Repositories;
 using Using_Elasticsearch.DataAccess.Repositories.Interfaces;
+using Using_Elasticsearch.DataAccess.AppContext;
+using Using_Elasticsearch.DataAccess.DbInitializers;
 
-namespace Using_Elastic.DataAccess
+namespace Using_Elasticsearch.DataAccess
 {
     public static class Configuration
     {
@@ -32,10 +29,6 @@ namespace Using_Elastic.DataAccess
 
             SQLMapper();           
         }
-        public static void Use(IApplicationBuilder app)
-        {            
-            app.EnsureMigrate();
-        }
 
         private static void AddContext(IServiceCollection services, IConfiguration configuration)
         {
@@ -46,7 +39,7 @@ namespace Using_Elastic.DataAccess
                 .AddDefaultTokenProviders();
         }
 
-        private static void EnsureMigrate(this IApplicationBuilder app)
+        public static void EnsureMigrate(this IApplicationBuilder app)
         {
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {

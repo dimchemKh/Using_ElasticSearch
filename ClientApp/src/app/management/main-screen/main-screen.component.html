@@ -122,15 +122,8 @@
                    digitOnly
                    class="input-number"
                    autocomplete="off"
-                   [ngModel]="
-                toPercent(requestGetFilters.filters.greaterParkWeekOccupancy)
-                  | number
-              "
-                   (ngModelChange)="
-                requestGetFilters.filters.greaterParkWeekOccupancy = fromPercent(
-                  $event
-                )
-              " />
+                   [ngModel]="toPercent(requestGetFilters.filters.greaterParkWeekOccupancy) | number"
+                   (ngModelChange)="requestGetFilters.filters.greaterParkWeekOccupancy = fromPercent($event)" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Occupancy To (%)</mat-label>
@@ -138,15 +131,8 @@
                    type="number"
                    class="input-number"
                    autocomplete="off"
-                   [ngModel]="
-                toPercent(requestGetFilters.filters.lessParkWeekOccupancy)
-                  | number
-              "
-                   (ngModelChange)="
-                requestGetFilters.filters.lessParkWeekOccupancy = fromPercent(
-                  $event
-                )
-              " />
+                   [ngModel]="toPercent(requestGetFilters.filters.lessParkWeekOccupancy) | number"
+                   (ngModelChange)="requestGetFilters.filters.lessParkWeekOccupancy = fromPercent($event)" />
           </mat-form-field>
         </div>
 
@@ -159,15 +145,8 @@
                    digitOnly
                    class="input-number"
                    autocomplete="off"
-                   [ngModel]="
-                toPercent(requestGetFilters.filters.greaterParkWeekOccupancy)
-                  | number
-              "
-                   (ngModelChange)="
-                requestGetFilters.filters.greaterParkWeekOccupancy = fromPercent(
-                  $event
-                )
-              " />
+                   [ngModel]="toPercent(requestGetFilters.filters.greaterParkWeekOccupancy) | number"
+                   (ngModelChange)="requestGetFilters.filters.greaterParkWeekOccupancy = fromPercent($event)" />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Occupancy To (%)</mat-label>
@@ -175,15 +154,8 @@
                    type="number"
                    class="input-number"
                    autocomplete="off"
-                   [ngModel]="
-                toPercent(requestGetFilters.filters.lessParkWeekOccupancy)
-                  | number
-              "
-                   (ngModelChange)="
-                requestGetFilters.filters.lessParkWeekOccupancy = fromPercent(
-                  $event
-                )
-              " />
+                   [ngModel]="toPercent(requestGetFilters.filters.lessParkWeekOccupancy) | number"
+                   (ngModelChange)="requestGetFilters.filters.lessParkWeekOccupancy = fromPercent($event)" />
           </mat-form-field>
         </div>
       </div>

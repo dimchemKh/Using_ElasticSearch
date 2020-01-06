@@ -46,6 +46,7 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
             admin.LastName = InitialUsers.AdminLastName;
             admin.Email = InitialUsers.AdminEmail;
             admin.UserName = string.Concat(InitialUsers.AdminFirstName, InitialUsers.AdminLastName);
+            admin.Role = UserRole.Admin;
             admin.EmailConfirmed = true;
             admin.LockoutEnabled = false;
 
@@ -55,6 +56,7 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
             user.LastName = InitialUsers.UserLastName;
             user.Email = InitialUsers.UserEmail;
             user.UserName = string.Concat(InitialUsers.UserFirstName, InitialUsers.UserLastName);
+            user.Role = UserRole.User;
             admin.EmailConfirmed = true;
             admin.LockoutEnabled = false;
 

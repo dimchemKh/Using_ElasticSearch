@@ -6,6 +6,11 @@
     "deprecation": {
       "severity": "warning"
     },
+    "eofline": false,
+    "prefer-const": false,
+    "one-line": false,
+    "no-trailing-whitespace": false,
+    "variable-name": false,
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,
@@ -28,7 +33,7 @@
     "interface-name": false,
     "max-classes-per-file": false,
     "max-line-length": [
-      true,
+      false,
       140
     ],
     "member-access": false,

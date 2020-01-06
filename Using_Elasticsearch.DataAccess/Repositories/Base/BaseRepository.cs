@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Configs;
+using Using_Elasticsearch.DataAccess.Configs;
 using Using_Elasticsearch.DataAccess.Repositories.Base.Interfaces;
 using DataAnnotation = System.ComponentModel.DataAnnotations.Schema;
 

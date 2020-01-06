@@ -1,16 +1,19 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.MainScreen.Request;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
+using static Using_Elasticsearch.DataAccess.Entities.Enums.Enums;
 
-namespace Using_Elastic.Presentation.Controllers
+namespace Using_Elasticsearch.Presentation.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
-    [ApiController]
-    public class MainScreenController : ControllerBase
+    public class MainScreenController : Controller
     {
         private readonly IElasticsearchService _elasticService;
         private readonly IMainScreenService _mainScreenService;
@@ -20,6 +23,7 @@ namespace Using_Elastic.Presentation.Controllers
             _mainScreenService = mainScreenService;
         }
 
+        [AllowAnonymous]
         [HttpGet("indexData")]
         public async Task<IActionResult> IndexDataAsync()
         {

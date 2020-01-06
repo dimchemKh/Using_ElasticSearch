@@ -1,13 +1,13 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { MainScreenComponent } from './main-screen/main-screen.component';
 import { AdminScreenComponent } from './admin-screen/admin-screen.component';
-import { ManagmentComponent } from './managment.component';
+import { ManagementComponent } from './management.component';
 import { RoleGuard } from '../shared/guards/role.guard';
 import { UserRoles } from '../shared/enums/user-roles';
 
-export const routes: Routes = [
+const routes: Routes = [
     {
-        path: '', component: ManagmentComponent,
+        path: '', component: ManagementComponent,
         children: [
             { path: '', redirectTo: 'main-screen', pathMatch: 'full' },
             {
@@ -20,10 +20,10 @@ export const routes: Routes = [
                 path: 'admin-screen',
                 canActivate: [RoleGuard],
                 component: AdminScreenComponent,
-                data: { role: [UserRoles.Admin] }
+                data: { roles: [UserRoles.Admin] }
             }
         ]
     }
-]
+];
 
-export class ManagementRoutingModule { }
+export const ManagementRoutingModule = RouterModule.forChild(routes);

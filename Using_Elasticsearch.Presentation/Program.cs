@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Using_Elastic.Presentation
+namespace Using_Elasticsearch.Presentation
 {
     public class Program
     {

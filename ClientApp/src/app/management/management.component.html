@@ -1,0 +1,10 @@
+<div class="header-container">
+    <div class="menu">
+        <button mat-raised-button class="btn" [routerLink]="['/management/main-screen']">Main Screen</button>
+        <button mat-raised-button class="btn" [routerLink]="['/management/admin-screen']" [disabled]="isAdmin" >Admin Screen</button>
+    </div>
+    <div class="logOut">
+        <button mat-raised-button class="btn" (click)="logOut()">Log Out</button>
+    </div>
+</div>
+<router-outlet></router-outlet>

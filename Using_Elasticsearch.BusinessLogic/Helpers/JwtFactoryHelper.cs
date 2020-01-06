@@ -1,12 +1,16 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Using_Elasticsearch.BusinessLogic.Helpers.Interfaces;
 using Using_Elasticsearch.Common.Configs;
+using Using_Elasticsearch.Common.Constants;
+using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.Authentification.Response;
 using Using_Elasticsearch.DataAccess.Entities;
 
@@ -21,34 +25,28 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
         {
             _jwtConfig = jwtConfig;
         }
-        public ResponseGenerateAuthentificationView ValidateData(string token)
+        public string ValidateToken(string token)
         {
-            var response = new ResponseGenerateAuthentificationView();
-
             var refreshToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
 
-            //if (refreshToken.ValidTo < DateTime.Now)
-            //{
-            //    //response.Errors.Add(Constants.Errors.TokenExpire);
-            //    return response;
-            //}
+            if (refreshToken.ValidTo < DateTime.UtcNow)
+            {
+                throw new ProjectException(StatusCodes.Status419AuthenticationTimeout);
+            }
 
-            //var value = refreshToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var email = refreshToken.Claims.First(x => x.Type == ClaimTypes.Email)?.Value;
 
-            //if (!long.TryParse(value, out long userId))
-            //{
-            //    //response.Errors.Add(Constants.Errors.UserIdInvalid);
-            //    return response;
-            //}
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new ProjectException(StatusCodes.Status404NotFound, Messages.UserNotFound);
+            }
 
-            //response.UserId = userId;
-
-            return response;
+            return email;
         }
         public ResponseGenerateAuthentificationView Generate(ApplicationUser user)
         {
             var result = new ResponseGenerateAuthentificationView();
-
+            
             var accessClaims = GetAccessTokenClaims(user);
 
             var refreshClaims = GetRefreshTokenClaims(user);
@@ -74,6 +72,7 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
 
             return claims;
         }

@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading.Tasks;
-using Using_Elastic.DataAccess.Configs;
-using Using_Elastic.DataAccess.Entities;
-using Using_Elastic.DataAccess.Repositories.Interfaces;
+using Using_Elasticsearch.DataAccess.Configs;
+using Using_Elasticsearch.DataAccess.Entities;
+using Using_Elasticsearch.DataAccess.Repositories.Interfaces;
 using System.Linq;
 using System.Data;
 using System.Diagnostics;
@@ -15,7 +15,7 @@ using System;
 using Using_Elasticsearch.DataAccess.Repositories.Base;
 using Using_Elasticsearch.DataAccess.AppContext;
 
-namespace Using_Elastic.DataAccess.Repositories
+namespace Using_Elasticsearch.DataAccess.Repositories
 {
     public class WebAppDataRepository : BaseRepository<WebAppData>, IWebAppDataDapperRepository
     {

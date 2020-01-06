@@ -18,7 +18,6 @@ export class MainScreenService {
   }
 
   public getFilters(model: RequestGetFiltersMainScreenView): Observable<ResponseFiltersMainScreenView> {
-    debugger
     return this.http.post<ResponseFiltersMainScreenView>(this.apiRoutes.mainScreenRoute + 'getFilters', model);
   }
 
