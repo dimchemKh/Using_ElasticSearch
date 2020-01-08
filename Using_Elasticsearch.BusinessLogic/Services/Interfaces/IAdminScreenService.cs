@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Using_Elasticsearch.Common.Views.AdminScreen.Request;
 using Using_Elasticsearch.Common.Views.AdminScreen.Response;
 
@@ -8,6 +9,6 @@ namespace Using_Elasticsearch.BusinessLogic.Services.Interfaces
     {
         Task<ResponseGetLogsAdminScreenView> GetLogsAsync(RequestGetLogsAdminScreenView requestModel);
         Task<ResponseGetUsersAdminScreenView> GetUsersAsync(RequestGetUsersAdminScreenView requestModel);
-        Task CreateUserAsync(RequestCreateUserAdminScreenView requestModel);
+        Task<IEnumerable<string>> CreateUserAsync(RequestCreateUserAdminScreenView requestModel);
     }
 }

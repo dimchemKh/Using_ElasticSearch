@@ -10,7 +10,7 @@
                      formControlName="firstName"
                      placeholder="First name"
                      [(ngModel)]="requestUser.firstName">
-              <mat-error *ngIf="isControlInvalid('firstName')">{{ getFirstNameErrorMessage() }}</mat-error>
+              <mat-error *ngIf="isControlInvalid('firstName')">{{ getErrorMessage('firstName') }}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="input"
@@ -19,7 +19,7 @@
                      formControlName="lastName"
                      placeholder="Last name"
                      [(ngModel)]="requestUser.lastName">
-              <mat-error *ngIf="isControlInvalid('lastName')">{{ getLastNameErrorMessage() }}</mat-error>
+              <mat-error *ngIf="isControlInvalid('lastName')">{{ getErrorMessage('lastName') }}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="input"
@@ -28,7 +28,7 @@
                      formControlName="email"
                      placeholder="Email"
                      [(ngModel)]="requestUser.email">
-              <mat-error *ngIf="isControlInvalid('email')">{{ getEmailErrorMessage() }}</mat-error>
+              <mat-error *ngIf="isControlInvalid('email')">{{ getErrorMessage('email') }}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="input"
@@ -37,7 +37,7 @@
                      formControlName="password"
                      placeholder="Password"
                      [(ngModel)]="requestUser.password">
-              <mat-error *ngIf="isControlInvalid('password')">{{ getPasswordErrorMessage() }}</mat-error>
+              <mat-error *ngIf="isControlInvalid('password')">{{ getErrorMessage('password') }}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="select"
@@ -51,6 +51,7 @@
                       {{item}}
                   </mat-option>
               </mat-select>
+              <mat-error *ngIf="isControlInvalid('role')">{{ getErrorMessage('role') }}</mat-error>
           </mat-form-field>
 
           <div class="btn-group">
@@ -113,46 +114,10 @@
       </table>
       <mat-paginator class="paginator mat-elevation-z2"
                      [length]="responseGetUsers.totalCount"
-                     [pageSize]="requestGetLogs.from"
+                     [pageSize]="requestGetUsers.from"
                      [pageSizeOptions]="[5, 10]"
-                     (page)="changePage($event, 'requestGetUsers', 'getUsers')">
+                     (page)="changePage($event)">
       </mat-paginator>
   </div>
 </div>
 
-<mat-accordion class="table-according">
-  <mat-expansion-panel class="table">
-
-      <mat-expansion-panel-header>
-          <mat-panel-title>
-              Table logs
-          </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <table mat-table
-             [dataSource]="responseGetLogs.items"
-             class="mat-elevation-z2">
-
-          <ng-container *ngFor="let model of logColumnsNames"
-                        matColumnDef="{{model.name}}">
-              <th mat-header-cell
-                  *matHeaderCellDef> {{model.viewName}} </th>
-              <td mat-cell
-                  *matCellDef="let element"> {{element[model.name]}} </td>
-          </ng-container>
-
-          <tr mat-header-row
-              *matHeaderRowDef="logDisplayColumnsNames"></tr>
-          <tr mat-row
-              *matRowDef="let row; columns: logDisplayColumnsNames;"></tr>
-      </table>
-      <mat-paginator class="paginator mat-elevation-z2"
-                     [length]="responseGetLogs.totalCount"
-                     [pageIndex]="requestGetLogs.from / requestGetLogs.size"
-                     [pageSize]="requestGetLogs.size"
-                     [pageSizeOptions]="[5, 10, 15]"
-                     (page)="changePage($event, 'requestGetLogs', 'getLogs')">
-      </mat-paginator>
-
-  </mat-expansion-panel>
-</mat-accordion>

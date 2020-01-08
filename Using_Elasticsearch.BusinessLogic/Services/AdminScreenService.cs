@@ -1,4 +1,5 @@
 ﻿using Nest;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
@@ -54,7 +55,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
             return response;
         }
 
-        public async Task CreateUserAsync(RequestCreateUserAdminScreenView requestModel)
+        public async Task<IEnumerable<string>> CreateUserAsync(RequestCreateUserAdminScreenView requestModel)
         {
             var user = new ApplicationUser();
 
@@ -68,8 +69,11 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
             if (!result.Succeeded)
             {
-                throw new ProjectException(result.Errors.Select(x => x.Code).FirstOrDefault());
+                return result.Errors.Select(x => x.Description).ToList();
+                //throw new ProjectException(result.Errors.Select(x => x.Code).FirstOrDefault());
             }
+
+            return new List<string>();
         }
 
         public async Task UpdateUserAsync(RequestCreateUserAdminScreenView requestModel)

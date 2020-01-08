@@ -7,13 +7,15 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManagementComponent } from './management.component';
 import { ManagementRoutingModule } from './management-routing.module';
+import { LogsScreenComponent } from './logs-screen/logs-screen.component';
 
 
 @NgModule({
   declarations: [
     MainScreenComponent,
     AdminScreenComponent,
-    ManagementComponent
+    ManagementComponent,
+    LogsScreenComponent
   ],
   imports: [
     ManagementRoutingModule,

@@ -103,5 +103,6 @@ export class AuthHelper {
     logOut(): void {
         this.userData = null;
         this.storage.clear().subscribe();
+        this.router.navigate(['auth']);
     }
 }

@@ -31,7 +31,7 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
 
             if (refreshToken.ValidTo < DateTime.UtcNow)
             {
-                throw new ProjectException(StatusCodes.Status419AuthenticationTimeout);
+                throw new ProjectException(StatusCodes.Status401Unauthorized);
             }
 
             var email = refreshToken.Claims.First(x => x.Type == ClaimTypes.Email)?.Value;

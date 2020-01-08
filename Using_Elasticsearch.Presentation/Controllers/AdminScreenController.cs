@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.AdminScreen.Request;
+using Using_Elasticsearch.Presentation.Common;
 
 namespace Using_Elasticsearch.Presentation.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [CustomAuthorize]
     [Route("api/[controller]")]
     public class AdminScreenController : Controller
     {
@@ -52,9 +53,9 @@ namespace Using_Elasticsearch.Presentation.Controllers
                 throw new ProjectException(StatusCodes.Status400BadRequest);
             }
 
-            await _adminService.CreateUserAsync(requestModel);
+            var response = await _adminService.CreateUserAsync(requestModel);
 
-            return Ok();
+            return Ok(response);
         }
         [HttpPost("update")]
         public async Task<IActionResult> UpdateUserAsync([FromBody] RequestCreateUserAdminScreenView requestModel)

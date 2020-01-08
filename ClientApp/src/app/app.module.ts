@@ -8,6 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StorageModule } from '@ngx-pwa/local-storage';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,8 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    ToastrModule,
+    ToastrModule.forRoot(),
     StorageModule.forRoot({ IDBNoWrap: true })
   ],
   providers: [

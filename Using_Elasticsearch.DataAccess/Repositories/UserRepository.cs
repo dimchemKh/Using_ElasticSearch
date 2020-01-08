@@ -26,7 +26,7 @@ namespace Using_Elasticsearch.DataAccess.Repositories
         public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)
         {
             var result = await _userManager.CreateAsync(user, password: password);
-
+                
             return result;
         }
         public async Task<IdentityResult> UpdateUserAsync(ApplicationUser user)

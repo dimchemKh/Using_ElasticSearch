@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, throwError } from 'rxjs';
-import { catchError, map, flatMap, switchMap, mergeMap } from 'rxjs/operators';
+import { catchError, map, flatMap, switchMap, mergeMap, finalize } from 'rxjs/operators';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { AuthHelper } from '../helpers/auth.helper';
 import { RequestRefreshAuthentificationView } from '../models/authentification/request/request-refresh-authentification.view';
@@ -13,7 +13,7 @@ import { ResponseGenerateAuthentificationView } from '../models/authentification
 
 export class ErrorInterceptor implements HttpInterceptor {
 
-    private static accessTokenError = false;
+    private isRefreshing = false;
 
     constructor(
         private authService: AuthentificationService,
@@ -23,12 +23,11 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError(error => {
-                debugger;
-                if (error instanceof HttpErrorResponse && error.status === 401) {
+                if (error instanceof HttpErrorResponse && error.status === 419) {
 
-                    if (!ErrorInterceptor.accessTokenError) {
+                    if (!this.isRefreshing) {
 
-                        ErrorInterceptor.accessTokenError = true;
+                        this.isRefreshing = true;
 
                         let body: RequestRefreshAuthentificationView = {
                             refreshToken: this.authHelper.getRefreshToken()
@@ -36,13 +35,14 @@ export class ErrorInterceptor implements HttpInterceptor {
 
                         return this.authService.refresh(body).pipe(
                             mergeMap(response => {
+
                                 this.authHelper.saveTokens(response);
 
-                                ErrorInterceptor.accessTokenError = false;
+                                this.isRefreshing = false;
 
                                 const newRequest = request.clone({
                                     setHeaders: {
-                                        Authorization: `Bearer ${response.accessToken}`
+                                        Authorization: `Bearer ${this.authHelper.getAccessToken()}`
                                     }
                                 });
                                 return next.handle(newRequest).pipe(
@@ -51,16 +51,15 @@ export class ErrorInterceptor implements HttpInterceptor {
                                     })
                                 );
                             }),
-                            catchError(err => {
-                                debugger
-
+                            catchError(() => {
                                 this.authHelper.logOut();
 
-                                return Observable.throw(err);
+                                let message = error.message;
+
+                                return throwError(message);
                             })
                         );
                     } else {
-                        debugger;
                         return this.waitNewTokens().pipe(
                             flatMap((tokens) => {
 
@@ -77,15 +76,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                             })
                         );
                     }
-                } else if (error.status === 419) {
-                    debugger
+                } else if (error.status === 401) {
                     this.authHelper.logOut();
+
+                    return throwError('');
                 }
-
-                let message = error.message || error.statusText;
-
-                return throwError(message);
-
             }));
     }
 
@@ -96,7 +91,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         let wait = (callback) => {
 
             setTimeout(() => {
-                if (ErrorInterceptor.accessTokenError) {
+                if (this.isRefreshing) {
                     wait(callback);
                 } else {
                     if (callback !== undefined) {

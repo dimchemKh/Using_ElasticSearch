@@ -8,6 +8,8 @@ using Using_Elasticsearch.Presentation.Common.Extensions;
 using Using_Elasticsearch.DataAccess.DbInitializers;
 using Using_Elasticsearch.Presentation.Middlewares;
 using Using_Elasticsearch.DataAccess;
+using Microsoft.AspNetCore.Authorization;
+using Using_Elasticsearch.Presentation.Common;
 
 namespace Using_Elasticsearch.Presentation
 {
@@ -33,6 +35,8 @@ namespace Using_Elasticsearch.Presentation
             Using_ElasticSearch.BusinessLogic.Configuration.Add(services, Configuration);
 
             JwtExtension.AddJwt(services);
+
+            //services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

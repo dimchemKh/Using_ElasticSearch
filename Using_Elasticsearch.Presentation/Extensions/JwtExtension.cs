@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using Using_Elasticsearch.Common.Configs;
 
 namespace Using_Elasticsearch.Presentation.Common.Extensions
@@ -44,6 +45,18 @@ namespace Using_Elasticsearch.Presentation.Common.Extensions
                  options.RequireHttpsMetadata = false;
                  options.SaveToken = true;
                  options.TokenValidationParameters = tokenValidationParameter;
+                 options.Events = new JwtBearerEvents()
+                 {
+                     OnAuthenticationFailed = context =>
+                     {
+                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                         {
+                             context.Response.StatusCode = StatusCodes.Status419AuthenticationTimeout;
+                         }
+                         return Task.CompletedTask;
+                     }
+                 };
+
              });
         }
     }

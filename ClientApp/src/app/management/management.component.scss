@@ -1,26 +1,28 @@
 .header-container {
-    position: absolute;
     padding-top: 20px;
-    
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .menu{
-    position: fixed;
     display: flex;
-    flex-direction: row;
     justify-content: center;
+    padding-left: 125px;
     .btn {
         margin: 0 10px;
     }
     width: 100%;
 }
 .logOut {
-    position: fixed;
+    // position: absolute;
     padding-right: 50px;
-    // float: right;
     display: flex;
-    flex-direction: row;
+    // align-items: flex-end;
     justify-content: flex-end;
+    //width: 100%;
+
 }
 
 .mat-raised-button[disabled]:not([class*=mat-elevation-z]) {

@@ -1,0 +1,13 @@
+.table {
+    margin: 0 50px;
+}
+
+.mat-expansion-panel-header[aria-disabled=true] {
+    color: black;
+}
+
+.paginator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

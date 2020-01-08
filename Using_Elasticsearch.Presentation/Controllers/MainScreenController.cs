@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.MainScreen.Request;
+using Using_Elasticsearch.Presentation.Common;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
-using static Using_Elasticsearch.DataAccess.Entities.Enums.Enums;
 
 namespace Using_Elasticsearch.Presentation.Controllers
 {
-    [Authorize]
+    [CustomAuthorize]
     [Route("api/[controller]")]
     public class MainScreenController : Controller
     {

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminScreenService } from 'src/app/core/services/admin-screen.service';
-import { TABLE_LOGS_COLUMNS_NAMES, TABLE_USERS_COLUMNS_NAMES } from 'src/app/management/admin-screen/shared/column-names';
+import { TABLE_USERS_COLUMNS_NAMES } from 'src/app/shared/constants/table-columns';
 import { trigger, state, transition, style, animate } from '@angular/animations';
-import { ResponseGetLogsAdminScreenModel } from 'src/app/shared/models/admin-screen/response/response-get-logs-admin-screen-model';
-import { RequestGetLogsAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-get-logs-admin-screen-model';
 import { ResponseGetUsersAdminScreenModel } from 'src/app/shared/models/admin-screen/response/response-get-users-admin-screen-model';
 import { RequestGetUsersAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-get-users-admin-screen-model';
 import { RequestUserAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-user-admin-screen-model';
@@ -13,6 +11,15 @@ import { UserRoles } from 'src/app/shared/enums/user-roles';
 import { TableModel } from 'src/app/shared/models/table-model';
 import { Patterns } from 'src/app/shared/constants/patterns';
 import { PageEvent } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+
+export const CONTROLS_ERRORS = [
+  { name: 'firstName', message: 'Incorrect First name', default: 'Empty name' },
+  { name: 'lastName', message: 'Incorrect Last name', default: 'Empty name' },
+  { name: 'email', message: 'Incorrect email', default: 'Empty email' },
+  { name: 'password', message: 'Incorrect password', default: 'Empty password' },
+  { name: 'role', message: '', default: 'Choose role' },
+];
 
 @Component({
   selector: 'app-admin-screen',
@@ -26,29 +33,29 @@ import { PageEvent } from '@angular/material';
     ]),
   ],
 })
+
 export class AdminScreenComponent implements OnInit {
 
-  responseGetLogs: ResponseGetLogsAdminScreenModel;
-  requestGetLogs: RequestGetLogsAdminScreenModel;
   responseGetUsers: ResponseGetUsersAdminScreenModel;
   requestGetUsers: RequestGetUsersAdminScreenModel;
   requestUser: RequestUserAdminScreenModel;
   expandedUser: ApplicationUser | null;
   formGroup: FormGroup;
+  identityErrors: Array<string>;
 
   UserRoles = UserRoles;
-
 
   constructor(
     private adminScreenService: AdminScreenService,
     private fb: FormBuilder,
-    private patterns: Patterns
+    private patterns: Patterns,
+    private toastr: ToastrService
   ) {
-    this.responseGetLogs = new ResponseGetLogsAdminScreenModel();
-    this.requestGetLogs = new RequestGetLogsAdminScreenModel();
+
     this.responseGetUsers = new ResponseGetUsersAdminScreenModel();
     this.requestGetUsers = new RequestGetUsersAdminScreenModel();
     this.requestUser = new RequestUserAdminScreenModel();
+    this.identityErrors = new Array<string>();
     this.formGroup = this.fb.group({
       firstName: new FormControl(null, Validators.required),
       lastName: new FormControl(null, Validators.required),
@@ -59,18 +66,8 @@ export class AdminScreenComponent implements OnInit {
       password: new FormControl(null, Validators.required),
       role: new FormControl(null, Validators.required)
     });
-    this.requestGetLogs.from = 0;
-    this.requestGetLogs.size = 10;
     this.requestGetUsers.from = 0;
     this.requestGetUsers.size = 5;
-  }
-
-  get logColumnsNames(): Array<TableModel> {
-    return TABLE_LOGS_COLUMNS_NAMES.map<TableModel>(x => x);
-  }
-
-  get logDisplayColumnsNames(): string[] {
-    return TABLE_LOGS_COLUMNS_NAMES.map(x => x.name);
   }
 
   get usersColumnsNames(): Array<TableModel> {
@@ -93,43 +90,20 @@ export class AdminScreenComponent implements OnInit {
 
   isControlInvalid(controlName: string): boolean {
 
-    let control = this.formGroup.controls[controlName];
+    let control = this.formControls[controlName];
 
-    let result = control.invalid && control.touched;
-
-    return result;
+    return control.invalid;
   }
 
-  private checkError(control: string, patternError: string, requiredError: string): string {
+  getErrorMessage(control: string): string {
+    let error = CONTROLS_ERRORS.find(elem => elem.name === control);
+
     if (this.formControls[control].hasError('pattern')) {
-      return patternError;
+      return error.message;
     }
     if (this.formControls[control].hasError('required')) {
-      return requiredError;
+      return error.default;
     }
-  }
-
-  getLastNameErrorMessage(): string {
-    return this.checkError('lastName', 'Incorrect name', 'Empty field');
-  }
-
-  getFirstNameErrorMessage(): string {
-
-    return this.checkError('firstName', 'Incorrect name', 'Empty field');
-  }
-
-  getEmailErrorMessage(): string {
-    return this.checkError('email', 'Incorrect email', 'Empty email');
-  }
-
-  getPasswordErrorMessage(): string {
-    return this.checkError('password', '', 'Empty password');
-  }
-
-  getLogs(): void {
-    this.adminScreenService.getLogs(this.requestGetLogs).subscribe(data => {
-      this.responseGetLogs = data;
-    });
   }
 
   getUsers(): void {
@@ -140,8 +114,13 @@ export class AdminScreenComponent implements OnInit {
 
   createUser(): void {
     if (!this.formGroup.invalid) {
-      this.adminScreenService.createUser(this.requestUser).subscribe();
+      this.adminScreenService.createUser(this.requestUser).subscribe((errors) => {
+        if (errors.length > 0) {
+          this.showSuccess();
+        }
+      });
     }
+    this.formGroup.markAllAsTouched();
   }
 
   updateUser(): void {
@@ -158,17 +137,19 @@ export class AdminScreenComponent implements OnInit {
     this.requestUser.reset();
   }
 
-  changePage(event: PageEvent, requestName: string, requestMethod: string): void {
-    this[requestName].from = event.pageIndex * event.pageSize;
-    this[requestName].size = event.pageSize;
+  changePage(event: PageEvent): void {
+    this.requestGetUsers.from = event.pageIndex * event.pageSize;
+    this.requestGetUsers.size = event.pageSize;
 
-    this[requestMethod]();
+    this.getUsers();
+  }
+
+  showSuccess() {
+    this.toastr.success('Hello world!', 'Toastr fun!');
   }
 
   ngOnInit(): void {
     this.getUsers();
-
-    this.getLogs();
   }
 
 }

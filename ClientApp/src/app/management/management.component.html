@@ -2,6 +2,7 @@
     <div class="menu">
         <button mat-raised-button class="btn" [routerLink]="['/management/main-screen']">Main Screen</button>
         <button mat-raised-button class="btn" [routerLink]="['/management/admin-screen']" [disabled]="isAdmin" >Admin Screen</button>
+        <button mat-raised-button class="btn" [routerLink]="['/management/logs-screen']" [disabled]="isAdmin" >Logs Screen</button>
     </div>
     <div class="logOut">
         <button mat-raised-button class="btn" (click)="logOut()">Log Out</button>

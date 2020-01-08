@@ -10,7 +10,8 @@ import { FilterName } from 'src/app/shared/enums/filter-name.enum';
 import * as _ from 'lodash';
 import { RequestSearchMainScreenParameters } from 'src/app/shared/models/main-screen/request/request-search-main-screen-parameters';
 import { FILTERS_NAMES } from 'src/app/management/main-screen/shared/constants/filters-names';
-import { TableView } from './shared/views/table-view';
+import { TableModel } from 'src/app/shared/models/table-model';
+
 
 @Component({
   selector: 'app-main-screen',
@@ -59,12 +60,12 @@ export class MainScreenComponent implements OnInit {
     return num !== null ? num * 100 : null;
   }
 
-  get repetedColumns(): Array<TableView> {
-    const names = Array<TableView>();
+  get repetedColumns(): Array<TableModel> {
+    const names = Array<TableModel>();
 
     DAY_PREFIX.forEach(day => {
       REPETED_COLUMNS.forEach(column => {
-        const tab: TableView = { name: day.prefix + column.name, viewName: column.viewName };
+        const tab: TableModel = { name: day.prefix + column.name, viewName: column.viewName };
         names.push(tab);
       });
     });

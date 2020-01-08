@@ -4,6 +4,7 @@ import { AdminScreenComponent } from './admin-screen/admin-screen.component';
 import { ManagementComponent } from './management.component';
 import { RoleGuard } from '../shared/guards/role.guard';
 import { UserRoles } from '../shared/enums/user-roles';
+import { LogsScreenComponent } from './logs-screen/logs-screen.component';
 
 const routes: Routes = [
     {
@@ -20,6 +21,12 @@ const routes: Routes = [
                 path: 'admin-screen',
                 canActivate: [RoleGuard],
                 component: AdminScreenComponent,
+                data: { roles: [UserRoles.Admin] }
+            },
+            {
+                path: 'logs-screen',
+                canActivate: [RoleGuard],
+                component: LogsScreenComponent,
                 data: { roles: [UserRoles.Admin] }
             }
         ]

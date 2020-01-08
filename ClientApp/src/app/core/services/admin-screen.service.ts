@@ -17,16 +17,12 @@ export class AdminScreenService {
         public apiRoutes: ApiRoutes
     ) {
     }
-
-    getLogs(model: RequestGetLogsAdminScreenModel): Observable<ResponseGetLogsAdminScreenModel> {
-        return this.http.post<ResponseGetLogsAdminScreenModel>(this.apiRoutes.adminScreenRoute + 'getLogs', model);
-    }
     
     getUsers(model: RequestGetUsersAdminScreenModel): Observable<ResponseGetUsersAdminScreenModel> {
         return this.http.post<ResponseGetUsersAdminScreenModel>(this.apiRoutes.adminScreenRoute + 'getUsers', model);
     }
-    createUser(model: RequestUserAdminScreenModel): Observable<any> {
-        return this.http.post(this.apiRoutes.adminScreenRoute + 'create', model);
+    createUser(model: RequestUserAdminScreenModel): Observable<Array<string>> {
+        return this.http.post<Array<string>>(this.apiRoutes.adminScreenRoute + 'create', model);
     }
     updateUser(model: RequestUserAdminScreenModel): Observable<any> {
         return this.http.post(this.apiRoutes.adminScreenRoute + 'update', model);
