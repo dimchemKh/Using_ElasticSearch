@@ -53,12 +53,14 @@ namespace Using_ElasticSearch.BusinessLogic
         private static void AddServices(IServiceCollection services)
         {
             services.AddScoped<IJwtFactoryHelper, JwtFactoryHelper>();
+            services.AddScoped<IMapperHelper, MapperHelper>();
 
             services.AddScoped<IElasticsearchService, ElasticsearchService>();
             services.AddScoped<IMainScreenService, MainScreenService>();
             services.AddScoped<IAuthentificationService, AuthentificationService>();
             services.AddSingleton<ILogExceptionService, LogExceptionService>();
             services.AddScoped<IAdminScreenService, AdminScreenService>();
+            services.AddScoped<ILogsScreenService, LogsScreenService>();
         }
 
         private static void AddElasticsearch(IServiceCollection services, IOptions<ConnectionConfig> connectionConfig)
@@ -71,9 +73,5 @@ namespace Using_ElasticSearch.BusinessLogic
 
             services.AddSingleton<IElasticClient>(client);
         }
-        //public static void Use(IApplicationBuilder app)
-        //{
-        //    DataAccess.Configuration.Use(app);
-        //}
     }
 }

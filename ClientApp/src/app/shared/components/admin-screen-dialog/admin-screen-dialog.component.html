@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="header">
+        <h1 mat-dialog-title
+            class="container-title"> {{ nameView }}
+        </h1>
+        <button mat-icon-button (click)="close()"><mat-icon svgIcon="removeIcon"></mat-icon></button>
+    </div>
+    <div mat-dialog-content
+         class="user-form">
+        <div class="input-group">
+
+            <mat-form-field class="input"
+                            [formGroup]="formGroup">
+                <input matInput
+                       formControlName="firstName"
+                       placeholder="First name"
+                       [(ngModel)]="requestUser.firstName">
+                <mat-error *ngIf="isControlInvalid('firstName')">{{ getErrorMessage('firstName') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="input"
+                            [formGroup]="formGroup">
+                <input matInput
+                       formControlName="lastName"
+                       placeholder="Last name"
+                       [(ngModel)]="requestUser.lastName">
+                <mat-error *ngIf="isControlInvalid('lastName')">{{ getErrorMessage('lastName') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="input"
+                            [formGroup]="formGroup">
+                <input matInput
+                       formControlName="email"
+                       placeholder="Email"
+                       [(ngModel)]="requestUser.email">
+                <mat-error *ngIf="isControlInvalid('email')">{{ getErrorMessage('email') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="input"
+                            [formGroup]="formGroup">
+                <input matInput
+                       formControlName="phoneNumber"
+                       placeholder="Email"
+                       [(ngModel)]="requestUser.phoneNumber">
+                <mat-error *ngIf="isControlInvalid('phoneNumber')">{{ getErrorMessage('phoneNumber') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="input"
+                            [formGroup]="formGroup">
+                <input matInput
+                       formControlName="password"
+                       placeholder="Password"
+                       [(ngModel)]="requestUser.password">
+                <mat-error *ngIf="isControlInvalid('password')">{{ getErrorMessage('password') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="select"
+                            [formGroup]="formGroup">
+                <mat-select formControlName="role"
+                            placeholder="Role"
+                            [(ngModel)]="requestUser.role"
+                            name="item">
+                    <mat-option *ngFor="let item of roles; let i = index"
+                                [value]="i">
+                        {{item}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isControlInvalid('role')">{{ getErrorMessage('role') }}</mat-error>
+            </mat-form-field>
+
+            <div class="btn-group">
+                <button mat-raised-button color="primary" (click)="createUser()">Create</button>
+                <button mat-raised-button color="warn" (click)="resetUser()">Reset</button>
+            </div>
+
+        </div>
+    </div>
+</div>

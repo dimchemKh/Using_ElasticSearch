@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MainScreenComponent } from './main-screen/main-screen.component';
 import { AdminScreenComponent } from './admin-screen/admin-screen.component';
 import { MaterialModule } from '../shared/modules/material.module';
@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManagementComponent } from './management.component';
 import { ManagementRoutingModule } from './management-routing.module';
 import { LogsScreenComponent } from './logs-screen/logs-screen.component';
+import { AdminScreenDialogComponent } from '../shared/components/admin-screen-dialog/admin-screen-dialog.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { LogsScreenComponent } from './logs-screen/logs-screen.component';
     MainScreenComponent,
     AdminScreenComponent,
     ManagementComponent,
-    LogsScreenComponent
+    LogsScreenComponent,
+    AdminScreenDialogComponent
   ],
   imports: [
     ManagementRoutingModule,
@@ -24,6 +26,8 @@ import { LogsScreenComponent } from './logs-screen/logs-screen.component';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: [DatePipe],
+  entryComponents: [AdminScreenDialogComponent]
 })
 export class ManagementModule { }

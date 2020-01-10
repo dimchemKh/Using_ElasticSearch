@@ -1,5 +1,5 @@
 <mat-accordion class="table-according">
-    <mat-expansion-panel class="table"
+    <mat-expansion-panel class="table-panel"
                          expanded="true"
                          disabled=true
                          hideToggle="true">
@@ -12,14 +12,14 @@
 
         <table mat-table
                [dataSource]="responseGetLogs.items"
-               class="mat-elevation-z2">
+               class="mat-elevation-z2 table">
 
             <ng-container *ngFor="let model of logColumnsNames"
                           matColumnDef="{{model.name}}">
                 <th mat-header-cell
                     *matHeaderCellDef> {{model.viewName}} </th>
                 <td mat-cell
-                    *matCellDef="let element"> {{element[model.name]}} </td>
+                    *matCellDef="let element">{{ model.name === 'creationDate' ? pipe(element[model.name]) : element[model.name] }}</td>
             </ng-container>
 
             <tr mat-header-row

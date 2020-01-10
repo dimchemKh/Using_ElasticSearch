@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Helpers.Interfaces;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;

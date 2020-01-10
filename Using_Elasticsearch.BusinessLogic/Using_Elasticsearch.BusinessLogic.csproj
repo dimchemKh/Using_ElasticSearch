@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Using_Elasticsearch.DataAccess\Using_Elasticsearch.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

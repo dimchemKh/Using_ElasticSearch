@@ -13,8 +13,8 @@ namespace Using_Elasticsearch.Common.Configs
         public TimeSpan RefreshTokenExpiration { get; set; }
         public JwtConfig()
         {
-            AccessTokenExpiration = TimeSpan.FromSeconds(5);
-            RefreshTokenExpiration = TimeSpan.FromSeconds(10);
+            AccessTokenExpiration = TimeSpan.FromMinutes(10);
+            RefreshTokenExpiration = TimeSpan.FromDays(30);
         }
     }
 }

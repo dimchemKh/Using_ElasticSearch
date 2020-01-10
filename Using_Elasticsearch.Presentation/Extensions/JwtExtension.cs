@@ -37,7 +37,6 @@ namespace Using_Elasticsearch.Presentation.Common.Extensions
             services.AddAuthentication(scheme =>
             {
                 scheme.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 scheme.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

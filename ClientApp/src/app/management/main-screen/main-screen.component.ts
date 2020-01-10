@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MainScreenService } from 'src/app/core/services/main-screen.service';
 import { ResponseFiltersMainScreenView } from 'src/app/shared/models/main-screen/response/response-filter-main-screen-view';
 import { RequestGetFiltersMainScreenView } from 'src/app/shared/models/main-screen/request/request-get-filters-main-screen-view';
-import { MatSelectChange, PageEvent } from '@angular/material';
+import { MatSelectChange, PageEvent, MatIconRegistry } from '@angular/material';
 import { NgModel } from '@angular/forms';
 import { ResponseSearchMainScreenView } from 'src/app/shared/models/main-screen/response/response-search-main-screen-view';
 import { STICKY_COLUMNS, REPETED_COLUMNS, DAY_PREFIX, GROUP_HEADERS } from 'src/app/management/main-screen/shared/constants/column-names';
@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { RequestSearchMainScreenParameters } from 'src/app/shared/models/main-screen/request/request-search-main-screen-parameters';
 import { FILTERS_NAMES } from 'src/app/management/main-screen/shared/constants/filters-names';
 import { TableModel } from 'src/app/shared/models/table-model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -30,12 +31,16 @@ export class MainScreenComponent implements OnInit {
   public numberTo: number;
 
   constructor(
-    private mainScreenService: MainScreenService
+    private mainScreenService: MainScreenService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
   ) {
     this.responseFilters = new ResponseFiltersMainScreenView();
     this.requestGetFilters = new RequestGetFiltersMainScreenView();
     this.responseSearch = new ResponseSearchMainScreenView();
     this.requestSearch = new RequestSearchMainScreenParameters();
+    this.registryIcon('previous', 'chevron_left-24px.svg');
+    this.registryIcon('next', 'chevron_right-24px.svg');
   }
 
   get displayedColumns(): string[] {
@@ -50,6 +55,13 @@ export class MainScreenComponent implements OnInit {
 
   get groupHeaders(): any {
     return GROUP_HEADERS;
+  }
+
+  registryIcon(name: string, path: string): void {
+    this.matIconRegistry.addSvgIcon(
+      name,
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/' + path)
+    );
   }
 
   fromPercent(num: number): number | null {

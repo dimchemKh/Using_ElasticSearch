@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.MainScreen.Request;
 using Using_Elasticsearch.Presentation.Common;
+
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 
 namespace Using_Elasticsearch.Presentation.Controllers

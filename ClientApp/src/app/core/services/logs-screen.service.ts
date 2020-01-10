@@ -18,6 +18,6 @@ export class LogsScreenService {
     }
     
     getLogs(model: RequestGetLogsAdminScreenModel): Observable<ResponseGetLogsAdminScreenModel> {
-        return this.http.post<ResponseGetLogsAdminScreenModel>(this.apiRoutes.adminScreenRoute + 'getLogs', model);
+        return this.http.post<ResponseGetLogsAdminScreenModel>(this.apiRoutes.logsScreenRoute + 'getLogs', model);
     }
 }

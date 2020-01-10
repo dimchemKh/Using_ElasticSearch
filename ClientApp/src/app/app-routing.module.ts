@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -7,4 +8,10 @@ const routes: Routes = [
   { path: 'auth', loadChildren: 'src/app/authentification/authentification.module#AuthentificationModule' }
 ];
 
-export const AppRoutingModule = RouterModule.forRoot(routes);
+@NgModule({
+  imports: [RouterModule.forRoot(routes, { initialNavigation: 'enabled' })],
+  exports: [RouterModule]
+})
+
+
+export class AppRoutingModule {}

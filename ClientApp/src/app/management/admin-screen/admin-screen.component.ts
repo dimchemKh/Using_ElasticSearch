@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminScreenService } from 'src/app/core/services/admin-screen.service';
 import { TABLE_USERS_COLUMNS_NAMES } from 'src/app/shared/constants/table-columns';
-import { trigger, state, transition, style, animate } from '@angular/animations';
 import { ResponseGetUsersAdminScreenModel } from 'src/app/shared/models/admin-screen/response/response-get-users-admin-screen-model';
 import { RequestGetUsersAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-get-users-admin-screen-model';
-import { RequestUserAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-user-admin-screen-model';
 import { ApplicationUser } from 'src/app/shared/models/application-user';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserRoles } from 'src/app/shared/enums/user-roles';
 import { TableModel } from 'src/app/shared/models/table-model';
 import { Patterns } from 'src/app/shared/constants/patterns';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatIconRegistry, MatDialog, MatDialogRef } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AuthHelper } from 'src/app/shared/helpers/auth.helper';
+import { AdminScreenDialogComponent } from '../../shared/components/admin-screen-dialog/admin-screen-dialog.component';
 
 export const CONTROLS_ERRORS = [
   { name: 'firstName', message: 'Incorrect First name', default: 'Empty name' },
   { name: 'lastName', message: 'Incorrect Last name', default: 'Empty name' },
   { name: 'email', message: 'Incorrect email', default: 'Empty email' },
+  { name: 'phoneNumber', message: 'Incorrect phone', default: 'Empty field' },
   { name: 'password', message: 'Incorrect password', default: 'Empty password' },
   { name: 'role', message: '', default: 'Choose role' },
 ];
@@ -24,50 +25,84 @@ export const CONTROLS_ERRORS = [
 @Component({
   selector: 'app-admin-screen',
   templateUrl: './admin-screen.component.html',
-  styleUrls: ['./admin-screen.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+  styleUrls: ['./admin-screen.component.scss']
 })
 
 export class AdminScreenComponent implements OnInit {
 
   responseGetUsers: ResponseGetUsersAdminScreenModel;
   requestGetUsers: RequestGetUsersAdminScreenModel;
-  requestUser: RequestUserAdminScreenModel;
+
   expandedUser: ApplicationUser | null;
-  formGroup: FormGroup;
   identityErrors: Array<string>;
+  isSysAdmin: boolean;
 
   UserRoles = UserRoles;
 
   constructor(
     private adminScreenService: AdminScreenService,
-    private fb: FormBuilder,
-    private patterns: Patterns,
-    private toastr: ToastrService
+    private dialog: MatDialog,
+    private authHelper: AuthHelper,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
   ) {
 
     this.responseGetUsers = new ResponseGetUsersAdminScreenModel();
     this.requestGetUsers = new RequestGetUsersAdminScreenModel();
-    this.requestUser = new RequestUserAdminScreenModel();
+
     this.identityErrors = new Array<string>();
-    this.formGroup = this.fb.group({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
-      email: new FormControl(null, [
-        Validators.required,
-        Validators.pattern(this.patterns.email)
-      ]),
-      password: new FormControl(null, Validators.required),
-      role: new FormControl(null, Validators.required)
-    });
+
+    this.initIcons();
     this.requestGetUsers.from = 0;
     this.requestGetUsers.size = 5;
+  }
+
+
+  openDialog(actionName: string = null, element: ApplicationUser): void {
+    let data: string;
+    let dialogRef: MatDialogRef<AdminScreenDialogComponent, any>;
+
+    if (!actionName) {
+      data = 'Create user';
+      dialogRef = this.dialog.open(AdminScreenDialogComponent, {
+        data: { name: data }
+      });
+    }
+    if (actionName) {
+      data = actionName + ' user';
+      dialogRef = this.dialog.open(AdminScreenDialogComponent, {
+        data: {
+          name: data,
+          model: {
+            id: element.id,
+            firstName: element.firstName,
+            lastName: element.lastName,
+            role: element.role,
+            email: element.email,
+            phoneNumber: element.phoneNumber,
+          }
+        }
+      });
+    }
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+
+      }
+    });
+  }
+
+  private initIcons(): void {
+    this.registryIcon('createIcon', 'add-24px.svg');
+    this.registryIcon('changeIcon', 'create-24px.svg');
+    this.registryIcon('removeIcon', 'clear-24px.svg');
+  }
+
+  private registryIcon(name: string, path: string): void {
+    this.matIconRegistry.addSvgIcon(
+      name,
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/' + path)
+    );
   }
 
   get usersColumnsNames(): Array<TableModel> {
@@ -75,34 +110,18 @@ export class AdminScreenComponent implements OnInit {
   }
 
   get usersDisplayColumnsNames(): string[] {
-    return TABLE_USERS_COLUMNS_NAMES.map(x => x.name);
+    let colums = TABLE_USERS_COLUMNS_NAMES.map(x => x.name);
+    colums.push('icons');
+    return colums;
   }
 
-  get roles(): string[] {
-    let roles = Object.keys(UserRoles);
 
-    return roles.slice(roles.length / 2);
-  }
 
-  get formControls() {
-    return this.formGroup.controls;
-  }
+  async getRole(): Promise<void> {
+    let role = await this.authHelper.getRoleFromToken().then(x => x);
 
-  isControlInvalid(controlName: string): boolean {
-
-    let control = this.formControls[controlName];
-
-    return control.invalid;
-  }
-
-  getErrorMessage(control: string): string {
-    let error = CONTROLS_ERRORS.find(elem => elem.name === control);
-
-    if (this.formControls[control].hasError('pattern')) {
-      return error.message;
-    }
-    if (this.formControls[control].hasError('required')) {
-      return error.default;
+    if (role === UserRoles[UserRoles.SysAdmin]) {
+      this.isSysAdmin = true;
     }
   }
 
@@ -112,30 +131,6 @@ export class AdminScreenComponent implements OnInit {
     });
   }
 
-  createUser(): void {
-    if (!this.formGroup.invalid) {
-      this.adminScreenService.createUser(this.requestUser).subscribe((errors) => {
-        if (errors.length > 0) {
-          this.showSuccess();
-        }
-      });
-    }
-    this.formGroup.markAllAsTouched();
-  }
-
-  updateUser(): void {
-    this.adminScreenService.updateUser(this.requestUser).subscribe();
-  }
-
-  removeUser(): void {
-    // TODO userId
-    // this.adminScreenService.removeUser()
-  }
-
-  resetUser(): void {
-    this.formGroup.reset();
-    this.requestUser.reset();
-  }
 
   changePage(event: PageEvent): void {
     this.requestGetUsers.from = event.pageIndex * event.pageSize;
@@ -144,11 +139,10 @@ export class AdminScreenComponent implements OnInit {
     this.getUsers();
   }
 
-  showSuccess() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
-  }
+
 
   ngOnInit(): void {
+    this.getRole();
     this.getUsers();
   }
 

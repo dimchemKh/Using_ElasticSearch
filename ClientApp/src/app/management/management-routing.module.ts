@@ -5,6 +5,7 @@ import { ManagementComponent } from './management.component';
 import { RoleGuard } from '../shared/guards/role.guard';
 import { UserRoles } from '../shared/enums/user-roles';
 import { LogsScreenComponent } from './logs-screen/logs-screen.component';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
     {
@@ -15,19 +16,19 @@ const routes: Routes = [
                 path: 'main-screen',
                 canActivate: [RoleGuard],
                 component: MainScreenComponent,
-                data: { roles: [UserRoles.Admin, UserRoles.User] }
+                data: { roles: [UserRoles.SysAdmin, UserRoles.Admin, UserRoles.User] }
             },
             {
                 path: 'admin-screen',
                 canActivate: [RoleGuard],
                 component: AdminScreenComponent,
-                data: { roles: [UserRoles.Admin] }
+                data: { roles: [UserRoles.SysAdmin, UserRoles.Admin] }
             },
             {
                 path: 'logs-screen',
                 canActivate: [RoleGuard],
                 component: LogsScreenComponent,
-                data: { roles: [UserRoles.Admin] }
+                data: { roles: [UserRoles.SysAdmin, UserRoles.Admin] }
             }
         ]
     }

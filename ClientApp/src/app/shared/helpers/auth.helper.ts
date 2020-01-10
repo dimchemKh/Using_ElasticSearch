@@ -27,7 +27,7 @@ export class AuthHelper {
         });
     }
 
-    private async responseToken(): Promise<ResponseGenerateAuthentificationView> {
+    private responseToken(): Promise<ResponseGenerateAuthentificationView> {
         return this.storage.get<ResponseGenerateAuthentificationView>(this._userDataKey).toPromise();
     }
 
@@ -81,11 +81,6 @@ export class AuthHelper {
     }
 
     getRefreshToken(): string {
-        // if (!this.userData) {
-        //     (this.storage.get<ResponseGenerateAuthentificationView>(this._userDataKey).toPromise()).then(x => {
-        //         return x.refreshToken;
-        //     });
-        // }
         if (this.userData) {
             return this.userData.refreshToken;
         }

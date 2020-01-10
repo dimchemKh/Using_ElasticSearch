@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+
 using Using_Elasticsearch.DataAccess.Entities;
 
 namespace Using_Elasticsearch.Common.Views.AdminScreen.Response

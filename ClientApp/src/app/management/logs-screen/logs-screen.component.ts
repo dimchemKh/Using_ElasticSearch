@@ -7,7 +7,7 @@ import { LogsScreenService } from 'src/app/core/services/logs-screen.service';
 import { PageEvent } from '@angular/material';
 import { Observable, of } from 'rxjs';
 import { LogException } from 'src/app/shared/models/log-exception';
-import { flatMap } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-logs-screen',
@@ -21,7 +21,8 @@ export class LogsScreenComponent implements OnInit {
   exceptions: Observable<LogException>;
 
   constructor(
-    private logsScreenService: LogsScreenService
+    private logsScreenService: LogsScreenService,
+    private datePipe: DatePipe
   ) {
     this.responseGetLogs = new ResponseGetLogsAdminScreenModel();
     this.requestGetLogs = new RequestGetLogsAdminScreenModel();
@@ -35,6 +36,12 @@ export class LogsScreenComponent implements OnInit {
 
   get logDisplayColumnsNames(): string[] {
     return TABLE_LOGS_COLUMNS_NAMES.map(x => x.name);
+  }
+
+  pipe(name: string): string {
+    let date = new Date(name);
+    
+    return this.datePipe.transform(date, 'yyyy/MM/dd');
   }
 
   getLogs(): void {

@@ -10,13 +10,13 @@ import { Router } from '@angular/router';
 })
 export class ManagementComponent implements OnInit {
 
-  isAdmin: boolean;
+  nonAdmin: boolean;
 
   constructor(
     private authHelper: AuthHelper,
     private router: Router
   ) { 
-    this.isAdmin = true;
+    this.nonAdmin = true;
   }
 
   logOut(): void {
@@ -27,8 +27,8 @@ export class ManagementComponent implements OnInit {
   async ngOnInit() {
     let role = await this.authHelper.getRoleFromToken().then(x => x);
     
-    if (role === UserRoles[UserRoles.Admin]) {
-      this.isAdmin = false;
+    if (role === UserRoles[UserRoles.SysAdmin]) {
+      this.nonAdmin = false;
     }
   }
 

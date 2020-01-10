@@ -7,7 +7,7 @@ namespace Using_Elasticsearch.DataAccess.AppContext
 {
     public class ApplicationContext : IdentityDbContext<ApplicationUser, Role, Guid>
     {
-        //public DbSet<UserPermission> UserPermissions { get; set; }
+        public DbSet<UserPermissions> UserPermissions { get; set; }
         public DbSet<LogException> LogExceptions { get; set; }
         public ApplicationContext(DbContextOptions options) : base(options)
         {            

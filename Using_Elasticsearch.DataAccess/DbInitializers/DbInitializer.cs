@@ -40,6 +40,16 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
                 }
             }
 
+            var sysAdmin = new ApplicationUser();
+
+            sysAdmin.FirstName = InitialUsers.SysAdminFirstName;
+            sysAdmin.LastName = InitialUsers.SysAdminLastName;
+            sysAdmin.Email = InitialUsers.SysAdminEmail;
+            sysAdmin.UserName = string.Concat(InitialUsers.SysAdminFirstName, InitialUsers.SysAdminLastName);
+            sysAdmin.Role = UserRole.SysAdmin;
+            sysAdmin.EmailConfirmed = true;
+            sysAdmin.PhoneNumber = InitialUsers.SysAdminPhoneNumber;
+
             var admin = new ApplicationUser();
 
             admin.FirstName = InitialUsers.AdminFirstName;
@@ -48,25 +58,15 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
             admin.UserName = string.Concat(InitialUsers.AdminFirstName, InitialUsers.AdminLastName);
             admin.Role = UserRole.Admin;
             admin.EmailConfirmed = true;
-            admin.LockoutEnabled = false;
+            admin.PhoneNumber = InitialUsers.AdminPhoneNumber;
 
-            var user = new ApplicationUser();
+            var createdSysAdmin = _userManager.CreateAsync(sysAdmin, InitialUsers.SysAdminPassword).GetAwaiter().GetResult();
+            var createAdmin = _userManager.CreateAsync(admin, InitialUsers.AdminPassword).GetAwaiter().GetResult();
 
-            user.FirstName = InitialUsers.UserFirstName;
-            user.LastName = InitialUsers.UserLastName;
-            user.Email = InitialUsers.UserEmail;
-            user.UserName = string.Concat(InitialUsers.UserFirstName, InitialUsers.UserLastName);
-            user.Role = UserRole.User;
-            admin.EmailConfirmed = true;
-            admin.LockoutEnabled = false;
-
-            var createdAdmin = _userManager.CreateAsync(admin, InitialUsers.AdminPassword).GetAwaiter().GetResult();
-            var createdUser = _userManager.CreateAsync(user, InitialUsers.UserPassword).GetAwaiter().GetResult();
-
-            if (createdAdmin.Succeeded && createdUser.Succeeded)
+            if (createdSysAdmin.Succeeded && createAdmin.Succeeded)
             {
+                await _userManager.AddToRoleAsync(sysAdmin, UserRole.SysAdmin.ToString());
                 await _userManager.AddToRoleAsync(admin, UserRole.Admin.ToString());
-                await _userManager.AddToRoleAsync(user, UserRole.User.ToString());
 
                 //var adminId = _userManager.Users.Where(x => x.Email.Equals(admin.Email)).Select(z => z.Id).FirstOrDefault();
                 //_context.UserPermissions.Add(new UserPermission() { UserId = adminId, CanEdit = true, CanView = true });

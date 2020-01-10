@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="user-form mat-elevation-z2">
+    <!-- <div class="user-form mat-elevation-z2">
       <h3>New user</h3>
       <mat-divider></mat-divider>
       <div class="input-group">
@@ -60,64 +60,92 @@
           </div>
 
       </div>
-  </div>
+  </div> -->
 
-  <div class="user-table-container">
-      <table mat-table
-             [dataSource]="responseGetUsers.items"
-             multiTemplateDataRows
-             class="mat-elevation-z2 user-table">
-          <ng-container *ngFor="let model of usersColumnsNames"
-                        matColumnDef="{{model.name}}">
-              <th mat-header-cell
-                  *matHeaderCellDef> {{model.viewName}} </th>
-              <td mat-cell
-                  *matCellDef="let element">
-                  {{model.name === 'role' ? UserRoles[element[model.name]] : element[model.name]}} </td>
-          </ng-container>
+    <div class="user-table-container">
+        <button class="create-btn" mat-raised-button (click)="openDialog()"><mat-icon svgIcon="createIcon"></mat-icon>Create</button>
+        <table mat-table
+               [dataSource]="responseGetUsers.items"
+               multiTemplateDataRows
+               class="mat-elevation-z2 user-table">
+            <ng-container *ngFor="let model of usersColumnsNames"
+                          matColumnDef="{{model.name}}">
+                <th mat-header-cell
+                    *matHeaderCellDef> {{model.viewName}} </th>
+                <td mat-cell
+                    *matCellDef="let element">
+                    {{model.name === 'role' ? UserRoles[element[model.name]] : element[model.name]}} </td>
+            </ng-container>
+            <ng-container matColumnDef="icons">
+                <th mat-header-cell
+                    *matHeaderCellDef>
+                </th>
+                <td mat-cell
+                    *matCellDef="let element"
+                    align="end">
+                    <button mat-icon-button (click)="openDialog('Change', element)"><mat-icon svgIcon="changeIcon"></mat-icon></button>
+                    <button mat-icon-button><mat-icon svgIcon="removeIcon"></mat-icon></button>
+                </td>
+            </ng-container>
+            <tr mat-header-row
+                *matHeaderRowDef="usersDisplayColumnsNames"></tr>
+            <tr mat-row
+                *matRowDef="let row; columns: usersDisplayColumnsNames;"></tr>
+        </table>
+        <!-- <table mat-table
+               [dataSource]="responseGetUsers.items"
+               multiTemplateDataRows
+               class="mat-elevation-z2 user-table">
+            <ng-container *ngFor="let model of usersColumnsNames"
+                          matColumnDef="{{model.name}}">
+                <th mat-header-cell
+                    *matHeaderCellDef> {{model.viewName}} </th>
+                <td mat-cell
+                    *matCellDef="let element">
+                    {{model.name === 'role' ? UserRoles[element[model.name]] : element[model.name]}} </td>
+            </ng-container>
 
-          <ng-container matColumnDef="expandedDetail">
-              <td mat-cell
-                  *matCellDef="let element"
-                  [attr.colspan]="usersDisplayColumnsNames.length">
-                  <div class="item-detail"
-                       [@detailExpand]="element === expandedUser ? 'expanded' : 'collapsed'">
-                      <div class="item-detail-container">
-                          <ul class="list">
-                              <li>
-                                  Email: {{element.email}}
-                              </li>
-                              <li>
-                                  Phone: {{element.phoneNumber}}
-                              </li>
-                          </ul>
-                          <div class="btn-group">
-                              <button mat-raised-button color="accent" (click)="''">Change</button>
-                              <button mat-raised-button color="warn" (click)="''">Remove</button>
-                          </div>
-                      </div>
-                  </div>
-              </td>
-          </ng-container>
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell
+                    *matCellDef="let element"
+                    [attr.colspan]="usersDisplayColumnsNames.length">
+                    <div class="item-detail"
+                         [@detailExpand]="element === expandedUser ? 'expanded' : 'collapsed'">
+                        <div class="item-detail-container">
+                            <ul class="list">
+                                <li>
+                                    Email: {{element.email}}
+                                </li>
+                                <li>
+                                    Phone: {{element.phoneNumber}}
+                                </li>
+                            </ul>
+                            <div class="btn-group">
+                                <button mat-raised-button color="accent" (click)="''">Change</button>
+                                <button mat-raised-button color="warn" (click)="''">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
 
-          <tr mat-header-row
-              *matHeaderRowDef="usersDisplayColumnsNames"></tr>
-          <tr mat-row
-              *matRowDef="let element; columns: usersDisplayColumnsNames;"
-              class="item-row"
-              [class.expanded-row]="expandedUser === element"
-              (click)="expandedUser = expandedUser === element ? null : element">
-          </tr>
-          <tr mat-row
-              *matRowDef="let row; columns: ['expandedDetail']"
-              class="detail-row"></tr>
-      </table>
-      <mat-paginator class="paginator mat-elevation-z2"
-                     [length]="responseGetUsers.totalCount"
-                     [pageSize]="requestGetUsers.from"
-                     [pageSizeOptions]="[5, 10]"
-                     (page)="changePage($event)">
-      </mat-paginator>
-  </div>
+            <tr mat-header-row
+                *matHeaderRowDef="usersDisplayColumnsNames"></tr>
+            <tr mat-row
+                *matRowDef="let element; columns: usersDisplayColumnsNames;"
+                class="item-row"
+                [class.expanded-row]="expandedUser === element"
+                (click)="expandedUser = expandedUser === element ? null : element">
+            </tr>
+            <tr mat-row
+                *matRowDef="let row; columns: ['expandedDetail']"
+                class="detail-row"></tr>
+        </table> -->
+        <mat-paginator class="paginator mat-elevation-z2"
+                       [length]="responseGetUsers.totalCount"
+                       [pageSize]="requestGetUsers.from"
+                       [pageSizeOptions]="[5, 10]"
+                       (page)="changePage($event)">
+        </mat-paginator>
+    </div>
 </div>
-

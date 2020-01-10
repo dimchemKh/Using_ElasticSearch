@@ -1,9 +1,8 @@
-﻿using Nest;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Using_Elasticsearch.BusinessLogic.Helpers.Interfaces;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
-using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.AdminScreen.Request;
 using Using_Elasticsearch.Common.Views.AdminScreen.Response;
 using Using_Elasticsearch.DataAccess.Entities;
@@ -13,34 +12,14 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 {
     public class AdminScreenService : IAdminScreenService
     {
-        private readonly IElasticClient _elasticClient;
+
         private readonly IUserRepository _userRepository;
+        private readonly IMapperHelper _mapper;
 
-        private const string ValueKey = "totalCount";
-
-        public AdminScreenService(IElasticClient elasticClient, IUserRepository userRepository)
+        public AdminScreenService(IUserRepository userRepository, IMapperHelper mapper)
         {
-            _elasticClient = elasticClient;
             _userRepository = userRepository;
-        }
-
-        public async Task<ResponseGetLogsAdminScreenView> GetLogsAsync(RequestGetLogsAdminScreenView requestModel)
-        {
-            var result = await _elasticClient.SearchAsync<LogException>(x => x
-                         .From(requestModel.From)
-                         .Size(requestModel.Size)
-                         .Query(z => z).Sort(z => z.Ascending(a => a.CreationDate))
-                         .Index("log_index")
-                         .Sort(s => s.Descending(a => a.CreationDate))
-
-                         .Aggregations(a => a.ValueCount(ValueKey, f => f.Field(r => r.CreationDate))));
-
-            var response = new ResponseGetLogsAdminScreenView();
-
-            response.Items = result.Documents.ToList();
-            response.TotalCount = (int)result.Aggregations.ValueCount(ValueKey).Value;
-
-            return response;
+            _mapper = mapper;
         }
 
         public async Task<ResponseGetUsersAdminScreenView> GetUsersAsync(RequestGetUsersAdminScreenView requestModel)
@@ -57,12 +36,15 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
         public async Task<IEnumerable<string>> CreateUserAsync(RequestCreateUserAdminScreenView requestModel)
         {
-            var user = new ApplicationUser();
+            //var user = new ApplicationUser();
 
-            user.Email = requestModel.Email;
-            user.FirstName = requestModel.FirstName;
-            user.LastName = requestModel.LastName;
-            user.Role = requestModel.Role;
+            //user.Email = requestModel.Email;
+            //user.FirstName = requestModel.FirstName;
+            //user.LastName = requestModel.LastName;
+            //user.Role = requestModel.Role;
+
+            var user = _mapper.Map<RequestCreateUserAdminScreenView, ApplicationUser>(requestModel);
+
             user.UserName = string.Concat(requestModel.FirstName, requestModel.LastName);
 
             var result = await _userRepository.CreateUserAsync(user, requestModel.Password);
@@ -79,6 +61,8 @@ namespace Using_Elasticsearch.BusinessLogic.Services
         public async Task UpdateUserAsync(RequestCreateUserAdminScreenView requestModel)
         {
             var user = await _userRepository.FindUserAsync(requestModel.UserId);
+
+
         }
     }
 }

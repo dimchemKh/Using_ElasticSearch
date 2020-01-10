@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
@@ -18,19 +17,6 @@ namespace Using_Elasticsearch.Presentation.Controllers
         public AdminScreenController(IAdminScreenService adminService)
         {
             _adminService = adminService;
-        }
-
-        [HttpPost("getLogs")]
-        public async Task<IActionResult> GetLogsAsync([FromBody] RequestGetLogsAdminScreenView requestModel)
-        {
-            if (requestModel == null)
-            {
-                throw new ProjectException(StatusCodes.Status400BadRequest);
-            }
-
-            var response = await _adminService.GetLogsAsync(requestModel);
-
-            return Ok(response);
         }
 
         [HttpPost("getUsers")]

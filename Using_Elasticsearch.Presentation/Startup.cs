@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Using_Elasticsearch.Common.Configs;
-using Using_Elasticsearch.Presentation.Common.Extensions;
-using Using_Elasticsearch.DataAccess.DbInitializers;
-using Using_Elasticsearch.Presentation.Middlewares;
 using Using_Elasticsearch.DataAccess;
-using Microsoft.AspNetCore.Authorization;
-using Using_Elasticsearch.Presentation.Common;
+using Using_Elasticsearch.DataAccess.DbInitializers;
+using Using_Elasticsearch.Presentation.Common.Extensions;
+using Using_Elasticsearch.Presentation.Middlewares;
 
 namespace Using_Elasticsearch.Presentation
 {
@@ -36,8 +35,6 @@ namespace Using_Elasticsearch.Presentation
 
             JwtExtension.AddJwt(services);
 
-            //services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -59,8 +56,7 @@ namespace Using_Elasticsearch.Presentation
             app.UseAuthentication();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
-
-
+            
             app.UseSwagger(Configuration);
 
             app.UseCors(Configuration.GetSection(nameof(CorsConfig)).GetSection(nameof(CorsConfig.PolicyName)).Value);           

@@ -9,5 +9,6 @@ export class ApiRoutes {
     public readonly mainScreenRoute = this.protocolHttp + 'api/mainscreen/';
     public readonly authentificationRoute = this.protocolHttp + 'api/authentification/';
     public readonly adminScreenRoute = this.protocolHttp + 'api/adminscreen/';
+    public readonly logsScreenRoute = this.protocolHttp + 'api/logsscreen/';
 
 }
