@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ResponseGetLogsAdminScreenModel } from 'src/app/shared/models/admin-screen/response/response-get-logs-admin-screen-model';
-import { RequestGetLogsAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-get-logs-admin-screen-model';
+import { ResponseGetLogsAdminScreenModel } from 'src/app/shared/models/logs-screen/response/response-get-logs-admin-screen-model';
+import { RequestGetLogsAdminScreenModel } from 'src/app/shared/models/logs-screen/request/request-get-logs-admin-screen-model';
 import { TableModel } from 'src/app/shared/models/table-model';
 import { TABLE_LOGS_COLUMNS_NAMES } from 'src/app/shared/constants/table-columns';
 import { LogsScreenService } from 'src/app/core/services/logs-screen.service';

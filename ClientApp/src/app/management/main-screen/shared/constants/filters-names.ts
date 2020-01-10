@@ -1,4 +1,4 @@
-import { FilterName } from 'src/app/shared/enums/filter-name.enum';
+import { FilterName } from 'src/app/shared/enums/filter-names';
 
 export const FILTERS_NAMES = {
   ArrivalYear: FilterName.holidayYear,

@@ -58,6 +58,7 @@ namespace Using_Elasticsearch.DataAccess
             services.AddTransient<IWebAppDataDapperRepository, WebAppDataRepository>();
             services.AddTransient<ILogExceptionRepository, LogExceptionRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserPermissionsRepository, UserPermissionsRepository>();
         }
 
         public static void SQLMapper()

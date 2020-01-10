@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Using_Elasticsearch.DataAccess.Configs;
+using Using_Elasticsearch.DataAccess.Entities;
 using Using_Elasticsearch.DataAccess.Repositories.Base.Interfaces;
 using DataAnnotation = System.ComponentModel.DataAnnotations.Schema;
 
@@ -37,6 +38,14 @@ namespace Using_Elasticsearch.DataAccess.Repositories.Base
             using (IDbConnection connection = GetSqlConnection())
             {
                return await connection.ExecuteAsync(sql, entity);
+            }
+        }
+
+        public async Task CreateGroup(List<GroupPermission> entities)
+        {
+            using (var connection = GetSqlConnection())
+            {
+                await connection.InsertAsync(entities);
             }
         }
         public Task<int> DeleteAsync(TEntity entity) => throw new NotImplementedException();

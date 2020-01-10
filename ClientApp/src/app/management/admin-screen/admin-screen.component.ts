@@ -4,7 +4,7 @@ import { TABLE_USERS_COLUMNS_NAMES } from 'src/app/shared/constants/table-column
 import { ResponseGetUsersAdminScreenModel } from 'src/app/shared/models/admin-screen/response/response-get-users-admin-screen-model';
 import { RequestGetUsersAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-get-users-admin-screen-model';
 import { ApplicationUser } from 'src/app/shared/models/application-user';
-import { UserRoles } from 'src/app/shared/enums/user-roles';
+import { UserRole } from 'src/app/shared/enums/user-roles';
 import { TableModel } from 'src/app/shared/models/table-model';
 import { Patterns } from 'src/app/shared/constants/patterns';
 import { PageEvent, MatIconRegistry, MatDialog, MatDialogRef } from '@angular/material';
@@ -37,7 +37,7 @@ export class AdminScreenComponent implements OnInit {
   identityErrors: Array<string>;
   isSysAdmin: boolean;
 
-  UserRoles = UserRoles;
+  UserRoles = UserRole;
 
   constructor(
     private adminScreenService: AdminScreenService,
@@ -120,7 +120,7 @@ export class AdminScreenComponent implements OnInit {
   async getRole(): Promise<void> {
     let role = await this.authHelper.getRoleFromToken().then(x => x);
 
-    if (role === UserRoles[UserRoles.SysAdmin]) {
+    if (role === UserRole[UserRole.SysAdmin]) {
       this.isSysAdmin = true;
     }
   }

@@ -1,4 +1,4 @@
-import { UserRoles } from 'src/app/shared/enums/user-roles';
+import { UserRole } from 'src/app/shared/enums/user-roles';
 
 export class RequestUserAdminScreenModel {
     firstName: string;
@@ -6,7 +6,7 @@ export class RequestUserAdminScreenModel {
     email: string;
     phoneNumber: string;
     password: string;
-    role: UserRoles;
+    role: UserRole;
 
     reset(){
         this.firstName = null;

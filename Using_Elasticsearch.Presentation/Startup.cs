@@ -64,8 +64,7 @@ namespace Using_Elasticsearch.Presentation
             app.EnsureMigrate();
 
             initializer.Initialize().Wait();
-
-
+            
             app.UseMvc();
         }
     }

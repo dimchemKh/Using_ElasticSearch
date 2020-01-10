@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthHelper } from '../shared/helpers/auth.helper';
-import { UserRoles } from '../shared/enums/user-roles';
+import { UserRole } from '../shared/enums/user-roles';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,7 +27,7 @@ export class ManagementComponent implements OnInit {
   async ngOnInit() {
     let role = await this.authHelper.getRoleFromToken().then(x => x);
     
-    if (role === UserRoles[UserRoles.SysAdmin]) {
+    if (role === UserRole[UserRole.SysAdmin]) {
       this.nonAdmin = false;
     }
   }

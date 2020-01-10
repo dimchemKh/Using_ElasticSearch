@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RequestGetLogsAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-get-logs-admin-screen-model';
-import { ResponseGetLogsAdminScreenModel } from 'src/app/shared/models/admin-screen/response/response-get-logs-admin-screen-model';
+import { RequestGetLogsAdminScreenModel } from 'src/app/shared/models/logs-screen/request/request-get-logs-admin-screen-model';
+import { ResponseGetLogsAdminScreenModel } from 'src/app/shared/models/logs-screen/response/response-get-logs-admin-screen-model';
 import { Observable } from 'rxjs';
 import { ApiRoutes } from 'src/environments/api-routes';
-import { flatMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

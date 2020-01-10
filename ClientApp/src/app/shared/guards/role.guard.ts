@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { AuthHelper } from '../helpers/auth.helper';
-import { UserRoles } from '../enums/user-roles';
+import { UserRole } from '../enums/user-roles';
 
 @Injectable({providedIn: 'root'})
 
@@ -27,7 +27,7 @@ export class RoleGuard implements CanActivate {
             return false;
         }
 
-        let isInRole = currentRoles.some(x => x === UserRoles[role]);
+        let isInRole = currentRoles.some(x => x === UserRole[role]);
 
         if (isInRole) {
             return true;

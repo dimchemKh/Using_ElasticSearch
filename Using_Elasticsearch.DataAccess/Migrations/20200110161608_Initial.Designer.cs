@@ -10,8 +10,8 @@ using Using_Elasticsearch.DataAccess.AppContext;
 namespace Using_Elasticsearch.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200106082043_initial-create")]
-    partial class initialcreate
+    [Migration("20200110161608_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,6 +165,33 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Using_Elasticsearch.DataAccess.Entities.GroupPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnName("CanCreate");
+
+                    b.Property<bool>("CanEdit")
+                        .HasColumnName("CanEdit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnName("CanView");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnName("CreationDate");
+
+                    b.Property<int>("Page")
+                        .HasColumnName("Page");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupPermissions");
+                });
+
             modelBuilder.Entity("Using_Elasticsearch.DataAccess.Entities.LogException", b =>
                 {
                     b.Property<string>("Id")
@@ -213,6 +240,26 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Using_Elasticsearch.DataAccess.Entities.UserPermission", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnName("CreationDate");
+
+                    b.Property<string>("GroupPermissionId")
+                        .HasColumnName("GroupPermissionId");
+
+                    b.Property<string>("UserId")
+                        .HasColumnName("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPermissions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

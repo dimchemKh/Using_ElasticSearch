@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry } from '@angular/materia
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Patterns } from 'src/app/shared/constants/patterns';
 import { RequestUserAdminScreenModel } from 'src/app/shared/models/admin-screen/request/request-user-admin-screen-model';
-import { UserRoles } from 'src/app/shared/enums/user-roles';
+import { UserRole } from 'src/app/shared/enums/user-roles';
 import { CONTROLS_ERRORS } from '../../../management/admin-screen/admin-screen.component';
 import { ToastrService } from 'ngx-toastr';
 import { AdminScreenService } from 'src/app/core/services/admin-screen.service';
@@ -57,7 +57,7 @@ export class AdminScreenDialogComponent implements OnInit {
     }
 
     get roles(): string[] {
-        let roles = Object.keys(UserRoles);
+        let roles = Object.keys(UserRole);
 
         return roles.slice(roles.length / 2);
     }

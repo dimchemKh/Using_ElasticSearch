@@ -1,10 +1,10 @@
-import { UserRoles } from '../enums/user-roles';
+import { UserRole } from '../enums/user-roles';
 
 export class ApplicationUser {
     id: string;
     firstName: string;
     lastName: string;
-    role: UserRoles;   
+    role: UserRole;   
     email: string;
     phoneNumber: string;
     isRemoved: number;
