@@ -41,13 +41,6 @@ namespace Using_Elasticsearch.DataAccess.Repositories.Base
             }
         }
 
-        public async Task CreateGroup(List<GroupPermission> entities)
-        {
-            using (var connection = GetSqlConnection())
-            {
-                await connection.InsertAsync(entities);
-            }
-        }
         public Task<int> DeleteAsync(TEntity entity) => throw new NotImplementedException();
         public Task<int> SaveAsync() => throw new NotImplementedException();
         public Task<int> UpdateAsync(TEntity entity) => throw new NotImplementedException();

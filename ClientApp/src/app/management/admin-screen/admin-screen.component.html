@@ -63,7 +63,7 @@
   </div> -->
 
     <div class="user-table-container">
-        <button class="create-btn" mat-raised-button (click)="openDialog()"><mat-icon svgIcon="createIcon"></mat-icon>Create</button>
+        <button class="create-btn" mat-raised-button (click)="openDialog(null, null)"><mat-icon svgIcon="createIcon"></mat-icon>Create</button>
         <table mat-table
                [dataSource]="responseGetUsers.items"
                multiTemplateDataRows

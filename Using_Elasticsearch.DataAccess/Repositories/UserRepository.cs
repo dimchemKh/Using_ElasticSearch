@@ -17,9 +17,15 @@ namespace Using_Elasticsearch.DataAccess.Repositories
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public async Task<ApplicationUser> FindUserAsync(string email)
+        public async Task<ApplicationUser> FindUserByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+
+            return user;
+        }
+        public async Task<ApplicationUser> FindUserByIdAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
 
             return user;
         }
@@ -35,8 +41,10 @@ namespace Using_Elasticsearch.DataAccess.Repositories
 
             return result;
         }
-        public async Task<IdentityResult> RemoveUserAsync(ApplicationUser user)
+        public async Task<IdentityResult> RemoveUserAsync(string userId)
         {
+            var user = await FindUserByIdAsync(userId);
+
             user.IsRemoved = true;
 
             var result = await _userManager.UpdateAsync(user);

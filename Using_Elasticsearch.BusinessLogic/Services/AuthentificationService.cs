@@ -30,7 +30,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
         }
         public async Task<ApplicationUser> FindUserAsync(string email)
         {
-            var user = await _userRepository.FindUserAsync(email);
+            var user = await _userRepository.FindUserByEmailAsync(email);
 
             if (user == null)
             {

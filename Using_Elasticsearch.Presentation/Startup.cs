@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,10 @@ namespace Using_Elasticsearch.Presentation
             Using_ElasticSearch.BusinessLogic.Configuration.Add(services, Configuration);
 
             JwtExtension.AddJwt(services);
+
+
+            //services.AddAutoMapper(typeof(Startup));
+            //services.AddControllersWithViews();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

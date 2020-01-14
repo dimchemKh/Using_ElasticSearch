@@ -13,4 +13,12 @@ namespace Using_Elasticsearch.Common.Views.AdminScreen.Response
             Items = new List<LogException>();
         }
     }
+
+    public class ReponseGetLogsAdminScreenViewItem
+    {
+        public string StackTrace { get; set; }
+        public string Message { get; set; }
+        public string Action { get; set; }
+        public string UserId { get; set; }
+    }
 }

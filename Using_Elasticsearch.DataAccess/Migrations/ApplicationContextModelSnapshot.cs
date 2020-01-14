@@ -163,33 +163,6 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Using_Elasticsearch.DataAccess.Entities.GroupPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("CanCreate")
-                        .HasColumnName("CanCreate");
-
-                    b.Property<bool>("CanEdit")
-                        .HasColumnName("CanEdit");
-
-                    b.Property<bool>("CanView")
-                        .HasColumnName("CanView");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate");
-
-                    b.Property<int>("Page")
-                        .HasColumnName("Page");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroupPermissions");
-                });
-
             modelBuilder.Entity("Using_Elasticsearch.DataAccess.Entities.LogException", b =>
                 {
                     b.Property<string>("Id")
@@ -246,11 +219,20 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id");
 
+                    b.Property<bool>("CanCreate")
+                        .HasColumnName("CanCreate");
+
+                    b.Property<bool>("CanEdit")
+                        .HasColumnName("CanEdit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnName("CanView");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnName("CreationDate");
 
-                    b.Property<string>("GroupPermissionId")
-                        .HasColumnName("GroupPermissionId");
+                    b.Property<int>("Page")
+                        .HasColumnName("Page");
 
                     b.Property<string>("UserId")
                         .HasColumnName("UserId");

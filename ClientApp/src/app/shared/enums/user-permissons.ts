@@ -1,6 +1,6 @@
 export enum UserPermission {
-    CanView = 0,
-    CanEdit = 1,
-    CanCreate = 2,
+    canView = 0,
+    canEdit = 1,
+    canCreate = 2,
 
 }

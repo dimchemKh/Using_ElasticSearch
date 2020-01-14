@@ -65,7 +65,10 @@ export class AdminScreenComponent implements OnInit {
     if (!actionName) {
       data = 'Create user';
       dialogRef = this.dialog.open(AdminScreenDialogComponent, {
-        data: { name: data }
+        data: { 
+          name: data,
+          action: 'create'
+        }
       });
     }
     if (actionName) {
@@ -73,8 +76,9 @@ export class AdminScreenComponent implements OnInit {
       dialogRef = this.dialog.open(AdminScreenDialogComponent, {
         data: {
           name: data,
+          action: 'update',
           model: {
-            id: element.id,
+            userId: element.id,
             firstName: element.firstName,
             lastName: element.lastName,
             role: element.role,

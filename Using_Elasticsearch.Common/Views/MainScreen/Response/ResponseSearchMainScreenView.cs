@@ -13,7 +13,7 @@ namespace Using_Elasticsearch.Common.Views.MainScreen.Response
             Items = new List<WebAppData>();
         }
     }
-    public class GetDataSearchMainViewItem
+    public class ResponseSearchMainScreenViewItem
     {
         public string DocId { get; set; }
         public int RecId { get; set; }

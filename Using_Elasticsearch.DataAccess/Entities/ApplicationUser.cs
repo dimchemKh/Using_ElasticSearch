@@ -10,5 +10,9 @@ namespace Using_Elasticsearch.DataAccess.Entities
         public string Password { get; set; }
         public Enums.Enums.UserRole Role { get; set; }
         public bool IsRemoved { get; set; }
+        public ApplicationUser()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

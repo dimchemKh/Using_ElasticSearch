@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -14,6 +13,8 @@ using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_ElasticSearch.BusinessLogic.Services;
 using Using_ElasticSearch.BusinessLogic.Services.Interfaces;
 using DataAccess = Using_Elasticsearch.DataAccess;
+using AutoMapper;
+using Using_Elasticsearch.BusinessLogic.Automapper;
 
 namespace Using_ElasticSearch.BusinessLogic
 {
@@ -47,9 +48,22 @@ namespace Using_ElasticSearch.BusinessLogic
 
             AddServices(services);
 
+            ConfigureMapper(services);
+
             DataAccess.Configuration.Add(services, configuration);
         }
 
+        private static void ConfigureMapper(IServiceCollection services)
+        {
+            var mappingConfig = new MapperConfiguration(map =>
+            {
+                map.AddProfile(new AdminScreenMapping());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
+        }
         private static void AddServices(IServiceCollection services)
         {
             services.AddScoped<IJwtFactoryHelper, JwtFactoryHelper>();

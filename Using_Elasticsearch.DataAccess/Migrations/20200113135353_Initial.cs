@@ -53,23 +53,6 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupPermissions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    CanView = table.Column<bool>(nullable: false),
-                    CanEdit = table.Column<bool>(nullable: false),
-                    CanCreate = table.Column<bool>(nullable: false),
-                    Page = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupPermissions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LogExceptions",
                 columns: table => new
                 {
@@ -92,7 +75,10 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     Id = table.Column<string>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    GroupPermissionId = table.Column<string>(nullable: true)
+                    CanView = table.Column<bool>(nullable: false),
+                    CanEdit = table.Column<bool>(nullable: false),
+                    CanCreate = table.Column<bool>(nullable: false),
+                    Page = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -261,9 +247,6 @@ namespace Using_Elasticsearch.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "GroupPermissions");
 
             migrationBuilder.DropTable(
                 name: "LogExceptions");

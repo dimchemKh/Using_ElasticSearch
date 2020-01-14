@@ -14,7 +14,7 @@ namespace Using_Elasticsearch.DataAccess.Entities.Base
         public BaseEntity()
         {
             Id = Guid.NewGuid().ToString();
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
         }
     }
 }

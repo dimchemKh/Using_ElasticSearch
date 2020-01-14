@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using Using_Elasticsearch.BusinessLogic.Services.Interfaces;
 using Using_Elasticsearch.Common.Exceptions;
 using Using_Elasticsearch.Common.Views.AdminScreen.Request;
-using Using_Elasticsearch.Presentation.Common;
 
 namespace Using_Elasticsearch.Presentation.Controllers
 {
     //[Authorize]
-    [CustomAuthorize]
+    //[CustomAuthorize]
     [Route("api/[controller]")]
     public class AdminScreenController : Controller
     {
@@ -19,6 +18,18 @@ namespace Using_Elasticsearch.Presentation.Controllers
             _adminService = adminService;
         }
 
+        [HttpPost("getPermissions")]
+        public async Task<IActionResult> GetPermissionsAsync([FromBody] RequestGetPermissionsAdminScreenView request)
+        {
+            if (request == null)
+            {
+                throw new ProjectException(StatusCodes.Status400BadRequest);
+            }
+
+            var response = await _adminService.GetUserPermissionsAsync(request);
+
+            return Ok(response);
+        }
         [HttpPost("getUsers")]
         public async Task<IActionResult> GetUsersAsync([FromBody] RequestGetUsersAdminScreenView requestModel)
         {
@@ -50,8 +61,9 @@ namespace Using_Elasticsearch.Presentation.Controllers
             {
                 throw new ProjectException(StatusCodes.Status400BadRequest);
             }
+            
+            await _adminService.UpdateUserAsync(requestModel);
 
-            //await _adminService.requestModel
             return Ok();
 
         }
@@ -64,7 +76,9 @@ namespace Using_Elasticsearch.Presentation.Controllers
                 throw new ProjectException(StatusCodes.Status400BadRequest);
             }
 
-            return Ok();
+            var response = await _adminService.RemoveUserAsync(userId);
+
+            return Ok(response);
         }
     }
 }

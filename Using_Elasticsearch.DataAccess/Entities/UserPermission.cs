@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 using Using_Elasticsearch.DataAccess.Entities.Base;
+using Using_Elasticsearch.DataAccess.Entities.Enums;
 
 namespace Using_Elasticsearch.DataAccess.Entities
 {
@@ -9,13 +10,13 @@ namespace Using_Elasticsearch.DataAccess.Entities
     {
         [Column("UserId")]
         public string UserId { get; set; }
-        [Column("GroupPermissionId")]
-        public string GroupPermissionId { get; set; }
-        //[Write(false)]
-        //public List<GroupPermission> GroupPermissions { get; set; }
-        //public UserPermission()
-        //{
-        //    GroupPermissions = new List<GroupPermission>();
-        //}
+        [Column("CanView")]
+        public bool CanView { get; set; }
+        [Column("CanEdit")]
+        public bool CanEdit { get; set; }
+        [Column("CanCreate")]
+        public bool CanCreate { get; set; }
+        [Column("Page")]
+        public PagePermission Page { get; set; }
     }
 }
