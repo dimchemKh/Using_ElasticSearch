@@ -9,6 +9,6 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers.Interfaces
     public interface IJwtFactoryHelper
     {
         string ValidateToken(string token);
-        ResponseGenerateAuthentificationView Generate(ApplicationUser user);
+        ResponseGenerateAuthentificationView Generate(ApplicationUser user, IEnumerable<UserPermission> permissions);
     }
 }

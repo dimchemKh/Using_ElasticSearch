@@ -13,7 +13,7 @@ namespace Using_Elasticsearch.Common.Views.AdminScreen.Request
         public string Email { get; set; }
         public string Password { get; set; }
         public UserRole Role { get; set; }
-        public List<PermissionModel> Permissions { get; set; }
+        public IList<PermissionModel> Permissions { get; set; }
         public RequestCreateUserAdminScreenView()
         {
             Permissions = new List<PermissionModel>();

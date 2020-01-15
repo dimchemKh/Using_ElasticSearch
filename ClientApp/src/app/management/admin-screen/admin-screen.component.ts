@@ -6,12 +6,12 @@ import { RequestGetUsersAdminScreenModel } from 'src/app/shared/models/admin-scr
 import { ApplicationUser } from 'src/app/shared/models/application-user';
 import { UserRole } from 'src/app/shared/enums/user-roles';
 import { TableModel } from 'src/app/shared/models/table-model';
-import { Patterns } from 'src/app/shared/constants/patterns';
 import { PageEvent, MatIconRegistry, MatDialog, MatDialogRef } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthHelper } from 'src/app/shared/helpers/auth.helper';
 import { AdminScreenDialogComponent } from '../../shared/components/admin-screen-dialog/admin-screen-dialog.component';
+import { PagePermission } from 'src/app/shared/enums/page-permission';
+import { PermissionHelper } from 'src/app/shared/helpers/permission.helper';
 
 export const CONTROLS_ERRORS = [
   { name: 'firstName', message: 'Incorrect First name', default: 'Empty name' },
@@ -35,13 +35,14 @@ export class AdminScreenComponent implements OnInit {
 
   expandedUser: ApplicationUser | null;
   identityErrors: Array<string>;
-  isSysAdmin: boolean;
+  // isSysAdmin: boolean;
 
   UserRoles = UserRole;
 
   constructor(
     private adminScreenService: AdminScreenService,
     private dialog: MatDialog,
+    private permissionHelper: PermissionHelper,
     private authHelper: AuthHelper,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
@@ -56,7 +57,6 @@ export class AdminScreenComponent implements OnInit {
     this.requestGetUsers.from = 0;
     this.requestGetUsers.size = 5;
   }
-
 
   openDialog(actionName: string = null, element: ApplicationUser): void {
     let data: string;
@@ -119,22 +119,27 @@ export class AdminScreenComponent implements OnInit {
     return colums;
   }
 
-
-
-  async getRole(): Promise<void> {
-    let role = await this.authHelper.getRoleFromToken().then(x => x);
-
-    if (role === UserRole[UserRole.SysAdmin]) {
-      this.isSysAdmin = true;
+  isPermissionAccess(action: string, role: UserRole = null): boolean {
+    let userRole = this.authHelper.getRoleUser();
+    
+    if (role === UserRole.SysAdmin && userRole === UserRole[UserRole.SysAdmin]) {
+      return true;
     }
+    
+    let permissions = this.authHelper.getPermissionFromUserData();
+
+    return this.permissionHelper.isPermissionAccess(action, permissions, PagePermission.adminScreen);
   }
+
+  private setUpperCase(word: string): string {
+    return word.substring(0, 1).toUpperCase() + word.substring(1);
+}
 
   getUsers(): void {
     this.adminScreenService.getUsers(this.requestGetUsers).subscribe(data => {
       this.responseGetUsers = data;
     });
   }
-
 
   changePage(event: PageEvent): void {
     this.requestGetUsers.from = event.pageIndex * event.pageSize;
@@ -143,11 +148,8 @@ export class AdminScreenComponent implements OnInit {
     this.getUsers();
   }
 
-
-
   ngOnInit(): void {
-    this.getRole();
+
     this.getUsers();
   }
-
 }

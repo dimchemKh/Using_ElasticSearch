@@ -10,8 +10,8 @@ using Using_Elasticsearch.DataAccess.AppContext;
 namespace Using_Elasticsearch.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200113135353_Initial")]
-    partial class Initial
+    [Migration("20200115152745_Initial-Create")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -226,6 +226,9 @@ namespace Using_Elasticsearch.DataAccess.Migrations
 
                     b.Property<bool>("CanEdit")
                         .HasColumnName("CanEdit");
+
+                    b.Property<bool>("CanRemove")
+                        .HasColumnName("CanRemove");
 
                     b.Property<bool>("CanView")
                         .HasColumnName("CanView");

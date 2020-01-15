@@ -14,6 +14,7 @@ import { PagePermission } from '../../enums/page-permission';
 import { PermissionModel } from '../../models/common/PermissionModel';
 import { RequestGetPermissionAdminScreenModel } from '../../models/admin-screen/request/request-get-permissions-screen-model';
 import { ResponseGetPermissionsAdminScreenModel } from '../../models/admin-screen/response/resposne-get-permissions-admin-screen-model';
+import { PermissionHelper } from '../../helpers/permission.helper';
 
 @Component({
     selector: 'app-admin-screen-dialog',
@@ -29,17 +30,19 @@ export class AdminScreenDialogComponent implements OnInit {
     requestUser: RequestCreateUserAdminScreenModel;
     isExistedData: boolean;
     userRole: string;
-    // UserPermission = UserPermission;
+    isClickSubmit: boolean;
+
     PagePermission = PagePermission;
-    mainScreen = new Array<string>();
-    adminScreen = new Array<string>();
-    logsScreen = new Array<string>();
+    mainScreen: Array<string>;
+    adminScreen: Array<string>;
+    logsScreen: Array<string>;
 
 
     constructor(
         private dialogRef: MatDialogRef<AdminScreenDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private authHelper: AuthHelper,
+        private permissionHelper: PermissionHelper,
         private patterns: Patterns,
         private fb: FormBuilder,
         private toastr: ToastrService,
@@ -50,6 +53,12 @@ export class AdminScreenDialogComponent implements OnInit {
         this.requestUser = new RequestCreateUserAdminScreenModel();
         this.nameView = data.name;
         this.action = data.action;
+
+        this.isClickSubmit = false;
+
+        this.mainScreen = new Array<string>();
+        this.adminScreen = new Array<string>();
+        this.logsScreen = new Array<string>();
         this.initFormGroup();
         this.initIcons();
     }
@@ -60,8 +69,8 @@ export class AdminScreenDialogComponent implements OnInit {
 
         event.forEach((data) => {
             this.requestUser.permissions[page][data] = !this.requestUser.permissions[page][data];
-            this.requestUser.permissions[page].userId = this.requestUser.userId;
         });
+        this.requestUser.permissions[page].userId = this.requestUser.userId;
     }
 
     private initFormGroup(): void {
@@ -103,54 +112,64 @@ export class AdminScreenDialogComponent implements OnInit {
         return this.formGroup.controls;
     }
 
-    getUserRole(): void {
-        this.authHelper.getRoleFromToken().then(x => {
-            this.userRole = x;
-        });
-    }
-
     isControlInvalid(controlName: string): boolean {
         let control = this.formControls[controlName];
 
         return control.invalid;
     }
 
-    isPermissionAccess(item: UserRole): boolean {
-        if (this.requestUser.role === item) {
+    isPermissionForRoleInput(role: UserRole): boolean {
+        if (role === UserRole.SysAdmin) {
             return true;
         }
-        return false;
+
+        let userRole = this.authHelper.getRoleUser();
+
+        if (UserRole[UserRole.SysAdmin] === userRole) {
+            return false;
+        }
+
+        if (UserRole[UserRole.Admin] === userRole && role === UserRole.Admin) {
+            return true;
+        }
+
+        if (UserRole[UserRole.User] === userRole) {
+            return true;
+        }
     }
 
     getErrorMessage(control: string): string {
         let error = CONTROLS_ERRORS.find(elem => elem.name === control);
 
+        // if (this.formGroup.invalid && this.isClickSubmit) {
         if (this.formControls[control].hasError('pattern')) {
             return error.message;
         }
         if (this.formControls[control].hasError('required')) {
             return error.default;
         }
+        // }
+
     }
 
     invokeAction(actionName: string): void {
+        // this.isClickSubmit = true;
         this[actionName + 'User']();
     }
 
     private createUser(): void {
-        debugger
-        // if (!this.formGroup.invalid) {
-        this.adminScreenService.createUser(this.requestUser).subscribe((errors) => {
-            if (errors.length > 0) {
-                this.showError(errors);
-            }
-        });
-        // }
+
+        if (!this.formGroup.invalid) {
+            this.adminScreenService.createUser(this.requestUser).subscribe((errors) => {
+                if (errors.length > 0) {
+                    this.showError(errors);
+                }
+            });
+        }
         this.formGroup.markAllAsTouched();
     }
 
-    updateUser(): void {
-        debugger
+    private updateUser(): void {
         this.adminScreenService.updateUser(this.requestUser).subscribe();
     }
 
@@ -187,8 +206,6 @@ export class AdminScreenDialogComponent implements OnInit {
         this.requestUser.permissions = new Array<PermissionModel>();
     }
 
-    // pemrissionsForUser: PermissionModel[] = [];
-
     private getUserPermissions(): void {
         let request: RequestGetPermissionAdminScreenModel = { userId: this.data.model.userId };
 
@@ -200,7 +217,6 @@ export class AdminScreenDialogComponent implements OnInit {
             });
         });
     }
-
 
     private getCorectPermissionView(data: PermissionModel): Array<string> {
         let tempArray = new Array<string>();
@@ -214,6 +230,10 @@ export class AdminScreenDialogComponent implements OnInit {
         return tempArray;
     }
 
+    setUpperCase(word: string): string {
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
+
     ngOnInit(): void {
         if (this.data.model) {
             this.requestUser = this.data.model;
@@ -221,6 +241,6 @@ export class AdminScreenDialogComponent implements OnInit {
             this.getUserPermissions();
         }
         this.initPermissions();
-        this.getUserRole();
+        // this.getUserRole();
     }
 }

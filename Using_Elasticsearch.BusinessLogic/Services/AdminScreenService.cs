@@ -36,7 +36,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
             var permissions = await _userPermissionsRepository.GetPermissionsAsync(request.UserId);
 
-            var models = _autoMapper.Map<IList<UserPermission>, IEnumerable<PermissionModel>>(permissions);
+            var models = _autoMapper.Map<IEnumerable<UserPermission>, IEnumerable<PermissionModel>>(permissions);
 
 
             response.Items = models;
@@ -57,7 +57,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
         public async Task<IEnumerable<string>> CreateUserAsync(RequestCreateUserAdminScreenView requestModel)
         {
-            var user = _mapperHelper.Map<RequestCreateUserAdminScreenView, ApplicationUser>(requestModel);
+            var user = _autoMapper.Map<RequestCreateUserAdminScreenView, ApplicationUser>(requestModel);
 
             user.UserName = string.Concat(requestModel.FirstName, requestModel.LastName);
 
@@ -78,7 +78,8 @@ namespace Using_Elasticsearch.BusinessLogic.Services
                     Page = permissionPage.Page,
                     CanCreate = permissionPage.CanCreate,
                     CanView = permissionPage.CanView,
-                    CanEdit = permissionPage.CanEdit
+                    CanEdit = permissionPage.CanEdit,
+                    CanRemove = permissionPage.CanRemove
                 });
             }
 
@@ -87,7 +88,7 @@ namespace Using_Elasticsearch.BusinessLogic.Services
 
         public async Task UpdateUserAsync(RequestCreateUserAdminScreenView requestModel)
         {
-            var models = _autoMapper.Map<IList<PermissionModel>, IEnumerable<UserPermission>>(requestModel.Permissions);
+            var models = _autoMapper.Map<IEnumerable<PermissionModel>, IEnumerable<UserPermission>>(requestModel.Permissions);
 
             foreach (var permissionPage in models)
             {

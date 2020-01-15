@@ -16,8 +16,8 @@ namespace Using_Elasticsearch.BusinessLogic.Automapper
                     map => map
                         .MapFrom(source =>
                             source.FirstName + source.LastName));
-            //CreateMap<IList<UserPermission>, IList<PermissionModel>>();
             CreateMap<UserPermission, PermissionModel>();
+            CreateMap<PermissionModel, UserPermission>();
         }
     }
 }

@@ -1,3 +1,9 @@
+%flex-container {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+}
+
 .container {
     padding: 10px;
 }
@@ -10,41 +16,52 @@
 
 .user-form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     h3 {
         text-align: center;
     }
     border-radius: 5px;
-    width: 500px;
+    width: 700px;
 }
 .surName {
     display: flex;
     flex-direction: row;
+    & .input-name {
+        width: 150px;
+    }
+    & .input-name:first-child {
+        margin-right: 20px;
+    }
 }
-.input-group {
+.left-group {
     margin-top: 10px;
     margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    margin: 0 20px;
 
-    .input {
-        width: 300px;
-        justify-content: center;
+    & .input {
+        width: 320px;
     }
-    .select {
-        width: 300px;
-        justify-content: center;
-
+    & .select {
+        width: 320px;
     }
 }
-.btn-group {
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row;
+.right-group {
+    @extend %flex-container;
+
+    & .select-permission {
+        width: 300px;
+    }
+}
+.btn-submit {
+    @extend %flex-container;
     align-items: center;
-    button {
-        width: 100px;
-        margin: 0 20px;
-    }   
+    & button {
+        width: 150px;
+    }
+}
+::ng-deep .mat-option .mat-pseudo-checkbox {
+    display: none;
+}
+[hidden] {
+display: none !important;
 }

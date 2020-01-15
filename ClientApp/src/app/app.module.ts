@@ -9,6 +9,7 @@ import { StorageModule } from '@ngx-pwa/local-storage';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { PermissionPipe } from './shared/pipes/permission-pipe';
 
 @NgModule({
   declarations: [

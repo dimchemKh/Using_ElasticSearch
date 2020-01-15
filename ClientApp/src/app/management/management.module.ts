@@ -9,6 +9,7 @@ import { ManagementComponent } from './management.component';
 import { ManagementRoutingModule } from './management-routing.module';
 import { LogsScreenComponent } from './logs-screen/logs-screen.component';
 import { AdminScreenDialogComponent } from '../shared/components/admin-screen-dialog/admin-screen-dialog.component';
+import { PermissionPipe } from '../shared/pipes/permission-pipe';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { AdminScreenDialogComponent } from '../shared/components/admin-screen-di
     AdminScreenComponent,
     ManagementComponent,
     LogsScreenComponent,
-    AdminScreenDialogComponent
+    AdminScreenDialogComponent,
+    PermissionPipe
   ],
   imports: [
     ManagementRoutingModule,

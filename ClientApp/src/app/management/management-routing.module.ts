@@ -2,10 +2,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainScreenComponent } from './main-screen/main-screen.component';
 import { AdminScreenComponent } from './admin-screen/admin-screen.component';
 import { ManagementComponent } from './management.component';
-import { RoleGuard } from '../shared/guards/role.guard';
+import { ManagementGuard } from '../shared/guards/management.guard';
 import { UserRole } from '../shared/enums/user-roles';
 import { LogsScreenComponent } from './logs-screen/logs-screen.component';
 import { NgModule } from '@angular/core';
+import { UserPermission } from '../shared/enums/user-permissons';
 
 const routes: Routes = [
     {
@@ -14,21 +15,30 @@ const routes: Routes = [
             { path: '', redirectTo: 'main-screen', pathMatch: 'full' },
             {
                 path: 'main-screen',
-                canActivate: [RoleGuard],
+                canActivate: [ManagementGuard],
                 component: MainScreenComponent,
-                data: { roles: [UserRole.SysAdmin, UserRole.Admin, UserRole.User] }
+                data:
+                {
+                    // roles: [UserRole.SysAdmin, UserRole.Admin, UserRole.User]
+                }
             },
             {
                 path: 'admin-screen',
-                canActivate: [RoleGuard],
+                canActivate: [ManagementGuard],
                 component: AdminScreenComponent,
-                data: { roles: [UserRole.SysAdmin, UserRole.Admin] }
+                data:
+                {
+                    // roles: [UserRole.SysAdmin, UserRole.Admin]
+                }
             },
             {
                 path: 'logs-screen',
-                canActivate: [RoleGuard],
+                canActivate: [ManagementGuard],
                 component: LogsScreenComponent,
-                data: { roles: [UserRole.SysAdmin, UserRole.Admin] }
+                data:
+                {
+                    // roles: [UserRole.SysAdmin, UserRole.Admin]
+                }
             }
         ]
     }

@@ -25,11 +25,11 @@ export class ManagementComponent implements OnInit {
   }
 
   async ngOnInit() {
-    let role = await this.authHelper.getRoleFromToken().then(x => x);
+    let role = await this.authHelper.getPermissionsFromToken().then(x => x);
     
-    if (role === UserRole[UserRole.SysAdmin]) {
-      this.nonAdmin = false;
-    }
+    // if (role === UserRole[UserRole.SysAdmin]) {
+    //   this.nonAdmin = false;
+    // }
   }
 
 }

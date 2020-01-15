@@ -4,6 +4,7 @@
     {
         CanView = 0,
         CanEdit = 1,
-        CanCreate = 2
+        CanCreate = 2,
+        CanRemove = 3
     }
 }

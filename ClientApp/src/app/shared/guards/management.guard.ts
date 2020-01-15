@@ -5,7 +5,7 @@ import { UserRole } from '../enums/user-roles';
 
 @Injectable({providedIn: 'root'})
 
-export class RoleGuard implements CanActivate {
+export class ManagementGuard implements CanActivate {
 
     constructor(
         private authHelper: AuthHelper,
@@ -14,24 +14,32 @@ export class RoleGuard implements CanActivate {
     }
 
     async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
-        let role = await this.authHelper.getRoleFromToken();
+        let permission = await this.authHelper.getPermissionsFromToken();
 
         let currentRoles: number[] = route.data.roles;
 
         if (!currentRoles) {
-            return false;
+            // return false;
         }
 
-        if (!role) {
+        if (!permission) {
             this.router.navigate(['auth']);
             return false;
         }
 
-        let isInRole = currentRoles.some(x => x === UserRole[role]);
+        let url = route.url.map(x => x.path)[0];
 
-        if (isInRole) {
+        let sp = url.split('-').map(x => x.substring(0, 1).toUpperCase() + x.substring(1)).join('');
+
+        if (permission.includes(sp + '.' + 'CanView=true')) {
             return true;
         }
+        
+        // let isInRole = currentRoles.some(x => x === UserRole[permission]);
+
+        // if (isInRole) {
+        //     return true;
+        // }
 
         this.router.navigate(['management']);
         return false;

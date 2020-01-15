@@ -1,69 +1,7 @@
 <div class="container">
-    <!-- <div class="user-form mat-elevation-z2">
-      <h3>New user</h3>
-      <mat-divider></mat-divider>
-      <div class="input-group">
-
-          <mat-form-field class="input"
-                          [formGroup]="formGroup">
-              <input matInput
-                     formControlName="firstName"
-                     placeholder="First name"
-                     [(ngModel)]="requestUser.firstName">
-              <mat-error *ngIf="isControlInvalid('firstName')">{{ getErrorMessage('firstName') }}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="input"
-                          [formGroup]="formGroup">
-              <input matInput
-                     formControlName="lastName"
-                     placeholder="Last name"
-                     [(ngModel)]="requestUser.lastName">
-              <mat-error *ngIf="isControlInvalid('lastName')">{{ getErrorMessage('lastName') }}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="input"
-                          [formGroup]="formGroup">
-              <input matInput
-                     formControlName="email"
-                     placeholder="Email"
-                     [(ngModel)]="requestUser.email">
-              <mat-error *ngIf="isControlInvalid('email')">{{ getErrorMessage('email') }}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="input"
-                          [formGroup]="formGroup">
-              <input matInput
-                     formControlName="password"
-                     placeholder="Password"
-                     [(ngModel)]="requestUser.password">
-              <mat-error *ngIf="isControlInvalid('password')">{{ getErrorMessage('password') }}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="select"
-                          [formGroup]="formGroup">
-              <mat-select formControlName="role"
-                          placeholder="Role"
-                          [(ngModel)]="requestUser.role"
-                          name="item">
-                  <mat-option *ngFor="let item of roles; let i = index"
-                              [value]="i">
-                      {{item}}
-                  </mat-option>
-              </mat-select>
-              <mat-error *ngIf="isControlInvalid('role')">{{ getErrorMessage('role') }}</mat-error>
-          </mat-form-field>
-
-          <div class="btn-group">
-              <button mat-raised-button color="primary" (click)="createUser()">Create</button>
-              <button mat-raised-button color="warn" (click)="resetUser()">Reset</button>
-          </div>
-
-      </div>
-  </div> -->
 
     <div class="user-table-container">
-        <button class="create-btn" mat-raised-button (click)="openDialog(null, null)"><mat-icon svgIcon="createIcon"></mat-icon>Create</button>
+        <button class="create-btn" mat-raised-button [disabled]="isPermissionAccess('Create')" (click)="openDialog(null, null)"><mat-icon svgIcon="createIcon"></mat-icon>Create</button>
         <table mat-table
                [dataSource]="responseGetUsers.items"
                multiTemplateDataRows
@@ -83,8 +21,8 @@
                 <td mat-cell
                     *matCellDef="let element"
                     align="end">
-                    <button mat-icon-button (click)="openDialog('Change', element)"><mat-icon svgIcon="changeIcon"></mat-icon></button>
-                    <button mat-icon-button><mat-icon svgIcon="removeIcon"></mat-icon></button>
+                    <button mat-icon-button [disabled]="isPermissionAccess('Edit', element.role)" (click)="openDialog('Change', element)"><mat-icon svgIcon="changeIcon"></mat-icon></button>
+                    <button mat-icon-button [disabled]="isPermissionAccess('Remove', element.role)" ><mat-icon svgIcon="removeIcon"></mat-icon></button>
                 </td>
             </ng-container>
             <tr mat-header-row
@@ -92,55 +30,7 @@
             <tr mat-row
                 *matRowDef="let row; columns: usersDisplayColumnsNames;"></tr>
         </table>
-        <!-- <table mat-table
-               [dataSource]="responseGetUsers.items"
-               multiTemplateDataRows
-               class="mat-elevation-z2 user-table">
-            <ng-container *ngFor="let model of usersColumnsNames"
-                          matColumnDef="{{model.name}}">
-                <th mat-header-cell
-                    *matHeaderCellDef> {{model.viewName}} </th>
-                <td mat-cell
-                    *matCellDef="let element">
-                    {{model.name === 'role' ? UserRoles[element[model.name]] : element[model.name]}} </td>
-            </ng-container>
 
-            <ng-container matColumnDef="expandedDetail">
-                <td mat-cell
-                    *matCellDef="let element"
-                    [attr.colspan]="usersDisplayColumnsNames.length">
-                    <div class="item-detail"
-                         [@detailExpand]="element === expandedUser ? 'expanded' : 'collapsed'">
-                        <div class="item-detail-container">
-                            <ul class="list">
-                                <li>
-                                    Email: {{element.email}}
-                                </li>
-                                <li>
-                                    Phone: {{element.phoneNumber}}
-                                </li>
-                            </ul>
-                            <div class="btn-group">
-                                <button mat-raised-button color="accent" (click)="''">Change</button>
-                                <button mat-raised-button color="warn" (click)="''">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row
-                *matHeaderRowDef="usersDisplayColumnsNames"></tr>
-            <tr mat-row
-                *matRowDef="let element; columns: usersDisplayColumnsNames;"
-                class="item-row"
-                [class.expanded-row]="expandedUser === element"
-                (click)="expandedUser = expandedUser === element ? null : element">
-            </tr>
-            <tr mat-row
-                *matRowDef="let row; columns: ['expandedDetail']"
-                class="detail-row"></tr>
-        </table> -->
         <mat-paginator class="paginator mat-elevation-z2"
                        [length]="responseGetUsers.totalCount"
                        [pageSize]="requestGetUsers.from"

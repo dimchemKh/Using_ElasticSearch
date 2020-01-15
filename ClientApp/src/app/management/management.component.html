@@ -1,8 +1,8 @@
 <div class="header-container">
     <div class="menu">
         <button mat-raised-button class="btn" [routerLink]="['/management/main-screen']">Main Screen</button>
-        <button mat-raised-button class="btn" [routerLink]="['/management/admin-screen']" [disabled]="nonAdmin" >Admin Screen</button>
-        <button mat-raised-button class="btn" [routerLink]="['/management/logs-screen']" [disabled]="nonAdmin" >Logs Screen</button>
+        <button mat-raised-button class="btn" [routerLink]="['/management/admin-screen']" >Admin Screen</button>
+        <button mat-raised-button class="btn" [routerLink]="['/management/logs-screen']" >Logs Screen</button>
     </div>
     <div class="logOut">
         <button mat-raised-button class="btn" (click)="logOut()">Log Out</button>

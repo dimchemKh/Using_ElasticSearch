@@ -225,6 +225,9 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     b.Property<bool>("CanEdit")
                         .HasColumnName("CanEdit");
 
+                    b.Property<bool>("CanRemove")
+                        .HasColumnName("CanRemove");
+
                     b.Property<bool>("CanView")
                         .HasColumnName("CanView");
 

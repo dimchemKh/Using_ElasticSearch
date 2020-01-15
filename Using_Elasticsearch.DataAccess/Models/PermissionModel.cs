@@ -9,6 +9,7 @@ namespace Using_Elasticsearch.Common.Models
         public bool CanView { get; set; }
         public bool CanEdit { get; set; }
         public bool CanCreate { get; set; }
+        public bool CanRemove { get; set; }
         public PagePermission Page { get; set; }
         public string CreationDate { get; set; }
         public PermissionModel()

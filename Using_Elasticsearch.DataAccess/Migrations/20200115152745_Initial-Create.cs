@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Using_Elasticsearch.DataAccess.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,6 +78,7 @@ namespace Using_Elasticsearch.DataAccess.Migrations
                     CanView = table.Column<bool>(nullable: false),
                     CanEdit = table.Column<bool>(nullable: false),
                     CanCreate = table.Column<bool>(nullable: false),
+                    CanRemove = table.Column<bool>(nullable: false),
                     Page = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

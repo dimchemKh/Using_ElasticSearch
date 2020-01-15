@@ -5,6 +5,7 @@ import { LocalDatabase } from '@ngx-pwa/local-storage';
 import { ApiRoutes } from 'src/environments/api-routes';
 import { ResponseGenerateAuthentificationView } from '../models/authentification/response/response-generation-authentification-view';
 import * as jwt_decode from 'jwt-decode';
+import { PagePermission } from '../enums/page-permission';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,6 @@ import * as jwt_decode from 'jwt-decode';
 export class AuthHelper {
 
     private readonly _userDataKey: string = 'USER_KEY';
-    private authSubject: BehaviorSubject<boolean>;
     private userData: ResponseGenerateAuthentificationView;
 
     constructor(
@@ -21,7 +21,6 @@ export class AuthHelper {
         private storage: LocalDatabase,
         private apiRoutes: ApiRoutes
     ) {
-        this.authSubject = new BehaviorSubject(false);
         this.responseToken().then(x => {
             this.userData = x;
         });
@@ -54,8 +53,32 @@ export class AuthHelper {
         });
     }
 
-    public async getRoleFromToken(): Promise<string> {
-        let role = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+    getPermissionFromUserData(): string {
+        let claimName = 'UserPermission';
+
+        let res = this.getDecodedAccessToken(this.userData.accessToken);
+
+        if (!res) {
+            return undefined;
+        }
+
+        return res[claimName];
+    }
+
+    getRoleUser(): string {
+        let claimName = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+
+        let res = this.getDecodedAccessToken(this.userData.accessToken);
+
+        if (!res) {
+            return undefined;
+        }
+
+        return res[claimName];
+    }
+
+    async getPermissionsFromToken(): Promise<string> {
+        let claimName = 'UserPermission';
 
         let accessToken = await this.getAccessToken();
 
@@ -65,7 +88,7 @@ export class AuthHelper {
             return undefined;
         }
 
-        return res[role];
+        return res[claimName];
     }
 
     getAccessToken(): string {

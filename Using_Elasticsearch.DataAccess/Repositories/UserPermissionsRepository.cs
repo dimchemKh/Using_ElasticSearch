@@ -1,13 +1,11 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Using_Elasticsearch.Common.Models;
 using Using_Elasticsearch.DataAccess.Configs;
 using Using_Elasticsearch.DataAccess.Entities.Enums;
 using Using_Elasticsearch.DataAccess.Repositories.Base;
@@ -38,20 +36,21 @@ namespace Using_Elasticsearch.DataAccess.Repositories
             }
         }
 
-        public async Task<int> UpdatePermissionAsync(UserPermission permissionModel)
+        public async Task<int> UpdatePermissionAsync(UserPermission permission)
         {
-            var sql = $@"UPDATE {tableName} SET {nameof(permissionModel.CreationDate)} = '{permissionModel.CreationDate}', 
-                                                {nameof(permissionModel.CanView)} = '{permissionModel.CanView}', 
-                                                {nameof(permissionModel.CanEdit)} = '{permissionModel.CanEdit}', 
-                                                {nameof(permissionModel.CanCreate)} = '{permissionModel.CanCreate}' 
-                                                WHERE Page = '{(int)permissionModel.Page}' AND UserId = '{permissionModel.UserId}'";
+            var sql = $@"UPDATE {tableName} SET {nameof(permission.CreationDate)} = '{permission.CreationDate}', 
+                                                {nameof(permission.CanView)} = '{permission.CanView}', 
+                                                {nameof(permission.CanEdit)} = '{permission.CanEdit}', 
+                                                {nameof(permission.CanCreate)} = '{permission.CanCreate}' 
+                                                {nameof(permission.CanRemove)} = '{permission.CanRemove}' 
+                                                WHERE Page = '{(int)permission.Page}' AND UserId = '{permission.UserId}'";
 
             using (IDbConnection connection = GetSqlConnection())
             {
                 return await connection.ExecuteAsync(sql);
             }
         }
-        public async Task<IList<UserPermission>> GetPermissionsAsync(string userId)
+        public async Task<IEnumerable<UserPermission>> GetPermissionsAsync(string userId)
         {
             var sql = $@"SELECT * FROM {tableName} WHERE {nameof(UserPermission.UserId)} = '{userId}'";
 
@@ -68,6 +67,7 @@ namespace Using_Elasticsearch.DataAccess.Repositories
                 CanCreate = x.CanCreate,
                 CanEdit = x.CanEdit,
                 CanView = x.CanView,
+                CanRemove = x.CanRemove,
                 Page = (PagePermission)x.Page
             })
             .OrderBy(x => x.Page)

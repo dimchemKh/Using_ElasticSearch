@@ -16,6 +16,8 @@ namespace Using_Elasticsearch.DataAccess.Entities
         public bool CanEdit { get; set; }
         [Column("CanCreate")]
         public bool CanCreate { get; set; }
+        [Column("CanRemove")]
+        public bool CanRemove { get; set; }
         [Column("Page")]
         public PagePermission Page { get; set; }
     }

@@ -9,6 +9,6 @@ namespace Using_Elasticsearch.DataAccess.Repositories.Interfaces
     {
         Task<int> AddInGroupAsync(UserPermission permissionModel);
         Task<int> UpdatePermissionAsync(UserPermission permissionModel);
-        Task<IList<UserPermission>> GetPermissionsAsync(string userId);
+        Task<IEnumerable<UserPermission>> GetPermissionsAsync(string userId);
     }
 }

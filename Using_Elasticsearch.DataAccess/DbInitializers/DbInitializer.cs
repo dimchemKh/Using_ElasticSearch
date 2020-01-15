@@ -80,7 +80,7 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
                     CanCreate = true,
                     CanView = true,
                     CanEdit = true,
-
+                    CanRemove = true
                 });
                 await _userPermissionsRepository.AddInGroupAsync(new UserPermission
                 {
@@ -88,7 +88,8 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
                     Page = PagePermission.MainScreen,
                     CanCreate = true,
                     CanView = true,
-                    CanEdit = true
+                    CanEdit = true,
+                    CanRemove = true
                 });
                 await _userPermissionsRepository.AddInGroupAsync(new UserPermission
                 {
@@ -96,7 +97,8 @@ namespace Using_Elasticsearch.DataAccess.DbInitializers
                     Page = PagePermission.LogsScreen,
                     CanCreate = true,
                     CanView = true,
-                    CanEdit = true
+                    CanEdit = true,
+                    CanRemove = true
                 });
             }
 

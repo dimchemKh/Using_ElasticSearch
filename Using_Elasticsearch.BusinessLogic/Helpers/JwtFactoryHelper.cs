@@ -43,11 +43,11 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
 
             return email;
         }
-        public ResponseGenerateAuthentificationView Generate(ApplicationUser user)
+        public ResponseGenerateAuthentificationView Generate(ApplicationUser user, IEnumerable<UserPermission> permissions)
         {
             var result = new ResponseGenerateAuthentificationView();
             
-            var accessClaims = GetAccessTokenClaims(user);
+            var accessClaims = GetAccessTokenClaims(user, permissions);
 
             var refreshClaims = GetRefreshTokenClaims(user);
 
@@ -57,12 +57,26 @@ namespace Using_Elasticsearch.BusinessLogic.Helpers
 
             return result;
         }
-        private List<Claim> GetAccessTokenClaims(ApplicationUser user)
+        private List<Claim> GetAccessTokenClaims(ApplicationUser user, IEnumerable<UserPermission> permissions)
         {
             var claims = GetRefreshTokenClaims(user);
 
             claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+
+            var tempStr = new List<string>();
+
+            foreach (var item in permissions)
+            {
+                var page = item.Page.ToString();
+                var result = item.GetType().GetProperties().Where(x => x.Name.StartsWith("Can")).Select(z => $"{page}.{z.Name.ToString()}={z.GetValue(item).ToString().ToLower()}");
+
+                tempStr.Add(string.Join(',', result.Select(x => x)));
+            }
+
+            var str = string.Join(',', tempStr.Select(x => x));
+
+            claims.Add(new Claim(nameof(UserPermission), str));
 
             return claims;
         }

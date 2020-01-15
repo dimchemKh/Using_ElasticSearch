@@ -15,20 +15,25 @@ namespace Using_Elasticsearch.BusinessLogic.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtFactoryHelper _jwtFactory;
-        public AuthentificationService(IUserRepository userRepository, IJwtFactoryHelper jwtFactory)
+        private readonly IUserPermissionsRepository _userPermissionsRepository;
+        public AuthentificationService(IUserRepository userRepository, IJwtFactoryHelper jwtFactory, IUserPermissionsRepository userPermissionsRepository)
         {
             _userRepository = userRepository;
             _jwtFactory = jwtFactory;
+            _userPermissionsRepository = userPermissionsRepository;
         }
         public async Task<ResponseGenerateAuthentificationView> LoginAsync(RequestLoginAuthentificationView requestLogin)
         {
             var user = await CheckUser(requestLogin);
 
-            var resposne = _jwtFactory.Generate(user);
+            var permissions = await _userPermissionsRepository.GetPermissionsAsync(user.Id.ToString());
+
+            var resposne = _jwtFactory.Generate(user, permissions);
 
             return resposne;
         }
-        public async Task<ApplicationUser> FindUserAsync(string email)
+
+        public async Task<ResponseGenerateAuthentificationView> RefreshAsync(string email)
         {
             var user = await _userRepository.FindUserByEmailAsync(email);
 
@@ -37,12 +42,21 @@ namespace Using_Elasticsearch.BusinessLogic.Services
                 throw new ProjectException(statusCode: StatusCodes.Status404NotFound, message: Messages.UserExistedError);
             }
 
-            return user;
+            var permissions = await _userPermissionsRepository.GetPermissionsAsync(user.Id.ToString());
+
+            var response = _jwtFactory.Generate(user, permissions);
+
+            return response;
         }
 
         private async Task<ApplicationUser> CheckUser(RequestLoginAuthentificationView requestLogin)
         {
-            var user = await FindUserAsync(requestLogin.Email);
+            var user = await _userRepository.FindUserByEmailAsync(requestLogin.Email);
+
+            if (user == null)
+            {
+                throw new ProjectException(statusCode: StatusCodes.Status404NotFound, message: Messages.UserExistedError);
+            }
 
             var result = await _userRepository.CheckPasswordAsync(user, requestLogin.Password);
 

@@ -30,9 +30,7 @@ namespace Using_Elasticsearch.Presentation.Controllers
         {
             var email = _jwtFactory.ValidateToken(requestRefresh.RefreshToken);
 
-            var user = await _service.FindUserAsync(email);
-
-            var response = _jwtFactory.Generate(user);
+            var response = await _service.RefreshAsync(email);
 
             return Ok(response);
         }
